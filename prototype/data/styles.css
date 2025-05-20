@@ -1,0 +1,251 @@
+﻿.ax_default {
+  font-family:"Arial Normal", "Arial", sans-serif;
+  font-weight:400;
+  font-style:normal;
+  font-size:13px;
+  letter-spacing:normal;
+  color:#333333;
+  vertical-align:none;
+  text-align:center;
+  line-height:normal;
+  text-transform:none;
+}
+._图片 {
+}
+.placeholder {
+}
+.heading_1 {
+  font-family:"Arial Normal", "Arial", sans-serif;
+  font-weight:bold;
+  font-style:normal;
+  font-size:32px;
+  text-align:left;
+}
+.heading_2 {
+  font-family:"Arial Normal", "Arial", sans-serif;
+  font-weight:bold;
+  font-style:normal;
+  font-size:24px;
+  text-align:left;
+}
+.heading_3 {
+  font-family:"Arial Normal", "Arial", sans-serif;
+  font-weight:bold;
+  font-style:normal;
+  font-size:18px;
+  text-align:left;
+}
+._36号字_顶部标题、大按钮、弹窗提示主标题_ {
+  font-family:"PingFang SC", sans-serif;
+  font-weight:400;
+  font-style:normal;
+  font-size:18px;
+  text-align:left;
+}
+.heading_4 {
+  font-family:"Arial Normal", "Arial", sans-serif;
+  font-weight:bold;
+  font-style:normal;
+  font-size:14px;
+  text-align:left;
+}
+.heading_5 {
+  font-family:"Arial Normal", "Arial", sans-serif;
+  font-weight:bold;
+  font-style:normal;
+  text-align:left;
+}
+.heading_6 {
+  font-family:"Arial Normal", "Arial", sans-serif;
+  font-weight:bold;
+  font-style:normal;
+  font-size:10px;
+  text-align:left;
+}
+.label {
+  font-size:13px;
+  text-align:left;
+}
+.paragraph {
+  text-align:left;
+}
+.link_button {
+  color:#169BD5;
+}
+.form_hint {
+  color:#999999;
+}
+.form_disabled {
+}
+.connector {
+  font-family:"Nunito Sans", sans-serif;
+  font-weight:400;
+  font-style:normal;
+}
+.snapshot {
+}
+.shape {
+}
+._60号字_如金额展示、金额输入） {
+  font-family:"PingFang SC", sans-serif;
+  font-weight:400;
+  font-style:normal;
+  font-size:30px;
+  text-align:left;
+}
+.marker {
+  color:#FFFFFF;
+}
+.form_disabled1 {
+}
+.text_link {
+  color:#0000FF;
+}
+.text_link_mouse_over {
+}
+.text_link_mouse_down {
+  color:#FF0000;
+}
+.image {
+}
+.button {
+}
+.primary_button {
+  color:#FFFFFF;
+}
+.primary_button1 {
+  color:#FFFFFF;
+}
+.text_field {
+  text-align:left;
+}
+.box_2 {
+}
+.line {
+}
+.line1 {
+}
+.text_area {
+  color:#000000;
+  text-align:left;
+}
+.list_box {
+  color:#000000;
+  text-align:left;
+}
+.ellipse {
+}
+.vertical_line {
+}
+.icon {
+}
+.box_3 {
+}
+.horizontal_line {
+}
+.text_field1 {
+  color:#000000;
+  text-align:left;
+}
+.box_1 {
+}
+._分割线 {
+}
+._34号字_单行列表内，左方主标题文字字） {
+  font-family:"PingFang SC", sans-serif;
+  font-weight:400;
+  font-style:normal;
+  font-size:17px;
+  text-align:left;
+}
+._32号字_单行列表内，右方操作说明的文字__） {
+  font-family:"PingFang SC", sans-serif;
+  font-weight:400;
+  font-style:normal;
+  font-size:16px;
+  text-align:left;
+}
+._30号字_服务主标题，例如双行列表内的下方描述信息。__） {
+  font-family:"PingFang SC", sans-serif;
+  font-weight:400;
+  font-style:normal;
+  font-size:15px;
+  text-align:left;
+}
+._28号字_页面备注信息及列表的表头说明文字__） {
+  font-family:"PingFang SC", sans-serif;
+  font-weight:400;
+  font-style:normal;
+  font-size:14px;
+  text-align:left;
+}
+._24号字_最小说明文本，例如列表时间态、版权信息等） {
+  font-family:"PingFang SC", sans-serif;
+  font-weight:400;
+  font-style:normal;
+  font-size:12px;
+  text-align:left;
+}
+.image1 {
+  color:#000000;
+}
+._默认样式 {
+}
+._表单提示文本 {
+  color:#999999;
+}
+._表单禁用 {
+}
+.image2 {
+}
+.refs-webm-wechat {
+  font-family:"PingFang SC", sans-serif;
+  font-weight:400;
+  font-style:normal;
+}
+.refs-icon-brands {
+  font-family:"Arial Normal", "Arial", sans-serif;
+  font-weight:400;
+  font-style:normal;
+}
+._图片1 {
+  color:#000000;
+}
+._段落 {
+  text-align:left;
+}
+._形状 {
+}
+._线段 {
+}
+._鼠标按下文本链接时 {
+}
+.form_hint1 {
+  color:#999999;
+}
+.primary_button2 {
+  color:#FFFFFF;
+}
+.text_field2 {
+  color:#000000;
+  text-align:left;
+}
+.label1 {
+  font-size:14px;
+  text-align:left;
+}
+.refs-design-apple {
+  font-family:"PingFang SC", sans-serif;
+  font-weight:400;
+  font-style:normal;
+}
+._形状1 {
+  font-family:"PingFang SC", sans-serif;
+  font-weight:normal;
+  font-style:normal;
+  font-size:50px;
+  color:#FFFFFF;
+  text-align:center;
+  line-height:normal;
+}
+textarea, select, input, button, div, svg { outline: none; }
