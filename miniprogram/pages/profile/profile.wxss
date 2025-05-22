@@ -1,0 +1,24 @@
+/* profile.wxss */
+.container {
+  min-height: 100vh;
+  background: #F5F5F5;
+}
+
+.user-info {
+  background: #FFFFFF;
+  padding: 48rpx 32rpx;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 24rpx;
+}
+
+.avatar-wrapper {
+  margin-bottom: 24rpx;
+}
+
+.user-name {
+  font-size: 32rpx;
+  color: #333333;
+  font-weight: 500;
+} 

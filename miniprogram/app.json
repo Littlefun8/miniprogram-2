@@ -1,13 +1,49 @@
 {
   "pages": [
     "pages/index/index",
-    "pages/logs/logs"
+    "pages/progress/progress",
+    "pages/profile/profile"
   ],
   "window": {
     "navigationBarTextStyle": "black",
-    "navigationBarTitleText": "Weixin",
+    "navigationBarTitleText": "酱菜内推",
     "navigationBarBackgroundColor": "#ffffff"
   },
+  "tabBar": {
+    "custom": false,
+    "color": "#999999",
+    "selectedColor": "#0079FE",
+    "backgroundColor": "#ffffff",
+    "list": [
+      {
+        "pagePath": "pages/index/index",
+        "text": "职位",
+        "iconPath": "assets/icons/home.png",
+        "selectedIconPath": "assets/icons/home-active.png"
+      },
+      {
+        "pagePath": "pages/progress/progress",
+        "text": "进度",
+        "iconPath": "assets/icons/progress.png",
+        "selectedIconPath": "assets/icons/progress-active.png"
+      },
+      {
+        "pagePath": "pages/profile/profile",
+        "text": "我的",
+        "iconPath": "assets/icons/profile.png",
+        "selectedIconPath": "assets/icons/profile-active.png"
+      }
+    ]
+  },
   "componentFramework": "glass-easel",
-  "lazyCodeLoading": "requiredComponents"
+  "lazyCodeLoading": "requiredComponents",
+  "usingComponents": {
+    "t-button": "tdesign-miniprogram/button/button",
+    "t-input": "tdesign-miniprogram/input/input",
+    "t-icon": "tdesign-miniprogram/icon/icon",
+    "t-tag": "tdesign-miniprogram/tag/tag",
+    "t-cell": "tdesign-miniprogram/cell/cell",
+    "t-cell-group": "tdesign-miniprogram/cell-group/cell-group",
+    "t-search": "tdesign-miniprogram/search/search"
+  }
 }

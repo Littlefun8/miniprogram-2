@@ -1,28 +1,51 @@
 <!--index.wxml-->
 <scroll-view class="scrollarea" scroll-y type="list">
   <view class="container">
-    <view class="userinfo">
-      <block wx:if="{{canIUseNicknameComp && !hasUserInfo}}">
-        <button class="avatar-wrapper" open-type="chooseAvatar" bind:chooseavatar="onChooseAvatar">
-          <image class="avatar" src="{{userInfo.avatarUrl}}"></image>
-        </button>
-        <view class="nickname-wrapper">
-          <text class="nickname-label">昵称</text>
-          <input type="nickname" class="nickname-input" placeholder="请输入昵称" bind:change="onInputChange" />
+    <!-- 搜索栏 -->
+    <view class="search-bar">
+      <t-search
+        class="custom-search"
+        value="{{searchValue}}"
+        placeholder="搜索职位"
+        bind:change="onSearchChange"
+        bind:clear="onSearchClear"
+        bind:submit="onSearchSubmit"
+        shape="round"
+        center
+        leftIcon="search"
+      />
+      <view class="publish-btn" bindtap="onPublishTap">
+        <t-icon name="add" size="48rpx" color="#0079FE" />
+      </view>
+    </view>
+
+    <!-- 职位列表 -->
+    <view class="job-list">
+      <block wx:for="{{jobList}}" wx:key="id">
+        <view class="job-card" bindtap="onJobCardTap" data-id="{{item.id}}">
+          <view class="job-header">
+            <view class="job-title">{{item.title}}</view>
+            <view class="job-salary">{{item.salary}}</view>
+          </view>
+          
+          <view class="job-company">{{item.company}}</view>
+          
+          <view class="job-tags">
+            <t-tag wx:for="{{item.tags}}" wx:key="*this" wx:for-item="tag" variant="light" theme="primary" size="small">{{tag}}</t-tag>
+          </view>
+          
+          <view class="job-footer">
+            <view class="job-location">
+              <t-icon name="location" size="32rpx" />
+              <text>{{item.location}}</text>
+            </view>
+            <view class="job-publisher">
+              <t-tag variant="light" theme="primary" size="small">{{item.publisherType}}</t-tag>
+              <text>{{item.publisher}}</text>
+            </view>
+          </view>
         </view>
       </block>
-      <block wx:elif="{{!hasUserInfo}}">
-        <button wx:if="{{canIUseGetUserProfile}}" bindtap="getUserProfile"> 获取头像昵称 </button>
-        <view wx:else> 请使用2.10.4及以上版本基础库 </view>
-      </block>
-      <block wx:else>
-        <image bindtap="bindViewTap" class="userinfo-avatar" src="{{userInfo.avatarUrl}}" mode="cover"></image>
-        <text class="userinfo-nickname">{{userInfo.nickName}}</text>
-      </block>
     </view>
-    <view class="usermotto">
-      <text class="user-motto">{{motto}}</text>
-    </view>
-    <t-button theme="primary">按钮</t-button>
   </view>
 </scroll-view>

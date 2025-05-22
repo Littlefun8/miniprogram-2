@@ -60,3 +60,99 @@ page {
 .nickname-input {
   flex: 1;
 }
+
+.container {
+  padding: 0;
+  background: #F5F5F5;
+  min-height: 100vh;
+}
+
+/* 搜索栏样式 */
+.search-bar {
+  position: fixed;
+  width: 100%;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  padding: 24rpx;
+  background: #FFFFFF;
+  box-shadow: 0 2rpx 8rpx rgba(0, 0, 0, 0.06);
+}
+
+.search-bar .custom-search {
+  width: 80%; /* 搜索框长度 */
+}
+
+.search-bar .publish-btn {
+  margin-left: 24rpx;
+  padding: 16rpx;
+}
+
+/* 职位列表样式 */
+.job-list {
+  margin-top: 180rpx;
+  padding: 24rpx;
+}
+
+.job-card {
+  background: #FFFFFF;
+  border-radius: 12rpx;
+  padding: 24rpx;
+  margin-bottom: 24rpx;
+  box-shadow: 0 2rpx 8rpx rgba(0, 0, 0, 0.06);
+}
+
+.job-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16rpx;
+}
+
+.job-title {
+  font-size: 32rpx;
+  font-weight: 500;
+  color: #333333;
+}
+
+.job-salary {
+  font-size: 32rpx;
+  font-weight: 500;
+  color: #FF4D4F;
+}
+
+.job-company {
+  font-size: 28rpx;
+  color: #666666;
+  margin-bottom: 16rpx;
+}
+
+.job-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16rpx;
+  margin-bottom: 16rpx;
+}
+
+.job-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 24rpx;
+  color: #999999;
+}
+
+.job-location {
+  display: flex;
+  align-items: center;
+  gap: 8rpx;
+}
+
+.job-publisher {
+  display: flex;
+  align-items: center;
+  gap: 8rpx;
+}

@@ -19,15 +19,17 @@
     "lib": ["ES2020"],
     "typeRoots": [
       "./typings"
-    ]
+    ],
+    "outDir": "./dist", // 确保编译后的文件输出到 dist 目录
+    "rootDir": "./miniprogram"  // 确保源文件在 miniprogram 目录
   },
   "include": [
-    "./**/*.ts"
+    "./miniprogram/**/*.ts"
   ],
   "exclude": [
     "node_modules"
   ],
   "paths": {
-    "tdesign-miniprogram/*":["./miniprogram/miniprogram_npm/tdesign-miniprogram/*"]
-  }  
+    "tdesign-miniprogram/*": ["./miniprogram/miniprogram_npm/tdesign-miniprogram/*"]
+  }
 }
