@@ -1,0 +1,65 @@
+<!--login.wxml-->
+<view class="container">
+  <view class="login-header">
+    <image class="logo" src="/assets/images/logo.png" mode="aspectFit" />
+    <view class="title">欢迎使用求职小程序</view>
+    <view class="subtitle">登录后即可开始求职之旅</view>
+  </view>
+
+  <view class="login-form">
+    <!-- 头像选择 -->
+    <view class="avatar-wrapper">
+      <t-avatar
+        class="avatar"
+        image="{{userInfo.avatarUrl}}"
+        size="large"
+        bind:tap="onChooseAvatar"
+      />
+      <view class="avatar-tip">点击更换头像</view>
+    </view>
+
+    <!-- 昵称输入 -->
+    <view class="nickname-wrapper">
+      <t-input
+        class="nickname-input"
+        value="{{userInfo.nickName}}"
+        placeholder="请输入昵称"
+        bind:change="onInputChange"
+        maxlength="20"
+      />
+    </view>
+
+    <!-- 用户类型选择 -->
+    <view class="user-type">
+      <view class="type-title">选择用户类型</view>
+      <view class="type-options">
+        <t-radio-group value="{{userType}}" bind:change="onTypeChange">
+          <t-radio value="jobseeker" label="求职者" />
+          <t-radio value="recruiter" label="招聘者" />
+        </t-radio-group>
+      </view>
+    </view>
+
+    <!-- 登录按钮 -->
+    <view class="login-button">
+      <t-button
+        theme="primary"
+        size="large"
+        block
+        loading="{{loading}}"
+        disabled="{{!userInfo.avatarUrl || !userInfo.nickName || !userType}}"
+        bindtap="onLogin"
+      >登录</t-button>
+    </view>
+
+    <!-- 用户协议 -->
+    <view class="agreement">
+      <t-checkbox value="{{agreed}}" bind:change="onAgreementChange">
+        我已阅读并同意
+        <text class="link" bindtap="onViewAgreement">《用户协议》</text>
+        和
+        <text class="link" bindtap="onViewPrivacy">《隐私政策》</text>
+      </t-checkbox>
+    </view>
+  </view>
+</view> 
