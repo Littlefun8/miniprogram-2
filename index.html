@@ -120,6 +120,15 @@
       <iframe src="pages/empty_state.html" class="prototype-frame" id="empty-state-frame"></iframe>
     </div>
   </div>
+  
+  <!-- 老师端数据统计页 -->
+  <div class="prototype-wrapper">
+    <h2 class="prototype-title">老师端数据统计</h2>
+    <div class="prototype-container">
+      <div class="device-notch"></div>
+      <iframe src="pages/teacher_stats.html" class="prototype-frame" id="teacher-stats-frame"></iframe>
+    </div>
+  </div>
 
   <script>
     // 监听iframe之间的通信
@@ -166,6 +175,12 @@
           case 'empty_state':
             window.scrollTo({
               top: document.getElementById('empty-state-frame').closest('.prototype-wrapper').offsetTop - 20,
+              behavior: 'smooth'
+            });
+            break;
+          case 'teacher_stats':
+            window.scrollTo({
+              top: document.getElementById('teacher-stats-frame').closest('.prototype-wrapper').offsetTop - 20,
               behavior: 'smooth'
             });
             break;
