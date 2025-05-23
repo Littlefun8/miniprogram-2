@@ -734,6 +734,15 @@
       color: #999;
       font-size: 12px;
     }
+
+    /* 添加返回按钮样式 */
+    .back-button {
+      position: absolute;
+      left: 15px;
+      font-size: 18px;
+      color: #333;
+      cursor: pointer;
+    }
   
   </style>
 </head>
@@ -893,6 +902,7 @@
         </div>
       </div>
       <div class="nav-bar">
+        <div class="back-button"><i class="fas fa-chevron-left"></i></div>
         <div class="title">职位详情</div>
       </div>
       <div class="content">
@@ -996,23 +1006,8 @@
         <div class="favor-btn"><i class="far fa-heart"></i></div>
         <div class="apply-btn">申请职位</div>
       </div>
-      
-      <div class="tab-bar">
-        <div class="tab-item active">
-          <div class="icon"><i class="fas fa-home"></i></div>
-          <div>职位</div>
-        </div>
-        <div class="tab-item">
-          <div class="icon"><i class="fas fa-chart-bar"></i></div>
-          <div>进度</div>
-        </div>
-        <div class="tab-item">
-          <div class="icon"><i class="fas fa-user"></i></div>
-          <div>我的</div>
-        </div>
-      </div>
     </div>
-    
+
     <!-- 发布职位页 -->
     <div class="phone-frame">
       <div class="status-bar">
@@ -1177,6 +1172,18 @@
         saveQrcodeBtn.addEventListener('click', function() {
           // 简单的提示信息，实际应用中可以实现保存二维码的功能
           alert('二维码已保存');
+        });
+      }
+
+      // 获取返回按钮
+      const backButton = document.querySelector('.back-button');
+      if (backButton) {
+        // 添加点击事件监听器
+        backButton.addEventListener('click', function() {
+          // 在实际应用中，这里应该是返回到首页的逻辑
+          alert('返回到首页');
+          // 在iframe环境中，可以使用以下代码实现返回
+          // window.parent.postMessage('navigate:home', '*');
         });
       }
     });
