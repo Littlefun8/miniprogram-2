@@ -119,6 +119,8 @@
       border-radius: 8px;
       overflow: hidden;
       margin-bottom: 15px;
+      position: relative;
+      padding: 2px;
     }
     
     .progress-tab {
@@ -128,6 +130,8 @@
       font-size: 14px;
       color: #666;
       position: relative;
+      z-index: 1;
+      transition: color 0.3s;
     }
     
     .progress-tab.active {
@@ -135,16 +139,13 @@
       font-weight: 500;
     }
     
-    .progress-tab.active::after {
-      content: '';
+    .progress-slider {
       position: absolute;
-      bottom: 0;
-      left: 50%;
-      transform: translateX(-50%);
-      width: 20px;
-      height: 3px;
-      background-color: #0052d9;
-      border-radius: 1.5px;
+      height: calc(100% - 4px);
+      background-color: #f5f5f5;
+      border-radius: 6px;
+      top: 2px;
+      transition: left 0.3s, width 0.3s;
     }
     
     .notification-list {
@@ -271,6 +272,7 @@
       <div class="progress-tab" data-tab="pending">待处理</div>
       <div class="progress-tab" data-tab="success">已通过</div>
       <div class="progress-tab" data-tab="rejected">已拒绝</div>
+      <div class="progress-slider" id="progress-slider"></div>
     </div>
     
     <!-- 通知列表 -->
@@ -386,8 +388,24 @@
       
       // 进度标签切换
       const progressTabs = document.querySelectorAll('.progress-tab');
+      const progressSlider = document.getElementById('progress-slider');
       const notificationItems = document.querySelectorAll('.notification-item');
       const emptyState = document.getElementById('empty-state');
+      
+      // 初始化滑块位置和宽度
+      function updateSliderPosition() {
+        const activeTab = document.querySelector('.progress-tab.active');
+        if (activeTab) {
+          const tabWidth = activeTab.offsetWidth;
+          const tabLeft = activeTab.offsetLeft;
+          progressSlider.style.width = `${tabWidth}px`;
+          progressSlider.style.left = `${tabLeft}px`;
+        }
+      }
+      
+      // 页面加载时初始化滑块
+      updateSliderPosition();
+      window.addEventListener('resize', updateSliderPosition);
       
       progressTabs.forEach(tab => {
         tab.addEventListener('click', function() {
@@ -395,6 +413,9 @@
           progressTabs.forEach(t => t.classList.remove('active'));
           // 给当前点击的标签添加active类
           this.classList.add('active');
+          
+          // 更新滑块位置
+          updateSliderPosition();
           
           const tabType = this.getAttribute('data-tab');
           

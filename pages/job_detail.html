@@ -179,7 +179,7 @@
     
     .job-detail-section {
       background: #fff;
-      padding: 5px 15px;
+      padding: 15px 15px;
       border-radius: 8px;
       margin-bottom: 15px;
     }
@@ -233,28 +233,74 @@
     /* 岗位详情链接和二维码部分 */
     .job-link {
       background: #f9f9f9;
-      padding: 12px;
+      padding: 10px;
       border-radius: 4px;
-      margin-bottom: 15px;
+      margin-bottom: 2px;
       font-size: 14px;
       color: #0052d9;
       word-break: break-all;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    
+    .job-link-text {
+      flex: 1;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+    
+    .job-link-copy {
+      color: #0052d9;
+      background: #e6f7ff;
+      padding: 4px 8px;
+      border-radius: 4px;
+      margin-left: 10px;
+      font-size: 12px;
+      cursor: pointer;
+      white-space: nowrap;
     }
     
     .qrcode-section {
       display: flex;
       margin-bottom: 20px;
+      background: #fff;
+      border-radius: 8px;
+      padding: 15px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
     }
     
     .qrcode-image {
       width: 120px;
       height: 120px;
-      background-color: #f0f0f0;
+      background-color: #f5f5f5;
       border: 1px solid #e0e0e0;
       display: flex;
       align-items: center;
       justify-content: center;
       margin-right: 15px;
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .qrcode-image::after {
+      content: '';
+      position: absolute;
+      width: 30px;
+      height: 30px;
+      background-color: #fff;
+      border-radius: 4px;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      z-index: 1;
+    }
+    
+    .qrcode-image img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
     }
     
     .qrcode-buttons {
@@ -265,11 +311,10 @@
     }
     
     .qrcode-button {
-      background: #fff;
-      border: 1px solid #e0e0e0;
+      background: #f5f5f5;
       border-radius: 6px;
-      padding: 1px 0;
-      margin-bottom: 10px;
+      padding: 5px 0;
+      margin-bottom: 5px;
       text-align: center;
       font-size: 14px;
       display: flex;
@@ -277,10 +322,19 @@
       align-items: center;
       justify-content: center;
       cursor: pointer;
+      transition: all 0.2s;
     }
     
     .qrcode-button:last-child {
       margin-bottom: 0;
+    }
+    
+    .qrcode-button:hover {
+      background: #e6f7ff;
+    }
+    
+    .qrcode-button:active {
+      background: #bae7ff;
     }
     
     .qrcode-button .button-title {
@@ -290,8 +344,13 @@
     }
     
     .qrcode-button .button-text {
-      color: #333;
-      font-weight: 500;
+      color: #0052d9;
+      font-weight: 400;
+    }
+    
+    .qrcode-button .button-icon {
+      margin-right: 5px;
+      color: #0052d9;
     }
     
     /* 关联部分样式 */
@@ -463,21 +522,22 @@
       </div>
       <div class="section-content">
         <div class="job-link">
-          https://talent.baidu.com/jobs/list
+          <div class="job-link-text">https://talent.baidu.com/jobs/list</div>
+          <div class="job-link-copy" id="copy-link-btn">复制链接</div>
         </div>
         
         <div class="qrcode-section">
           <div class="qrcode-image">
-            <i class="fas fa-qrcode fa-3x" style="color: #999;"></i>
+            <img src="https://api.qrserver.com/v1/create-qr-code/?size=120x120&data=https://talent.baidu.com/jobs/list" alt="职位二维码">
           </div>
           <div class="qrcode-buttons">
             <div class="qrcode-button" id="scan-qrcode-btn">
               <div class="button-title">展开关联</div>
-              <div class="button-text">扫描二维码</div>
+              <div class="button-text"><i class="fas fa-qrcode button-icon"></i>扫描二维码</div>
             </div>
             <div class="qrcode-button" id="save-qrcode-btn">
               <div class="button-title">一键保存</div>
-              <div class="button-text">保存二维码</div>
+              <div class="button-text"><i class="fas fa-download button-icon"></i>保存二维码</div>
             </div>
           </div>
         </div>
@@ -563,7 +623,34 @@
         // 添加点击事件监听器
         saveQrcodeBtn.addEventListener('click', function() {
           // 简单的提示信息，实际应用中可以实现保存二维码的功能
-          alert('二维码已保存');
+          alert('二维码已保存到相册');
+        });
+      }
+
+      // 复制链接按钮
+      const copyLinkBtn = document.getElementById('copy-link-btn');
+      if (copyLinkBtn) {
+        copyLinkBtn.addEventListener('click', function() {
+          const linkText = document.querySelector('.job-link-text').textContent;
+          
+          // 创建临时textarea元素
+          const textarea = document.createElement('textarea');
+          textarea.value = linkText;
+          document.body.appendChild(textarea);
+          textarea.select();
+          
+          try {
+            // 执行复制命令
+            document.execCommand('copy');
+            this.textContent = '已复制';
+            setTimeout(() => {
+              this.textContent = '复制链接';
+            }, 2000);
+          } catch (err) {
+            console.error('复制失败:', err);
+          } finally {
+            document.body.removeChild(textarea);
+          }
         });
       }
 

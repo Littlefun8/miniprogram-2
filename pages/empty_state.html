@@ -176,40 +176,40 @@
     .filter-bar {
       display: flex;
       margin-bottom: 5px;
-      overflow-x: auto;
-      padding: 2px 0;
-      -webkit-overflow-scrolling: touch;
-      justify-content: space-between;
       background-color: #fff;
       border-radius: 8px;
-      padding: 5px 15px;
+      padding: 8px 15px;
+      position: relative;
+      overflow: hidden;
+      align-items: center;
+      justify-content: space-between;
+    }
+    
+    .filter-options {
+      display: flex;
+      align-items: center;
     }
     
     .filter-option {
-      padding: 6px 12px;
+      padding: 5px 10px;
       font-size: 14px;
       color: #666;
-      border-radius: 0;
+      text-align: center;
       position: relative;
-      margin-right: 0px;
-      background: transparent;
-    }
-    
-    .filter-option:last-child {
-      margin-right: 0;
+      z-index: 1;
+      transition: color 0.3s;
+      margin-right: 5px;
     }
     
     .filter-option.active {
-      color: #333;
+      color: #0052d9;
       font-weight: 500;
-      background: transparent;
-      border: none;
     }
     
     .filter-option.active::after {
       content: '';
       position: absolute;
-      bottom: -5px;
+      bottom: -2px;
       left: 50%;
       transform: translateX(-50%);
       width: 16px;
@@ -218,16 +218,28 @@
       border-radius: 2px;
     }
     
+    .filter-actions {
+      display: flex;
+      align-items: center;
+    }
+    
     .filter-dropdown {
       display: flex;
       align-items: center;
       font-size: 14px;
       color: #666;
+      padding: 0 5px;
+      margin-left: 15px;
     }
     
     .filter-dropdown .icon {
-      margin-left: 2px;
+      margin-left: 4px;
       font-size: 12px;
+      transition: transform 0.3s;
+    }
+    
+    .filter-dropdown.active .icon {
+      transform: rotate(180deg);
     }
     
     .empty-state {
@@ -268,15 +280,18 @@
       <div class="add-job-btn"><i class="fas fa-plus"></i></div>
     </div>
     
-    <!-- 空状态页面也添加筛选栏保持一致性 -->
     <div class="filter-bar">
-      <div class="filter-option active">推荐</div>
-      <div class="filter-option">最新</div>
-      <div class="filter-dropdown">
-        城市 <span class="icon"><i class="fas fa-chevron-down"></i></span>
+      <div class="filter-options">
+        <div class="filter-option active" data-filter="recommend">推荐</div>
+        <div class="filter-option" data-filter="newest">最新</div>
       </div>
-      <div class="filter-dropdown">
-        筛选 <span class="icon"><i class="fas fa-chevron-down"></i></span>
+      <div class="filter-actions">
+        <div class="filter-dropdown" id="city-filter">
+          城市 <span class="icon"><i class="fas fa-chevron-down"></i></span>
+        </div>
+        <div class="filter-dropdown" id="more-filter">
+          岗位 <span class="icon"><i class="fas fa-chevron-down"></i></span>
+        </div>
       </div>
     </div>
     
@@ -311,6 +326,31 @@
           window.parent.postMessage('navigate:post_job', '*');
         });
       }
+      
+      // 筛选选项点击事件
+      const filterOptions = document.querySelectorAll('.filter-option');
+      
+      // 筛选选项点击事件
+      filterOptions.forEach(option => {
+        option.addEventListener('click', function() {
+          filterOptions.forEach(o => o.classList.remove('active'));
+          this.classList.add('active');
+        });
+      });
+      
+      // 下拉筛选点击事件
+      const cityFilter = document.getElementById('city-filter');
+      const moreFilter = document.getElementById('more-filter');
+      
+      cityFilter.addEventListener('click', function() {
+        this.classList.toggle('active');
+        // 这里可以添加城市筛选的弹出逻辑
+      });
+      
+      moreFilter.addEventListener('click', function() {
+        this.classList.toggle('active');
+        // 这里可以添加更多筛选的弹出逻辑
+      });
     });
   </script>
 </body>
