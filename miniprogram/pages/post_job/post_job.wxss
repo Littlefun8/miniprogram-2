@@ -1,26 +1,27 @@
 /* post_job.wxss */
 page {
   background-color: #f5f5f5;
-  padding-bottom: 160rpx;
+  padding-bottom: 120rpx;
 }
 
 .container {
-  padding: 0 0 30rpx 0;
+  padding: 0;
   box-sizing: border-box;
 }
 
 .form-container {
-  padding: 0 0 120rpx 0;
+  padding: 20rpx;
 }
 
-/* 表单部分样式 */
-.form-section {
+/* 表单块样式 */
+.form-block {
   background: #fff;
   padding: 30rpx;
   margin-bottom: 20rpx;
+  border-radius: 8rpx;
 }
 
-.section-title {
+.form-block-title {
   font-size: 32rpx;
   font-weight: 500;
   color: #333;
@@ -30,47 +31,145 @@ page {
   align-items: center;
 }
 
-.tag-count {
+.form-tips {
   font-size: 24rpx;
   color: #999;
-  font-weight: normal;
+  margin-top: 10rpx;
 }
 
 /* 标签选择器样式 */
-.tags-container {
+.tag-selector {
   display: flex;
   flex-wrap: wrap;
   gap: 20rpx;
-  margin-bottom: 30rpx;
+  margin-bottom: 16rpx;
 }
 
-.tag-item {
-  padding: 16rpx 24rpx;
+.tag {
+  padding: 12rpx 24rpx;
   background: #f5f5f5;
-  border-radius: 8rpx;
-  font-size: 28rpx;
   color: #666;
-  transition: all 0.3s;
+  border-radius: 32rpx;
+  font-size: 26rpx;
+  border: 1rpx solid transparent;
+  transition: all 0.2s ease;
 }
 
-.tag-item.selected {
+.tag.selected {
   background: #e6f7ff;
   color: #0052d9;
   border: 1rpx solid #0052d9;
 }
 
-.custom-tag-input {
-  margin-bottom: 30rpx;
+.tag-counter {
+  font-size: 24rpx;
+  color: #999;
+  margin-top: 16rpx;
 }
 
-.selected-tags {
+.counter {
+  color: #0052d9;
+  font-weight: 500;
+  margin: 0 3rpx;
+}
+
+/* 信息框样式 */
+.info-box {
+  background-color: #f9f9f9;
+  padding: 24rpx;
+  border-radius: 8rpx;
+  font-size: 26rpx;
+  color: #666;
+  line-height: 1.6;
+}
+
+/* 发布人信息样式 */
+.publisher-info {
   display: flex;
-  flex-wrap: wrap;
-  gap: 16rpx;
+  align-items: center;
+  margin-bottom: 10rpx;
 }
 
-.selected-tag {
-  margin-bottom: 16rpx;
+/* 自定义下拉选择器样式 */
+.custom-select {
+  position: relative;
+  width: 200rpx;
+  z-index: 10;
+}
+
+.custom-select.disabled {
+  opacity: 0.6;
+}
+
+.select-value {
+  height: 88rpx;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 20rpx;
+  background-color: #f5f5f5;
+  border-radius: 8rpx;
+  font-size: 28rpx;
+  color: #333;
+  border: 1rpx solid #e0e0e0;
+}
+
+.select-dropdown {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  background: #fff;
+  border: 1rpx solid #e0e0e0;
+  border-radius: 0 0 8rpx 8rpx;
+  box-shadow: 0 4rpx 10rpx rgba(0, 0, 0, 0.1);
+  display: none;
+  z-index: 20;
+}
+
+.select-dropdown.open {
+  display: block;
+}
+
+.select-option {
+  padding: 20rpx;
+  font-size: 28rpx;
+  color: #333;
+  border-bottom: 1rpx solid #f0f0f0;
+}
+
+.select-option:last-child {
+  border-bottom: none;
+}
+
+.select-option.active {
+  color: #0052d9;
+  background-color: #f5f7fa;
+}
+
+/* 禁用块样式 */
+.disabled-block {
+  opacity: 0.7;
+}
+
+.status-tag {
+  margin-left: 20rpx;
+  font-size: 22rpx;
+  font-weight: normal;
+  color: #999;
+  background-color: #f0f0f0;
+  padding: 4rpx 12rpx;
+  border-radius: 8rpx;
+}
+
+/* 提交按钮样式 */
+.submit-btn-container {
+  padding: 40rpx 30rpx;
+}
+
+.submit-btn {
+  border-radius: 44rpx;
+  font-size: 32rpx;
 }
 
 /* 上传二维码样式 */

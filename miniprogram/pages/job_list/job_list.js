@@ -223,7 +223,8 @@ Page({
   onJobDetailTap(e) {
     const id = e.currentTarget.dataset.id;
     wx.navigateTo({
-      url: '/pages/job/job_detail?id=' + id
+      // url: '/pages/job/job_detail?id=' + id
+      url: '/pages/job_detail/job_detail'
     });
   }
 }) 
