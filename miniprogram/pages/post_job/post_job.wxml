@@ -1,0 +1,153 @@
+<!--post_job.wxml-->
+<view class="container">
+  <view class="form-container">
+    <!-- 基本信息 -->
+    <view class="form-section">
+      <view class="section-title">基本信息</view>
+      
+      <t-input 
+        label="职位名称" 
+        placeholder="请输入职位名称" 
+        value="{{formData.title}}" 
+        bind:change="onTitleChange" 
+        maxlength="30"
+        suffix="{{formData.title.length}}/30"
+        required
+      />
+      
+      <t-input 
+        label="薪资范围" 
+        placeholder="例如：15k-25k" 
+        value="{{formData.salary}}" 
+        bind:change="onSalaryChange" 
+        required
+      />
+      
+      <t-input 
+        label="公司名称" 
+        placeholder="请输入公司名称" 
+        value="{{formData.company}}" 
+        bind:change="onCompanyChange" 
+        required
+      />
+      
+      <t-input 
+        label="工作地点" 
+        placeholder="请输入工作地点" 
+        value="{{formData.location}}" 
+        bind:change="onLocationChange" 
+        required
+      />
+    </view>
+    
+    <!-- 职位描述 -->
+    <view class="form-section">
+      <view class="section-title">职位描述</view>
+      
+      <t-textarea 
+        placeholder="请输入职位描述，包括职责、要求等" 
+        value="{{formData.description}}" 
+        bind:change="onDescriptionChange" 
+        maxlength="1000"
+        indicator
+        disableDefaultPadding="{{true}}"
+      />
+    </view>
+    
+    <!-- 职位标签 -->
+    <view class="form-section">
+      <view class="section-title">
+        <text>职位标签</text>
+        <text class="tag-count">{{formData.tags.length}}/5</text>
+      </view>
+      
+      <view class="tags-container">
+        <view 
+          class="tag-item {{tag.selected ? 'selected' : ''}}" 
+          wx:for="{{tagOptions}}" 
+          wx:for-item="tag" 
+          wx:key="id" 
+          bindtap="onTagSelect" 
+          data-id="{{tag.id}}"
+        >
+          {{tag.name}}
+        </view>
+      </view>
+      
+      <view class="custom-tag-input">
+        <t-input 
+          placeholder="添加自定义标签" 
+          value="{{customTag}}" 
+          bind:change="onCustomTagChange"
+          bind:enter="onAddCustomTag"
+          suffix="{{formData.tags.length < 5 ? '添加' : ''}}"
+          disabled="{{formData.tags.length >= 5}}"
+          bind:click-suffix="onAddCustomTag"
+        />
+      </view>
+      
+      <view class="selected-tags" wx:if="{{formData.tags.length > 0}}">
+        <t-tag 
+          wx:for="{{formData.tags}}" 
+          wx:key="*this" 
+          variant="light" 
+          theme="primary" 
+          size="medium" 
+          class="selected-tag"
+          closable
+          bind:close="onTagClose"
+          data-index="{{index}}"
+        >{{item}}</t-tag>
+      </view>
+    </view>
+    
+    <!-- 链接信息 -->
+    <view class="form-section">
+      <view class="section-title">链接信息</view>
+      
+      <t-input 
+        label="职位链接" 
+        placeholder="请输入职位详情链接" 
+        value="{{formData.link}}" 
+        bind:change="onLinkChange" 
+        required
+      />
+      
+      <view class="upload-qrcode">
+        <view class="upload-title">上传二维码</view>
+        <view class="upload-container">
+          <view class="upload-preview" wx:if="{{qrCodeUrl}}">
+            <image src="{{qrCodeUrl}}" mode="aspectFit" class="preview-image" />
+            <view class="remove-btn" bindtap="removeQrCode">
+              <t-icon name="close" size="32rpx" />
+            </view>
+          </view>
+          <view class="upload-btn" bindtap="uploadQrCode" wx:else>
+            <t-icon name="add" size="48rpx" />
+            <text>上传二维码</text>
+          </view>
+        </view>
+      </view>
+    </view>
+    
+    <!-- 内推信息 -->
+    <view class="form-section">
+      <view class="section-title">内推信息</view>
+      
+      <t-textarea 
+        placeholder="请输入内推信息，如内推优势、注意事项等" 
+        value="{{formData.recommenderMessage}}" 
+        bind:change="onRecommenderMessageChange" 
+        maxlength="500"
+        indicator
+        disableDefaultPadding="{{true}}"
+      />
+    </view>
+  </view>
+  
+  <!-- 底部操作栏 -->
+  <view class="footer-actions">
+    <t-button theme="light" size="large" class="cancel-btn" bindtap="onCancel">取消</t-button>
+    <t-button theme="primary" size="large" class="submit-btn" bindtap="onSubmit">发布</t-button>
+  </view>
+</view> 

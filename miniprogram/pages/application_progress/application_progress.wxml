@@ -1,4 +1,4 @@
-<!--progress.wxml-->
+<!--application_progress.wxml-->
 <view class="container">
   <!-- 标签切换栏 -->
   <view class="tabs-container">
@@ -90,7 +90,6 @@
           theme="primary" 
           variant="outline" 
           bindtap="onViewDetailTap" 
-          class="detail-btn" 
           data-id="{{item.id}}"
           catchtap
         >查看详情</t-button>

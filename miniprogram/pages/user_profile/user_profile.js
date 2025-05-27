@@ -1,4 +1,4 @@
-// profile.js
+// user_profile.js
 Page({
   data: {
     userInfo: {

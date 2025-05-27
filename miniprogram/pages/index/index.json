@@ -1,9 +1,0 @@
-{
-  "navigationBarTitleText": "酱菜内推",
-  "usingComponents": {
-    "t-search": "tdesign-miniprogram/search/search",
-    "t-button": "tdesign-miniprogram/button/button",
-    "t-tag": "tdesign-miniprogram/tag/tag",
-    "t-icon": "tdesign-miniprogram/icon/icon"
-  }
-}

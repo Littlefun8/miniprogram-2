@@ -1,0 +1,115 @@
+<!--job_detail.wxml-->
+<view class="container">
+  <view class="job-header">
+    <view class="job-title">{{jobDetail.title}}</view>
+    <view class="job-salary">{{jobDetail.salary}}</view>
+    <view class="job-info">
+      <view class="info-item">
+        <t-icon name="location" size="32rpx" />
+        <text>{{jobDetail.location}}</text>
+      </view>
+      <view class="info-item">
+        <t-icon name="time" size="32rpx" />
+        <text>发布于 {{jobDetail.date}}</text>
+      </view>
+    </view>
+    <view class="job-tags">
+      <t-tag 
+        wx:for="{{jobDetail.tags}}" 
+        wx:key="*this" 
+        variant="light" 
+        size="small" 
+        style="margin-right: 12rpx;"
+      >{{item}}</t-tag>
+    </view>
+  </view>
+
+  <!-- 内推者想说 -->
+  <view class="section recommender-section">
+    <view class="section-title">
+      <t-icon name="chat" size="36rpx" color="#0052d9" />
+      <text>内推者想说</text>
+    </view>
+    <view class="section-content">
+      <text>{{jobDetail.recommenderMessage}}</text>
+    </view>
+  </view>
+
+  <!-- 岗位详情 -->
+  <view class="section job-detail-section">
+    <view class="section-title">
+      <t-icon name="link" size="36rpx" color="#0052d9" />
+      <text>岗位详情</text>
+    </view>
+    <view class="section-content">
+      <view class="job-link" bindtap="copyLink">
+        <text class="link-text">{{jobDetail.link}}</text>
+        <view class="copy-btn">复制链接</view>
+      </view>
+
+      <view class="qrcode-section">
+        <view class="qrcode-image">
+          <image wx:if="{{qrCodeUrl}}" src="{{qrCodeUrl}}" mode="aspectFit" class="qrcode"></image>
+          <t-icon wx:else name="qrcode" size="80rpx" color="#999" />
+        </view>
+        <view class="qrcode-buttons">
+          <view class="qrcode-button" bindtap="scanQrCode">
+            <text class="button-title">展开关联</text>
+            <view class="button-text">
+              <t-icon name="qrcode" size="28rpx" color="#0052d9" />
+              <text>扫描二维码</text>
+            </view>
+          </view>
+          <view class="qrcode-button" bindtap="saveQrCode">
+            <text class="button-title">一键保存</text>
+            <view class="button-text">
+              <t-icon name="download" size="28rpx" color="#0052d9" />
+              <text>保存二维码</text>
+            </view>
+          </view>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 发布人信息 -->
+  <view class="section publisher-section">
+    <view class="section-title">
+      <t-icon name="user" size="36rpx" color="#0052d9" />
+      <text>发布人信息</text>
+    </view>
+    <view class="publisher-container">
+      <view class="publisher-info">
+        <t-avatar image="{{jobDetail.publisher.avatar}}" icon="user" size="small" />
+        <text class="publisher-name">{{jobDetail.publisher.name}}</text>
+        <t-tag variant="light" theme="primary" size="small">{{jobDetail.publisher.tag}}</t-tag>
+      </view>
+      <view class="reviewer-info" wx:if="{{jobDetail.reviewer}}">
+        <t-avatar image="{{jobDetail.reviewer.avatar}}" icon="user" size="small" />
+        <text class="reviewer-name">{{jobDetail.reviewer.name}}</text>
+        <t-tag variant="light" theme="success" size="small">{{jobDetail.reviewer.tag}}</t-tag>
+      </view>
+    </view>
+  </view>
+
+  <!-- 关联信息 -->
+  <view class="section association-section" wx:if="{{showAssociation}}">
+    <view class="section-title">关联信息</view>
+    <view class="section-content">
+      <view>{{jobDetail.association.teacher}}</view>
+      
+      <view class="student-info" wx:for="{{jobDetail.association.students}}" wx:key="name">
+        {{item.info}}
+        <view>教师评价：{{item.comment}}</view>
+      </view>
+    </view>
+  </view>
+</view>
+
+<!-- 底部操作栏 -->
+<view class="footer-actions">
+  <view class="favor-btn {{isFavorite ? 'active' : ''}}" bindtap="toggleFavorite">
+    <t-icon name="{{isFavorite ? 'heart-filled' : 'heart'}}" size="48rpx" color="{{isFavorite ? '#ff4d4f' : '#999'}}" />
+  </view>
+  <t-button theme="primary" block class="apply-btn" bindtap="applyJob">申请职位</t-button>
+</view> 

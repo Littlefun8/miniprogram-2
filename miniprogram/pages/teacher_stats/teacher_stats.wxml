@@ -1,0 +1,186 @@
+<!--teacher_stats.wxml-->
+<view class="container">
+  <!-- 数据概览区域 -->
+  <view class="overview-section">
+    <view class="section-title">数据概览</view>
+    <view class="stats-cards">
+      <view class="stats-card">
+        <view class="stats-value">{{overview.totalStudents}}</view>
+        <view class="stats-label">总学生数</view>
+      </view>
+      <view class="stats-card">
+        <view class="stats-value">{{overview.totalApplies}}</view>
+        <view class="stats-label">总申请数</view>
+      </view>
+      <view class="stats-card">
+        <view class="stats-value">{{overview.pendingApplies}}</view>
+        <view class="stats-label">待处理申请</view>
+      </view>
+      <view class="stats-card">
+        <view class="stats-value">{{overview.passRate}}%</view>
+        <view class="stats-label">通过率</view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 申请趋势区域 -->
+  <view class="trend-section">
+    <view class="section-header">
+      <view class="section-title">申请趋势</view>
+      
+      <view class="filter-group">
+        <!-- 时间筛选 -->
+        <view class="time-filter">
+          <view 
+            wx:for="{{timeFilters}}" 
+            wx:key="value" 
+            class="filter-item {{timeFilterActive === item.value ? 'active' : ''}}"
+            bindtap="onTimeFilterChange"
+            data-value="{{item.value}}"
+          >{{item.label}}</view>
+        </view>
+        
+        <!-- 额外筛选 -->
+        <view class="more-filters" bindtap="toggleMoreFilters">
+          <t-icon name="filter" size="32rpx" color="#999" />
+          <text>筛选</text>
+        </view>
+      </view>
+    </view>
+    
+    <!-- 这里应该是一个图表组件，微信小程序可以使用ec-canvas或其他第三方图表组件 -->
+    <view class="chart-container">
+      <image class="placeholder-image" src="/images/trend_chart.png" mode="aspectFit"></image>
+      <!-- 实际项目中应该使用图表组件 -->
+      <!-- <ec-canvas id="trend-chart" canvas-id="trend-chart" ec="{{ trendChartOption }}"></ec-canvas> -->
+    </view>
+  </view>
+
+  <!-- 热门岗位排行区域 -->
+  <view class="ranking-section">
+    <view class="section-title">岗位热度排行</view>
+    <view class="ranking-list">
+      <view 
+        class="ranking-item" 
+        wx:for="{{popularJobs}}" 
+        wx:key="id"
+      >
+        <view class="ranking-index">{{index + 1}}</view>
+        <view class="ranking-content">
+          <view class="job-title">{{item.title}}</view>
+          <view class="job-info">
+            <text>{{item.company}}</text>
+            <text class="separator">|</text>
+            <text>申请人数: {{item.applicants}}</text>
+          </view>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 最近申请区域 -->
+  <view class="recent-section">
+    <view class="section-header">
+      <view class="section-title">最近申请</view>
+      <view class="view-all" bindtap="navigateToAllApplications">查看全部</view>
+    </view>
+    
+    <view class="applications-list">
+      <view 
+        class="application-item" 
+        wx:for="{{recentApplications}}" 
+        wx:key="id"
+        bindtap="viewApplicationDetail"
+        data-id="{{item.id}}"
+      >
+        <view class="application-header">
+          <view class="student-info">
+            <t-avatar image="{{item.studentAvatar}}" size="small" />
+            <view class="student-detail">
+              <view class="student-name">{{item.studentName}}</view>
+              <view class="student-class">{{item.studentClass}}</view>
+            </view>
+          </view>
+          <view class="application-status {{item.status}}">{{item.statusText}}</view>
+        </view>
+        
+        <view class="application-job">
+          <view class="job-title">{{item.jobTitle}}</view>
+          <view class="job-company">{{item.company}}</view>
+        </view>
+        
+        <view class="application-footer">
+          <view class="apply-time">申请时间: {{item.applyTime}}</view>
+          <t-button 
+            size="small" 
+            theme="primary" 
+            bindtap="handleApplication" 
+            data-id="{{item.id}}"
+            catchtap
+          >处理</t-button>
+        </view>
+      </view>
+    </view>
+  </view>
+</view>
+
+<!-- 筛选弹出层 -->
+<t-popup visible="{{showMoreFilters}}" bind:visible-change="onPopupVisibleChange" placement="bottom">
+  <view class="filter-popup">
+    <view class="filter-popup-header">
+      <view class="popup-title">筛选条件</view>
+      <view class="popup-close" bindtap="closeMoreFilters">
+        <t-icon name="close" size="40rpx" />
+      </view>
+    </view>
+    
+    <view class="filter-group">
+      <view class="filter-label">申请状态</view>
+      <view class="filter-options">
+        <view 
+          class="filter-option {{statusFilter === 'all' ? 'active' : ''}}" 
+          bindtap="onStatusFilterChange" 
+          data-value="all"
+        >全部</view>
+        <view 
+          class="filter-option {{statusFilter === 'pending' ? 'active' : ''}}" 
+          bindtap="onStatusFilterChange" 
+          data-value="pending"
+        >待处理</view>
+        <view 
+          class="filter-option {{statusFilter === 'approved' ? 'active' : ''}}" 
+          bindtap="onStatusFilterChange" 
+          data-value="approved"
+        >已通过</view>
+        <view 
+          class="filter-option {{statusFilter === 'rejected' ? 'active' : ''}}" 
+          bindtap="onStatusFilterChange" 
+          data-value="rejected"
+        >已拒绝</view>
+      </view>
+    </view>
+    
+    <view class="filter-group">
+      <view class="filter-label">班级</view>
+      <view class="filter-options">
+        <view 
+          class="filter-option {{classFilter === 'all' ? 'active' : ''}}" 
+          bindtap="onClassFilterChange" 
+          data-value="all"
+        >全部班级</view>
+        <view 
+          wx:for="{{classes}}" 
+          wx:key="value"
+          class="filter-option {{classFilter === item.value ? 'active' : ''}}" 
+          bindtap="onClassFilterChange" 
+          data-value="{{item.value}}"
+        >{{item.label}}</view>
+      </view>
+    </view>
+    
+    <view class="filter-buttons">
+      <t-button theme="default" block bindtap="resetFilters">重置</t-button>
+      <t-button theme="primary" block bindtap="applyFilters">确认</t-button>
+    </view>
+  </view>
+</t-popup> 

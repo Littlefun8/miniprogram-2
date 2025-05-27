@@ -1,0 +1,347 @@
+/* teacher_stats.wxss */
+page {
+  background-color: #f5f5f5;
+}
+
+.container {
+  padding: 0 0 30rpx 0;
+  box-sizing: border-box;
+}
+
+/* 公共样式 */
+.section-title {
+  font-size: 32rpx;
+  font-weight: bold;
+  color: #333;
+  margin-bottom: 20rpx;
+}
+
+.section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20rpx;
+}
+
+.separator {
+  margin: 0 10rpx;
+  color: #ddd;
+}
+
+/* 数据概览区域 */
+.overview-section {
+  background: #fff;
+  padding: 30rpx;
+  margin: 20rpx;
+  border-radius: 12rpx;
+  box-shadow: 0 2rpx 8rpx rgba(0, 0, 0, 0.05);
+}
+
+.stats-cards {
+  display: flex;
+  justify-content: space-between;
+}
+
+.stats-card {
+  flex: 1;
+  text-align: center;
+  padding: 16rpx 0;
+  position: relative;
+}
+
+.stats-card:not(:last-child)::after {
+  content: '';
+  position: absolute;
+  right: 0;
+  top: 20%;
+  height: 60%;
+  width: 1rpx;
+  background-color: #eee;
+}
+
+.stats-value {
+  font-size: 36rpx;
+  font-weight: bold;
+  color: #0052d9;
+  margin-bottom: 8rpx;
+}
+
+.stats-label {
+  font-size: 24rpx;
+  color: #999;
+}
+
+/* 申请趋势区域 */
+.trend-section {
+  background: #fff;
+  padding: 30rpx;
+  margin: 20rpx;
+  border-radius: 12rpx;
+  box-shadow: 0 2rpx 8rpx rgba(0, 0, 0, 0.05);
+}
+
+.filter-group {
+  display: flex;
+  align-items: center;
+}
+
+.time-filter {
+  display: flex;
+  margin-right: 20rpx;
+}
+
+.filter-item {
+  font-size: 24rpx;
+  color: #666;
+  padding: 8rpx 16rpx;
+  border-radius: 4rpx;
+  margin-right: 10rpx;
+}
+
+.filter-item.active {
+  color: #0052d9;
+  background-color: #e6f7ff;
+}
+
+.more-filters {
+  display: flex;
+  align-items: center;
+  font-size: 24rpx;
+  color: #999;
+}
+
+.more-filters text {
+  margin-left: 8rpx;
+}
+
+.chart-container {
+  height: 400rpx;
+  padding: 20rpx 0;
+}
+
+.placeholder-image {
+  width: 100%;
+  height: 100%;
+}
+
+/* 岗位热度排行区域 */
+.ranking-section {
+  background: #fff;
+  padding: 30rpx;
+  margin: 20rpx;
+  border-radius: 12rpx;
+  box-shadow: 0 2rpx 8rpx rgba(0, 0, 0, 0.05);
+}
+
+.ranking-list {
+  padding: 0 10rpx;
+}
+
+.ranking-item {
+  display: flex;
+  align-items: center;
+  padding: 20rpx 0;
+  border-bottom: 1rpx solid #f5f5f5;
+}
+
+.ranking-item:last-child {
+  border-bottom: none;
+}
+
+.ranking-index {
+  width: 50rpx;
+  height: 50rpx;
+  line-height: 50rpx;
+  text-align: center;
+  font-size: 24rpx;
+  font-weight: bold;
+  color: #fff;
+  background-color: #0052d9;
+  border-radius: 50%;
+  margin-right: 20rpx;
+}
+
+.ranking-item:nth-child(1) .ranking-index {
+  background-color: #ff4d4f;
+}
+
+.ranking-item:nth-child(2) .ranking-index {
+  background-color: #faad14;
+}
+
+.ranking-item:nth-child(3) .ranking-index {
+  background-color: #52c41a;
+}
+
+.ranking-content {
+  flex: 1;
+}
+
+.job-title {
+  font-size: 28rpx;
+  font-weight: 500;
+  color: #333;
+  margin-bottom: 8rpx;
+}
+
+.job-info {
+  font-size: 24rpx;
+  color: #999;
+}
+
+/* 最近申请区域 */
+.recent-section {
+  background: #fff;
+  padding: 30rpx;
+  margin: 20rpx;
+  border-radius: 12rpx;
+  box-shadow: 0 2rpx 8rpx rgba(0, 0, 0, 0.05);
+}
+
+.view-all {
+  font-size: 26rpx;
+  color: #0052d9;
+}
+
+.applications-list {
+  margin-top: 10rpx;
+}
+
+.application-item {
+  padding: 20rpx 0;
+  border-bottom: 1rpx solid #f5f5f5;
+}
+
+.application-item:last-child {
+  border-bottom: none;
+}
+
+.application-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16rpx;
+}
+
+.student-info {
+  display: flex;
+  align-items: center;
+}
+
+.student-detail {
+  margin-left: 16rpx;
+}
+
+.student-name {
+  font-size: 28rpx;
+  font-weight: 500;
+  color: #333;
+}
+
+.student-class {
+  font-size: 24rpx;
+  color: #999;
+  margin-top: 4rpx;
+}
+
+.application-status {
+  font-size: 24rpx;
+  padding: 4rpx 12rpx;
+  border-radius: 4rpx;
+}
+
+.application-status.pending {
+  color: #fa8c16;
+  background-color: #fff7e6;
+}
+
+.application-status.approved {
+  color: #52c41a;
+  background-color: #f6ffed;
+}
+
+.application-status.rejected {
+  color: #ff4d4f;
+  background-color: #fff1f0;
+}
+
+.application-job {
+  margin-bottom: 16rpx;
+}
+
+.application-job .job-title {
+  font-size: 28rpx;
+  color: #333;
+  margin-bottom: 4rpx;
+}
+
+.application-job .job-company {
+  font-size: 24rpx;
+  color: #999;
+}
+
+.application-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.apply-time {
+  font-size: 24rpx;
+  color: #999;
+}
+
+/* 筛选弹出层样式 */
+.filter-popup {
+  padding: 30rpx;
+  max-height: 70vh;
+}
+
+.filter-popup-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 30rpx;
+}
+
+.popup-title {
+  font-size: 32rpx;
+  font-weight: 500;
+  color: #333;
+}
+
+.filter-group {
+  margin-bottom: 30rpx;
+}
+
+.filter-label {
+  font-size: 28rpx;
+  color: #333;
+  margin-bottom: 16rpx;
+}
+
+.filter-options {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16rpx;
+}
+
+.filter-option {
+  padding: 12rpx 24rpx;
+  background: #f5f5f5;
+  border-radius: 8rpx;
+  font-size: 26rpx;
+  color: #666;
+}
+
+.filter-option.active {
+  background: #e6f7ff;
+  color: #0052d9;
+  border: 1rpx solid #0052d9;
+}
+
+.filter-buttons {
+  display: flex;
+  gap: 20rpx;
+  margin-top: 40rpx;
+} 
