@@ -50,7 +50,7 @@
     <view class="form-block" style="height: 545rpx; display: block; box-sizing: border-box">
       <view class="form-block-title">内推者想说</view>
       <t-textarea 
-        placeholder="请尽可能真实地描述该职位的优势和潜在劝退项" 
+        placeholder="请尽可能真实地描述该职位的优势和可能存在的劝退点"
         value="{{formData.recommenderComment}}" 
         bind:change="onRecommenderCommentChange" 
         maxlength="500"
