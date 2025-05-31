@@ -53,7 +53,7 @@
         <view class="timeline-item {{item.timeline[0].done ? 'done' : ''}}">
           <view class="timeline-dot"></view>
           <view class="timeline-content">
-            <view class="timeline-title">提交申请</view>
+            <view class="timeline-title">{{item.timeline[0].title}}</view>
             <view class="timeline-time">{{item.timeline[0].time}}</view>
           </view>
         </view>
@@ -61,28 +61,34 @@
         <view class="timeline-item {{item.timeline[1].done ? 'done' : ''}}">
           <view class="timeline-dot"></view>
           <view class="timeline-content">
-            <view class="timeline-title">简历筛选</view>
+            <view class="timeline-title">{{item.timeline[1].title}}</view>
             <view class="timeline-time">{{item.timeline[1].time || '等待中'}}</view>
           </view>
         </view>
         
-        <view class="timeline-item {{item.timeline[2].done ? 'done' : ''}}">
+        <view class="timeline-item {{item.timeline[2].done ? 'done' : ''}} {{item.timeline[2].status === 'passed' ? 'passed' : ''}} {{item.timeline[2].status === 'failed' ? 'failed' : ''}}">
           <view class="timeline-dot"></view>
           <view class="timeline-content">
-            <view class="timeline-title">面试</view>
+            <view class="timeline-title">{{item.timeline[2].title}}</view>
             <view class="timeline-time">{{item.timeline[2].time || '等待中'}}</view>
-          </view>
-        </view>
-        
-        <view class="timeline-item {{item.timeline[3].done ? 'done' : ''}}">
-          <view class="timeline-dot"></view>
-          <view class="timeline-content">
-            <view class="timeline-title">录用</view>
-            <view class="timeline-time">{{item.timeline[3].time || '等待中'}}</view>
+            <view class="timeline-status" wx:if="{{item.timeline[2].status === 'passed'}}">已通过</view>
+            <view class="timeline-status failed" wx:if="{{item.timeline[2].status === 'failed'}}">未通过</view>
           </view>
         </view>
       </view>
       
+      <view class="referral-info {{item.timeline[2].status === 'passed' ? 'passed' : ''}}" wx:if="{{item.status === 'completed' && item.referralInfo && item.timeline[2].status === 'passed'}}">
+        <view class="referral-header">
+          <view class="referral-title">内推信息</view>
+          <view class="referral-tag">获得内推</view>
+        </view>
+        <view class="referral-content">{{item.referralInfo}}</view>
+        <view class="referral-actions" wx:if="{{item.referralCode}}">
+          <view class="referral-code">内推码：{{item.referralCode}}</view>
+          <t-button size="small" theme="primary" bindtap="copyReferralCode" data-code="{{item.referralCode}}" class="copy-btn">复制内推码</t-button>
+        </view>
+      </view>
+
       <view class="application-footer">
         <view class="application-date">申请时间：{{item.applyDate}}</view>
         <t-button 
@@ -90,6 +96,7 @@
           theme="primary" 
           variant="outline" 
           bindtap="onViewDetailTap" 
+          class="detail-btn" 
           data-id="{{item.id}}"
           catchtap
         >查看详情</t-button>

@@ -156,7 +156,7 @@ Page({
     }
     
     wx.navigateTo({
-      url: '/pages/progress/application_progress'
+      url: '/pages/application_progress/application_progress'
     });
   },
 

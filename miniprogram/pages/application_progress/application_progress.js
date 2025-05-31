@@ -1,171 +1,175 @@
-// progress.js
 Page({
   data: {
     activeTab: 'all',
-    sliderLeft: '0',
-    sliderWidth: '25%',
-    applications: [
-      {
-        id: '1',
-        jobTitle: '前端开发工程师',
-        company: '示例科技有限公司',
-        location: '北京市朝阳区',
-        status: 'pending',
-        statusText: '待处理',
-        applyDate: '2024-03-20',
-        timeline: [
-          { step: 'submit', done: true, time: '2024-03-20 10:30' },
-          { step: 'review', done: false, time: '' },
-          { step: 'interview', done: false, time: '' },
-          { step: 'offer', done: false, time: '' }
-        ]
-      },
-      {
-        id: '2',
-        jobTitle: '后端开发工程师',
-        company: '云智科技有限公司',
-        location: '上海市浦东新区',
-        status: 'processing',
-        statusText: '处理中',
-        applyDate: '2024-03-18',
-        timeline: [
-          { step: 'submit', done: true, time: '2024-03-18 14:15' },
-          { step: 'review', done: true, time: '2024-03-19 09:45' },
-          { step: 'interview', done: false, time: '' },
-          { step: 'offer', done: false, time: '' }
-        ]
-      },
-      {
-        id: '3',
-        jobTitle: '产品经理',
-        company: '创新互联网公司',
-        location: '深圳市南山区',
-        status: 'completed',
-        statusText: '已完成',
-        applyDate: '2024-03-15',
-        timeline: [
-          { step: 'submit', done: true, time: '2024-03-15 16:20' },
-          { step: 'review', done: true, time: '2024-03-16 11:30' },
-          { step: 'interview', done: true, time: '2024-03-18 14:00' },
-          { step: 'offer', done: true, time: '2024-03-20 10:00' }
-        ]
-      }
-    ],
-    filteredApplications: [],
+    sliderLeft: 0,
+    sliderWidth: 0,
+    applications: [],
     isLoading: false,
-    noMoreData: false
+    noMoreData: false,
   },
-  
+
   onLoad() {
-    this.setData({
-      filteredApplications: this.data.applications
+    this.getSystemInfo();
+    this.loadApplications();
+  },
+
+  getSystemInfo() {
+    wx.getSystemInfo({
+      success: (res) => {
+        const screenWidth = res.windowWidth;
+        const tabCount = 4; // Assuming 4 tabs
+        const sliderWidth = screenWidth / tabCount;
+        this.setData({
+          sliderWidth: sliderWidth,
+        });
+        this.updateSliderPosition(this.data.activeTab);
+      },
     });
   },
-  
-  onPullDownRefresh() {
-    this.refreshData();
+
+  updateSliderPosition(tab) {
+    const tabIndex = {
+      all: 0,
+      pending: 1,
+      processing: 2,
+      completed: 3,
+    }[tab];
+    const sliderLeft = this.data.sliderWidth * tabIndex;
+    this.setData({
+      sliderLeft: sliderLeft,
+    });
   },
-  
-  onReachBottom() {
-    this.loadMoreData();
-  },
-  
-  // 切换标签
+
   onTabChange(e) {
     const tab = e.currentTarget.dataset.tab;
-    let sliderLeft = '0';
-    
-    // 计算滑块位置
-    if (tab === 'all') {
-      sliderLeft = '0';
-    } else if (tab === 'pending') {
-      sliderLeft = '25%';
-    } else if (tab === 'processing') {
-      sliderLeft = '50%';
-    } else if (tab === 'completed') {
-      sliderLeft = '75%';
-    }
-    
     this.setData({
       activeTab: tab,
-      sliderLeft: sliderLeft
+      applications: [], // Clear existing applications when tab changes
+      noMoreData: false,
     });
-    
-    this.filterApplications(tab);
+    this.updateSliderPosition(tab);
+    this.loadApplications();
   },
-  
-  // 根据标签筛选申请
-  filterApplications(tab) {
-    if (tab === 'all') {
-      this.setData({
-        filteredApplications: this.data.applications
-      });
-    } else {
-      const filtered = this.data.applications.filter(item => item.status === tab);
-      this.setData({
-        filteredApplications: filtered
-      });
-    }
-  },
-  
-  // 刷新数据
-  refreshData() {
+
+  loadApplications() {
+    if (this.data.isLoading || this.data.noMoreData) return;
+
     this.setData({
-      isLoading: true
+      isLoading: true,
     });
-    
-    // 模拟请求
+
+    // 模拟API请求
     setTimeout(() => {
+      let newApplications = [];
+      if (this.data.activeTab === 'all' || this.data.activeTab === 'pending') {
+        newApplications.push({
+          id: '1',
+          jobTitle: '前端开发工程师',
+          company: '腾讯科技',
+          location: '深圳',
+          status: 'pending',
+          statusText: '待处理',
+          applyDate: '2023-10-26 10:00',
+          timeline: [
+            { title: '提交申请', time: '2023-10-26 10:00', done: true },
+            { title: '申请审核', time: '', done: false, status: '' },
+            { title: '通过/不通过', time: '', done: false, status: '' }
+          ],
+        });
+      }
+      if (this.data.activeTab === 'all' || this.data.activeTab === 'processing') {
+        newApplications.push({
+          id: '2',
+          jobTitle: '产品经理',
+          company: '阿里巴巴',
+          location: '杭州',
+          status: 'processing',
+          statusText: '处理中',
+          applyDate: '2023-10-25 14:30',
+          timeline: [
+            { title: '提交申请', time: '2023-10-25 14:30', done: true },
+            { title: '申请审核', time: '2023-10-26 09:00', done: true, status: '' },
+            { title: '通过/不通过', time: '', done: false, status: '' }
+          ],
+        });
+      }
+      if (this.data.activeTab === 'all' || this.data.activeTab === 'completed') {
+        newApplications.push({
+          id: '3',
+          jobTitle: '后端工程师',
+          company: '字节跳动',
+          location: '北京',
+          status: 'completed',
+          statusText: '已完成',
+          applyDate: '2023-10-24 11:15',
+          timeline: [
+            { title: '提交申请', time: '2023-10-24 11:15', done: true },
+            { title: '申请审核', time: '2023-10-25 10:00', done: true, status: '' },
+            { title: '通过/不通过', time: '2023-10-26 16:00', done: true, status: 'passed' }
+          ],
+          referralInfo: '恭喜您获得内推资格！请联系校友获取更多面试指导。',
+          referralCode: 'BYTE2024',
+          referralContact: '微信：ByteDancer2022'
+        });
+        newApplications.push({
+          id: '4',
+          jobTitle: 'UI设计师',
+          company: '美团',
+          location: '北京',
+          status: 'completed',
+          statusText: '已完成',
+          applyDate: '2023-10-23 09:00',
+          timeline: [
+            { title: '提交申请', time: '2023-10-23 09:00', done: true },
+            { title: '申请审核', time: '2023-10-24 14:00', done: true, status: '' },
+            { title: '通过/不通过', time: '2023-10-25 11:00', done: true, status: 'failed' }
+          ],
+          referralInfo: '很遗憾，您的申请未通过审核。请继续关注其他内推机会。'
+        });
+      }
+
       this.setData({
-        isLoading: false
-      });
-      
-      // 重新筛选数据
-      this.filterApplications(this.data.activeTab);
-      wx.stopPullDownRefresh();
-    }, 1000);
-  },
-  
-  // 加载更多数据
-  loadMoreData() {
-    if (this.data.noMoreData || this.data.isLoading) return;
-    
-    this.setData({
-      isLoading: true
-    });
-    
-    // 模拟请求
-    setTimeout(() => {
-      this.setData({
+        applications: [...this.data.applications, ...newApplications],
         isLoading: false,
-        noMoreData: true // 示例中设为无更多数据
+        noMoreData: true, // For simulation, assume no more data after initial load
       });
     }, 1000);
   },
-  
-  // 点击申请项
+
   onApplicationTap(e) {
     const id = e.currentTarget.dataset.id;
-    this.navigateToDetail(id);
+    console.log('Application tapped:', id);
+    // navigate to job detail or application detail page
   },
-  
-  // 点击查看详情
+
   onViewDetailTap(e) {
     const id = e.currentTarget.dataset.id;
-    this.navigateToDetail(id);
-  },
-  
-  // 导航到详情页
-  navigateToDetail(id) {
+    console.log('View detail tapped for application:', id);
+    // navigate to job detail or application detail page
     wx.navigateTo({
-      url: '/pages/application_detail/index?id=' + id
+      url: `/pages/job_detail/job_detail?id=${id}`,
     });
   },
-  
-  // 浏览职位
+
   onBrowseJobsTap() {
+    console.log('Browse jobs tapped');
+    // navigate to job listing page
     wx.switchTab({
-      url: '/pages/jobList/jobList'
+      url: '/pages/job/job',
     });
-  }
-}) 
+  },
+
+  // 复制内推码
+  copyReferralCode(e) {
+    const code = e.currentTarget.dataset.code;
+    wx.setClipboardData({
+      data: code,
+      success: () => {
+        wx.showToast({
+          title: '内推码已复制',
+          icon: 'success'
+        });
+      }
+    });
+  },
+});
