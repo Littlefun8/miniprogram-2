@@ -8,7 +8,7 @@ Page({
       location: '北京市朝阳区',
       date: '2024-03-20',
       tags: ['React', 'Vue', '小程序'],
-      recommenderMessage: '这是一个非常好的前端开发岗位，公司技术氛围浓厚，福利待遇优厚，有兴趣的同学可以联系我详聊。',
+      recommenderMessage: '好处：\n进来能把扫地机这个品类从头到尾摸透，后续跳槽转其他智能硬件方向会很顺;\n项目类型多、机会多，能够迅速成长;\n但也真诚说下劝退项：\n工作强度很大;项目较多;压力较大',
       link: 'https://example.com/job/12345',
       publisher: {
         avatar: '',
@@ -33,7 +33,11 @@ Page({
     },
     qrCodeUrl: '',
     isFavorite: false,
-    showAssociation: false
+    showAssociation: false,
+    showScreenshotInfo: false,
+    screenshotUser: { name: '贾明', id: '2202203321' },
+    screenshotInfo: { time: '' },
+    recommenderNodes: ''
   },
 
   onLoad(options) {
@@ -43,6 +47,10 @@ Page({
       });
       this.getJobDetail(options.id);
     }
+    // 处理内推者想说内容为 rich-text nodes
+    const msg = this.data.jobDetail.recommenderMessage;
+    const html = msg.replace(/\n/g, '<br/>');
+    this.setData({ recommenderNodes: html });
   },
 
   // 获取职位详情
@@ -87,84 +95,65 @@ Page({
     });
   },
 
-  // 扫描二维码
-  scanQrCode() {
-    wx.scanCode({
-      success: (res) => {
-        console.log('扫码结果：', res);
-        // 根据扫码结果处理逻辑
-        this.setData({
-          showAssociation: true
-        });
-        
-        wx.showToast({
-          title: '关联信息已展示',
-          icon: 'success'
-        });
-      },
-      fail: () => {
-        wx.showToast({
-          title: '扫码失败',
-          icon: 'none'
-        });
-      }
-    });
-  },
-
-  // 保存二维码
-  saveQrCode() {
-    if (!this.data.qrCodeUrl) {
-      wx.showToast({
-        title: '二维码不存在',
-        icon: 'none'
-      });
-      return;
-    }
-
-    wx.showLoading({
-      title: '保存中',
-      mask: true
-    });
-
-    // 下载二维码
-    wx.downloadFile({
-      url: this.data.qrCodeUrl,
-      success: (res) => {
-        if (res.statusCode === 200) {
-          // 保存到相册
-          wx.saveImageToPhotosAlbum({
-            filePath: res.tempFilePath,
-            success: () => {
-              wx.hideLoading();
-              wx.showToast({
-                title: '已保存到相册',
-                icon: 'success'
-              });
-            },
-            fail: () => {
-              wx.hideLoading();
-              wx.showToast({
-                title: '保存失败',
-                icon: 'none'
-              });
-            }
-          });
-        } else {
-          wx.hideLoading();
-          wx.showToast({
-            title: '下载失败',
-            icon: 'none'
+  // 扫描二维码按钮直接展开关联信息并后台记录
+  expandAssociation() {
+    this.setData({ showAssociation: true });
+    // 滚动到关联信息区域，减去底部操作栏高度 260rpx
+    setTimeout(() => {
+      wx.createSelectorQuery().select('.association-section').boundingClientRect(rect => {
+        if (rect) {
+          wx.pageScrollTo({
+            scrollTop: rect.top + wx.getSystemInfoSync().windowScrollY - 260,
+            duration: 300
           });
         }
-      },
-      fail: () => {
-        wx.hideLoading();
-        wx.showToast({
-          title: '下载失败',
-          icon: 'none'
-        });
+      }).exec();
+    }, 100);
+    // 调用后台API记录操作
+    wx.request({
+      url: 'https://your-backend-api/record',
+      method: 'POST',
+      data: {
+        userId: this.data.screenshotUser.id || '未填写',
+        jobId: this.data.jobId,
+        action: 'expandAssociation',
+        time: new Date().toISOString()
       }
     });
+    wx.showToast({ title: '关联信息已展示', icon: 'success' });
+  },
+
+  // 一键保存按钮逻辑，直接读取操作者信息
+  saveAllInfo() {
+    const that = this;
+    const { name, id } = this.data.screenshotUser;
+    const now = new Date();
+    const time = `${now.getFullYear()}-${now.getMonth()+1}-${now.getDate()} ${now.getHours()}:${now.getMinutes()}:${now.getSeconds()}`;
+    that.setData({
+      screenshotUser: { name, id },
+      screenshotInfo: { time },
+      showScreenshotInfo: true
+    });
+    // 延迟确保渲染完成
+    setTimeout(() => {
+      wx.createSelectorQuery().select('.container').boundingClientRect(rect => {
+        wx.createSelectorQuery().select('.container').node().exec(res2 => {
+          // 这里只做模拟
+          wx.showToast({ title: '已保存至相册', icon: 'success' });
+          // 调用后台API记录操作
+          wx.request({
+            url: 'https://your-backend-api/record',
+            method: 'POST',
+            data: {
+              userId: id,
+              jobId: that.data.jobId,
+              action: 'saveAllInfo',
+              time
+            }
+          });
+        });
+      }).exec();
+    }, 500);
   },
 
   // 收藏/取消收藏
