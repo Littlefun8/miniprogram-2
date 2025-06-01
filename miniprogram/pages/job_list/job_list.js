@@ -1,4 +1,46 @@
 // job_list.js
+// 本地模拟职位数据，后续可替换为云开发API
+function getMockJobList() {
+  return [
+    {
+      id: '1',
+      title: '前端开发工程师',
+      salary: '15K-25K',
+      company: '示例科技有限公司',
+      location: '北京市朝阳区',
+      date: '2024-03-20',
+      tags: ['React', 'Vue', '小程序'],
+      publisher: { name: '姚经理', tag: '校友' },
+      reviewer: { name: '张教授', tag: '老师' },
+      likeCount: 12
+    },
+    {
+      id: '2',
+      title: '后端开发工程师',
+      salary: '20K-35K',
+      company: '云智科技有限公司',
+      location: '上海市浦东新区',
+      date: '2024-03-18',
+      tags: ['Java', 'Spring Boot', '微服务'],
+      publisher: { name: '技术总监', tag: '校友' },
+      reviewer: { name: '李教授', tag: '老师' },
+      likeCount: 25
+    },
+    {
+      id: '3',
+      title: '产品经理',
+      salary: '18K-30K',
+      company: '创新互联网公司',
+      location: '深圳市南山区',
+      date: '2024-03-15',
+      tags: ['用户增长', '数据分析', '产品设计'],
+      publisher: { name: '李经理', tag: '校友' },
+      reviewer: { name: '王教授', tag: '老师' },
+      likeCount: 7
+    }
+  ];
+}
+
 Page({
   data: {
     searchValue: '',
@@ -11,59 +53,8 @@ Page({
     jobTypeList: ['全部', '前端开发', '后端开发', '产品经理', '设计师', '测试工程师', '运维工程师', '数据分析师', '人工智能', '算法工程师'],
     isLoading: false,
     noMoreData: false,
-    jobList: [
-      {
-        id: '1',
-        title: '前端开发工程师',
-        salary: '15K-25K',
-        company: '示例科技有限公司',
-        location: '北京市朝阳区',
-        date: '2024-03-20',
-        tags: ['React', 'Vue', '小程序'],
-        publisher: {
-          name: '姚经理',
-          tag: '校友'
-        },
-        reviewer: {
-          name: '张教授',
-          tag: '老师'
-        }
-      },
-      {
-        id: '2',
-        title: '后端开发工程师',
-        salary: '20K-35K',
-        company: '云智科技有限公司',
-        location: '上海市浦东新区',
-        date: '2024-03-18',
-        tags: ['Java', 'Spring Boot', '微服务'],
-        publisher: {
-          name: '技术总监',
-          tag: '校友'
-        },
-        reviewer: {
-          name: '李教授',
-          tag: '老师'
-        }
-      },
-      {
-        id: '3',
-        title: '产品经理',
-        salary: '18K-30K',
-        company: '创新互联网公司',
-        location: '深圳市南山区',
-        date: '2024-03-15',
-        tags: ['用户增长', '数据分析', '产品设计'],
-        publisher: {
-          name: '李经理',
-          tag: '校友'
-        },
-        reviewer: {
-          name: '王教授',
-          tag: '老师'
-        }
-      }
-    ]
+    jobList: [], // 当前显示的职位
+    allJobs: []  // 缓存所有职位数据
   },
 
   onLoad() {
@@ -78,21 +69,42 @@ Page({
     this.loadMoreJobs();
   },
 
-  // 获取职位列表
+  // 获取职位列表（本地模拟，后续可替换为云开发API）
   getJobList() {
-    this.setData({
-      isLoading: true
-    });
-
-    // 模拟接口请求
+    this.setData({ isLoading: true });
     setTimeout(() => {
+      const jobs = getMockJobList();
       this.setData({
-        isLoading: false
+        allJobs: jobs,
+        jobList: this.filterAndSortJobs(
+          jobs,
+          this.data.activeFilter,
+          this.data.selectedCity,
+          this.data.selectedJobType
+        ),
+        isLoading: false,
+        noMoreData: jobs.length === 0
       });
-
-      // 示例数据已在data中初始化
-      // 实际项目中应通过API获取数据
     }, 1000);
+    // 若用云开发API，直接替换为：
+    // wx.cloud.database().collection('jobList').where({
+    //   location: this.data.selectedCity !== '全部' ? this.data.selectedCity : undefined,
+    //   jobType: this.data.selectedJobType !== '全部' ? this.data.selectedJobType : undefined
+    // }).get().then(res => {
+    //   this.setData({
+    //     allJobs: res.data,
+    //     jobList: this.filterAndSortJobs(
+    //       res.data,
+    //       this.data.activeFilter,
+    //       this.data.selectedCity,
+    //       this.data.selectedJobType
+    //     ),
+    //     isLoading: false,
+    //     noMoreData: res.data.length === 0
+    //   });
+    // }).catch(() => {
+    //   this.setData({ isLoading: false });
+    // });
   },
 
   // 下拉刷新重新加载数据
@@ -101,7 +113,6 @@ Page({
       jobList: [],
       noMoreData: false
     });
-
     this.getJobList();
     wx.stopPullDownRefresh();
   },
@@ -151,11 +162,14 @@ Page({
   onFilterTap(e) {
     const type = e.currentTarget.dataset.type;
     this.setData({
-      activeFilter: type
+      activeFilter: type,
+      jobList: this.filterAndSortJobs(
+        this.data.allJobs,
+        type,
+        this.data.selectedCity,
+        this.data.selectedJobType
+      )
     });
-    
-    // 根据筛选条件获取数据
-    this.refreshJobList();
   },
 
   onCityFilterTap() {
@@ -174,11 +188,14 @@ Page({
     const city = e.currentTarget.dataset.city;
     this.setData({
       selectedCity: city,
-      cityFilterVisible: false
+      cityFilterVisible: false,
+      jobList: this.filterAndSortJobs(
+        this.data.allJobs,
+        this.data.activeFilter,
+        city,
+        this.data.selectedJobType
+      )
     });
-    
-    // 根据城市筛选条件获取数据
-    this.refreshJobList();
   },
 
   onJobTypeFilterTap() {
@@ -197,11 +214,14 @@ Page({
     const jobType = e.currentTarget.dataset.jobType;
     this.setData({
       selectedJobType: jobType,
-      jobTypeFilterVisible: false
+      jobTypeFilterVisible: false,
+      jobList: this.filterAndSortJobs(
+        this.data.allJobs,
+        this.data.activeFilter,
+        this.data.selectedCity,
+        jobType
+      )
     });
-    
-    // 根据岗位类型筛选条件获取数据
-    this.refreshJobList();
   },
 
   // 添加职位
@@ -226,5 +246,20 @@ Page({
       // url: '/pages/job/job_detail?id=' + id
       url: '/pages/job_detail/job_detail'
     });
+  },
+
+  filterAndSortJobs(jobs, filterType, city, jobType) {
+    let filtered = jobs;
+    if (city && city !== '全部') {
+      filtered = filtered.filter(item => item.location.includes(city));
+    }
+    if (jobType && jobType !== '全部') {
+      filtered = filtered.filter(item => item.title.includes(jobType));
+    }
+    if (filterType === 'newest') {
+      return filtered.slice().sort((a, b) => new Date(b.date) - new Date(a.date));
+    }
+    // 推荐：按喜欢数量降序
+    return filtered.slice().sort((a, b) => (b.likeCount || 0) - (a.likeCount || 0));
   }
 }) 

@@ -21,13 +21,25 @@
     />
     
     <!-- 工作地点 -->
-    <t-input 
-      label="工作地点" 
-      placeholder="如：北京市朝阳区" 
-      value="{{formData.location}}" 
-      bind:change="onLocationChange" 
-      required
-    />
+    <view class="form-item">
+      <t-select
+        label="工作地点"
+        value="{{selectedCityIndex}}"
+        options="{{cityOptions}}"
+        bind:change="onCitySelectChange"
+        placeholder="请选择工作地点"
+        required
+      />
+    </view>
+    <view class="form-item" wx:if="{{useCustomLocation}}">
+      <t-input
+        label="自定义地点"
+        placeholder="请输入具体地点，如：远程/海外/其他"
+        value="{{customLocation}}"
+        bind:change="onCustomLocationChange"
+        required
+      />
+    </view>
     
     <!-- 职位标签 -->
     <view class="form-block">
@@ -72,11 +84,11 @@
     
     
     <!-- 关联信息说明 -->
-    <view class="form-block">
-      <view class="form-block-title">关联信息说明</view>
-      <view class="info-box">
-        <view>发布后，系统将自动生成岗位详情页面，并提供二维码供分享。</view>
-        <view>查看者扫描二维码后，可以看到关联的学生和老师信息。</view>
+    <view class="form-block" style="height: 172rpx; display: block; box-sizing: border-box; left: 0rpx; top: 0rpx">
+      <view class="form-block-title" style="width: 654rpx; display: flex; box-sizing: border-box; position: relative; left: 0rpx; top: -14rpx">*关联信息说明</view>
+      <view class="info-box" style="height: 100rpx; display: block; box-sizing: border-box; position: relative; left: 0rpx; top: -33rpx">
+        <view style="position: relative; left: 0rpx; top: -14rpx">发布后，将生成岗位详情页面，并提供二维码供分享。</view>
+        <view style="position: relative; left: 0rpx; top: -12rpx">查看者扫描二维码后，可看到学生和老师关联信息。</view>
       </view>
     </view>
     

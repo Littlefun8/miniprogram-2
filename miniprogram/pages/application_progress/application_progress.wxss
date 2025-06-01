@@ -296,21 +296,60 @@ page {
   word-break: break-all;
 }
 
+.referral-contact {
+  font-size: 26rpx;
+  color: #666;
+  margin-top: 5rpx;
+  word-break: break-all;
+}
+
 .referral-actions {
   display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-top: 15rpx;
-  padding-top: 15rpx;
-  border-top: 1rpx solid #eee;
+  gap: 16rpx;
+  margin-top: 10rpx;
 }
 
 .referral-code {
-  font-size: 26rpx;
+  font-size: 32rpx;
   color: #0052d9;
   font-weight: 500;
 }
 
 .copy-btn {
   margin-left: auto;
+  
+}
+
+.referral-contact-block {
+  background: #e6f7ff;
+  border: 1rpx solid #91d5ff;
+  border-radius: 8rpx;
+  padding: 16rpx;
+  margin: 10rpx 0;
+}
+
+.referral-contact-title {
+  font-size: 24rpx;
+  color: #0052d9;
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+  margin-bottom: 6rpx;
+}
+
+.referral-contact-row {
+  display: flex;
+  align-items: center;
+  gap: 16rpx;
+}
+
+.referral-contact-content {
+  font-size: 26rpx;
+  color: #333;
+  word-break: break-all;
+}
+
+.application-footer-actions {
+  display: flex;
+  gap: 16rpx;
 } 

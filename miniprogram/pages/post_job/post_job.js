@@ -27,7 +27,24 @@ Page({
       { label: '人工智能', value: '人工智能', selected: false },
       { label: '区块链', value: '区块链', selected: false }
     ],
-    isPublisherDropdownOpen: false
+    isPublisherDropdownOpen: false,
+    cityList: ['北京', '上海', '广州', '深圳', '杭州', '南京', '成都', '武汉', '西安', '线上', '自定义'],
+    cityOptions: [
+      { label: '北京', value: 0 },
+      { label: '上海', value: 1 },
+      { label: '广州', value: 2 },
+      { label: '深圳', value: 3 },
+      { label: '杭州', value: 4 },
+      { label: '南京', value: 5 },
+      { label: '成都', value: 6 },
+      { label: '武汉', value: 7 },
+      { label: '西安', value: 8 },
+      { label: '线上', value: 9 },
+      { label: '自定义', value: 10 }
+    ],
+    selectedCityIndex: 0,
+    customLocation: '',
+    useCustomLocation: false
   },
 
   // 表单输入变化处理函数
@@ -135,9 +152,24 @@ Page({
     }
   },
 
+  onCitySelectChange(e) {
+    const idx = e.detail.value;
+    this.setData({
+      selectedCityIndex: idx,
+      useCustomLocation: idx === 10 // 10为"自定义"
+    });
+  },
+
+  onCustomLocationChange(e) {
+    this.setData({
+      customLocation: e.detail.value
+    });
+  },
+
   // 表单提交
   onSubmit() {
-    const { formData } = this.data;
+    const { formData, useCustomLocation, customLocation, cityList, selectedCityIndex } = this.data;
+    const location = useCustomLocation ? customLocation : cityList[selectedCityIndex];
     
     // 表单验证
     if (!formData.title) {
@@ -150,8 +182,8 @@ Page({
       return;
     }
     
-    if (!formData.location) {
-      this.showError('请输入工作地点');
+    if (!location) {
+      this.showError('请选择工作地点');
       return;
     }
     

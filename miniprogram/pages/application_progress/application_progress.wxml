@@ -83,14 +83,23 @@
           <view class="referral-tag">获得内推</view>
         </view>
         <view class="referral-content">{{item.referralInfo}}</view>
+        <view class="referral-contact-block" wx:if="{{item.referralContact}}">
+          <view class="referral-contact-title">
+            <t-icon name="usergroup" size="32rpx" color="#0052d9" /> 校友联系方式
+          </view>
+          <view class="referral-contact-row">
+            <view class="referral-contact-content" style="width: 316rpx; display: block; box-sizing: border-box">{{item.referralContact}}</view>
+            <t-button size="small" theme="primary" bindtap="copyReferralContact" data-contact="{{item.referralContact}}" class="copy-btn">复制联系方式</t-button>
+          </view>
+        </view>
         <view class="referral-actions" wx:if="{{item.referralCode}}">
-          <view class="referral-code">内推码：{{item.referralCode}}</view>
+          <view class="referral-code" style="position: relative; left: 14rpx; top: 14rpx; width: 339rpx; display: block; box-sizing: border-box; height: 41rpx">内推码：{{item.referralCode}}</view>
           <t-button size="small" theme="primary" bindtap="copyReferralCode" data-code="{{item.referralCode}}" class="copy-btn">复制内推码</t-button>
         </view>
       </view>
 
-      <view class="application-footer">
-        <view class="application-date">申请时间：{{item.applyDate}}</view>
+      <view class="application-footer" style="height: 81rpx; display: flex; box-sizing: border-box">
+        <view class="application-date" style="width: 410rpx; display: block; box-sizing: border-box; position: relative; left: 14rpx; top: -2rpx">申请时间：{{item.applyDate}}</view>
         <t-button 
           size="small" 
           theme="primary" 
