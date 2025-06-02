@@ -8,7 +8,8 @@ Page({
     noMoreData: false,
     isLoggedIn: false,
     userType: '',
-    showLoginDialog: false
+    showLoginDialog: false,
+    userInfo: {}
   },
 
   onLoad() {
@@ -21,6 +22,24 @@ Page({
     });
     this.getSystemInfo();
     this.loadApplications();
+  },
+
+  onShow() {
+    const userType = wx.getStorageSync('userType');
+    const isLoggedIn = wx.getStorageSync('isLoggedIn');
+    let userInfo = wx.getStorageSync('userInfo') || {};
+    if (userType === 'alumni') userInfo.role = '校友';
+    if (userType === 'teacher') userInfo.role = '老师';
+    if (userType === 'student') userInfo.role = '学生';
+    this.setData({
+      isLoggedIn: !!isLoggedIn,
+      userType: userType || '',
+      userInfo: userInfo
+    });
+    // 若已登录，刷新进度列表
+    if (this.data.isLoggedIn) {
+      this.refreshProgressList && this.refreshProgressList();
+    }
   },
 
   getSystemInfo() {
@@ -260,22 +279,15 @@ Page({
       itemList: ['校友', '老师', '学生'],
       success(res) {
         let userType = '';
-        let role = '';
-        if (res.tapIndex === 0) { userType = 'alumni'; role = '校友'; }
-        if (res.tapIndex === 1) { userType = 'teacher'; role = '老师'; }
-        if (res.tapIndex === 2) { userType = 'student'; role = '学生'; }
+        if (res.tapIndex === 0) userType = 'alumni';
+        if (res.tapIndex === 1) userType = 'teacher';
+        if (res.tapIndex === 2) userType = 'student';
         that.setData({
           isLoggedIn: true,
           userType: userType
         });
         wx.setStorageSync('isLoggedIn', true);
         wx.setStorageSync('userType', userType);
-        // 同步userInfo.role到本地缓存，供user_profile读取
-        let userInfo = wx.getStorageSync('userInfo') || {};
-        userInfo.role = role;
-        userInfo.nickName = role + '用户';
-        userInfo.isVerified = true;
-        wx.setStorageSync('userInfo', userInfo);
         wx.showToast({ title: '登录成功', icon: 'success' });
         setTimeout(() => { that.onPullDownRefresh(); if (typeof cb === 'function') cb(); }, 300);
       },

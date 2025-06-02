@@ -72,6 +72,15 @@ Page({
     this.initTrendChart();
   },
 
+  onShow() {
+    const userType = wx.getStorageSync('userType');
+    const isLoggedIn = wx.getStorageSync('isLoggedIn');
+    this.setData({
+      isLoggedIn: !!isLoggedIn,
+      userType: userType || ''
+    });
+  },
+
   // 初始化趋势图表（示例）
   initTrendChart() {
     // 实际项目中应该使用图表组件，例如ec-canvas

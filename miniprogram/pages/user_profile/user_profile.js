@@ -34,7 +34,18 @@ Page({
   },
 
   onShow() {
-    // 每次显示页面时重新获取用户信息和统计数据
+    // 每次显示页面时同步身份
+    const userType = wx.getStorageSync('userType');
+    const isLoggedIn = wx.getStorageSync('isLoggedIn');
+    let userInfo = wx.getStorageSync('userInfo') || {};
+    if (userType === 'alumni') userInfo.role = '校友';
+    if (userType === 'teacher') userInfo.role = '老师';
+    if (userType === 'student') userInfo.role = '学生';
+    this.setData({
+      isLoggedIn: !!isLoggedIn,
+      userInfo: userInfo,
+      userType: userType || ''
+    });
     if (this.data.isLoggedIn) {
       this.getUserInfo();
       this.getUserStats();
@@ -93,16 +104,14 @@ Page({
 
   // 获取用户统计数据
   getUserStats() {
-    // 优先读取本地缓存的appliesCount
-    let appliesCount = wx.getStorageSync('appliesCount');
-    if (appliesCount === '' || appliesCount === undefined || appliesCount === null) {
-      appliesCount = 8; // 默认模拟数据
-    }
+    // 实际项目中应该调用API获取用户统计数据
+    // 这里使用模拟数据
     const stats = {
       postsCount: 5,
-      appliesCount: Number(appliesCount),
+      appliesCount: 8,
       favoritesCount: 12
     };
+    
     this.setData({
       stats: stats
     });

@@ -37,7 +37,9 @@ Page({
     showScreenshotInfo: false,
     screenshotUser: { name: '贾明', id: '2202203321' },
     screenshotInfo: { time: '' },
-    recommenderNodes: ''
+    recommenderNodes: '',
+    isLoggedIn: false,
+    userType: ''
   },
 
   onLoad(options) {
@@ -56,6 +58,15 @@ Page({
     let displayJobId = 'JOB-' + jobId.padStart(4, '0');
     this.setData({
       screenshotInfo: Object.assign({}, this.data.screenshotInfo, { jobId: displayJobId })
+    });
+  },
+
+  onShow() {
+    const userType = wx.getStorageSync('userType');
+    const isLoggedIn = wx.getStorageSync('isLoggedIn');
+    this.setData({
+      isLoggedIn: !!isLoggedIn,
+      userType: userType || ''
     });
   },
 
@@ -257,25 +268,19 @@ Page({
       confirmText: '确定申请',
       success: (res) => {
         if (res.confirm) {
+          // 实际项目中应该调用API提交申请
           wx.showLoading({
             title: '提交中',
             mask: true
           });
+
           // 模拟API请求
           setTimeout(() => {
             wx.hideLoading();
-            // 申请成功后同步"我的申请"数字
-            let appliesCount = wx.getStorageSync('appliesCount') || 0;
-            appliesCount = Number(appliesCount) + 1;
-            wx.setStorageSync('appliesCount', appliesCount);
-            // 触发user_profile页面刷新（如tab页可直接切换）
             wx.showToast({
               title: '申请成功',
               icon: 'success'
             });
-            // 如果user_profile在tabBar，建议用switchTab
-            // wx.switchTab({ url: '/pages/user_profile/user_profile' });
-            // 或者用事件通知/全局刷新
           }, 1500);
         }
       }

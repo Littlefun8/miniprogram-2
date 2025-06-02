@@ -338,5 +338,14 @@ Page({
         wx.showToast({ title: '请先登录', icon: 'none' });
       }
     });
+  },
+
+  onShow() {
+    const userType = wx.getStorageSync('userType');
+    const isLoggedIn = wx.getStorageSync('isLoggedIn');
+    this.setData({
+      isLoggedIn: !!isLoggedIn,
+      userType: userType || ''
+    });
   }
 }) 
