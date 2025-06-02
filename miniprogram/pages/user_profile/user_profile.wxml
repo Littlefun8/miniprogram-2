@@ -1,7 +1,7 @@
 <!--user_profile.wxml-->
 <view class="container">
   <!-- 用户信息区域 -->
-  <view class="user-info-section">
+  <view class="user-info-section" bindtap="onUserInfoTap">
     <view class="avatar-container">
       <t-avatar 
         image="{{userInfo.avatarUrl}}" 
@@ -54,16 +54,14 @@
         </view>
         <t-icon name="chevron-right" size="40rpx" color="#bbb" />
       </view>
-      
-      <view class="menu-item" bindtap="onNavigateToMyPosts">
+      <view class="menu-item" wx:if="{{userType === 'alumni' || userType === 'teacher'}}" bindtap="onNavigateToMyPosts">
         <view class="menu-item-left">
           <t-icon name="edit" size="48rpx" color="#0052d9" />
           <text class="menu-item-text">我的发布</text>
         </view>
         <t-icon name="chevron-right" size="40rpx" color="#bbb" />
       </view>
-      
-      <view class="menu-item" bindtap="onNavigateToMyApplies">
+      <view class="menu-item" wx:if="{{userType === 'student'}}" bindtap="onNavigateToMyApplies">
         <view class="menu-item-left">
           <t-icon name="file-paste" size="48rpx" color="#0052d9" />
           <text class="menu-item-text">我的申请</text>
@@ -88,13 +86,11 @@
         </view>
         <t-icon name="chevron-right" size="40rpx" color="#bbb" />
       </view>
-      
-      <view class="menu-item" bindtap="onNavigateToHelp">
+      <view class="menu-item" bindtap="onLogoutTap">
         <view class="menu-item-left">
-          <t-icon name="help-circle" size="48rpx" color="#0052d9" />
-          <text class="menu-item-text">帮助与反馈</text>
+          <t-icon name="logout" size="48rpx" color="#ff4d4f" />
+          <text class="menu-item-text" style="color:#ff4d4f">退出登录</text>
         </view>
-        <t-icon name="chevron-right" size="40rpx" color="#bbb" />
       </view>
     </view>
   </view>

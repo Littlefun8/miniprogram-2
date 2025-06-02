@@ -13,7 +13,7 @@ function getMockJobList() {
       publisher: { name: '姚经理', tag: '校友' },
       reviewer: { name: '张教授', tag: '老师' },
       likeCount: 12
-    }
+    },
     {
       id: '2',
       title: '后端开发工程师',
@@ -54,11 +54,18 @@ Page({
     isLoading: false,
     noMoreData: false,
     jobList: [], // 当前显示的职位
-    allJobs: []  // 缓存所有职位数据
+    allJobs: [],  // 缓存所有职位数据
+    userType: '', // 'alumni' | 'teacher' | 'student' | ''
+    isLoggedIn: false
   },
 
   onLoad() {
     this.getJobList();
+    // 自动同步身份到user_profile
+    const userType = wx.getStorageSync('userType');
+    const isLoggedIn = wx.getStorageSync('isLoggedIn');
+    if (userType) this.setData({ userType });
+    if (isLoggedIn) this.setData({ isLoggedIn });
   },
 
   onPullDownRefresh() {
@@ -226,9 +233,22 @@ Page({
 
   // 添加职位
   onAddJobTap() {
-    wx.navigateTo({
-      url: '/pages/post_job/post_job'
-    });
+    if (!this.data.isLoggedIn) {
+      this.simulateLogin();
+      return;
+    }
+    if (this.data.userType === 'alumni' || this.data.userType === 'teacher') {
+      // 校友和老师可以发布岗位
+      wx.navigateTo({
+        url: '/pages/post_job/post_job'
+      });
+    } else if (this.data.userType === 'student') {
+      wx.showModal({
+        title: '提示',
+        content: '学生身份无法发布岗位，请切换为校友或老师后再试。',
+        showCancel: false
+      });
+    }
   },
 
   // 点击职位项
@@ -248,6 +268,31 @@ Page({
     });
   },
 
+  onScanQrcodeTap() {
+    if (!this.data.isLoggedIn) {
+      this.simulateLogin();
+      return;
+    }
+    // 所有身份都可以扫码
+    wx.scanCode({
+      onlyFromCamera: false,
+      scanType: ['qrCode', 'barCode'],
+      success: (res) => {
+        wx.showModal({
+          title: '扫码结果',
+          content: res.result,
+          showCancel: false
+        });
+      },
+      fail: () => {
+        wx.showToast({
+          title: '扫码失败',
+          icon: 'none'
+        });
+      }
+    });
+  },
+
   filterAndSortJobs(jobs, filterType, city, jobType) {
     let filtered = jobs;
     if (city && city !== '全部') {
@@ -261,5 +306,37 @@ Page({
     }
     // 推荐：按喜欢数量降序
     return filtered.slice().sort((a, b) => (b.likeCount || 0) - (a.likeCount || 0));
+  },
+
+  simulateLogin() {
+    const that = this;
+    wx.showActionSheet({
+      itemList: ['校友', '老师', '学生'],
+      success(res) {
+        let userType = '';
+        let role = '';
+        if (res.tapIndex === 0) { userType = 'alumni'; role = '校友'; }
+        if (res.tapIndex === 1) { userType = 'teacher'; role = '老师'; }
+        if (res.tapIndex === 2) { userType = 'student'; role = '学生'; }
+        that.setData({
+          isLoggedIn: true,
+          userType: userType
+        });
+        // 同步到本地缓存，供user_profile页面读取
+        wx.setStorageSync('userType', userType);
+        wx.setStorageSync('isLoggedIn', true);
+        // 同步userInfo.role
+        let userInfo = wx.getStorageSync('userInfo') || {};
+        userInfo.role = role;
+        wx.setStorageSync('userInfo', userInfo);
+        wx.showToast({
+          title: '已登录为' + role,
+          icon: 'success'
+        });
+      },
+      fail() {
+        wx.showToast({ title: '请先登录', icon: 'none' });
+      }
+    });
   }
 }) 

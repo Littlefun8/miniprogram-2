@@ -111,6 +111,10 @@
         >查看详情</t-button>
       </view>
     </view>
+    <view wx:if="{{!isLoggedIn}}" class="preview-hint" style="background: #fffbe6; color: #faad14; padding: 24rpx 32rpx; margin: 24rpx 0 0 0; border-radius: 12rpx; font-size: 28rpx; text-align: center; position: relative; left: 0rpx; top: 10rpx; height: 143rpx; display: block; box-sizing: border-box">
+      <text style="position: relative; left: 0rpx; top: 0rpx">当前为进度预览，登录后可查看全部岗位进度。</text>
+      <t-button size="small" theme="primary" style="margin-left:24rpx;vertical-align:middle;" bindtap="showLoginPrompt">去登录</t-button>
+    </view>
   </view>
 
   <!-- 空状态 -->

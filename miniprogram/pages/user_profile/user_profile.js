@@ -13,10 +13,23 @@ Page({
       favoritesCount: 0
     },
     showLoginDialog: false,
-    isLoggedIn: false
+    isLoggedIn: false,
+    userType: ''
   },
 
   onLoad() {
+    // 同步身份
+    const userType = wx.getStorageSync('userType');
+    const isLoggedIn = wx.getStorageSync('isLoggedIn');
+    let userInfo = wx.getStorageSync('userInfo') || {};
+    if (userType === 'alumni') userInfo.role = '校友';
+    if (userType === 'teacher') userInfo.role = '老师';
+    if (userType === 'student') userInfo.role = '学生';
+    this.setData({
+      isLoggedIn: !!isLoggedIn,
+      userInfo: userInfo,
+      userType: userType || ''
+    });
     this.checkLoginStatus();
   },
 
@@ -80,14 +93,16 @@ Page({
 
   // 获取用户统计数据
   getUserStats() {
-    // 实际项目中应该调用API获取用户统计数据
-    // 这里使用模拟数据
+    // 优先读取本地缓存的appliesCount
+    let appliesCount = wx.getStorageSync('appliesCount');
+    if (appliesCount === '' || appliesCount === undefined || appliesCount === null) {
+      appliesCount = 8; // 默认模拟数据
+    }
     const stats = {
       postsCount: 5,
-      appliesCount: 8,
+      appliesCount: Number(appliesCount),
       favoritesCount: 12
     };
-    
     this.setData({
       stats: stats
     });
@@ -142,9 +157,10 @@ Page({
       this.showLoginPrompt();
       return;
     }
-    
-    wx.navigateTo({
-      url: '/pages/my_posts/index'
+    wx.showModal({
+      title: '提示',
+      content: '功能开发中，敬请期待！',
+      showCancel: false
     });
   },
 
@@ -154,9 +170,10 @@ Page({
       this.showLoginPrompt();
       return;
     }
-    
-    wx.navigateTo({
-      url: '/pages/application_progress/application_progress'
+    wx.showModal({
+      title: '提示',
+      content: '功能开发中，敬请期待！',
+      showCancel: false
     });
   },
 
@@ -166,16 +183,19 @@ Page({
       this.showLoginPrompt();
       return;
     }
-    
-    wx.navigateTo({
-      url: '/pages/favorites/index'
+    wx.showModal({
+      title: '提示',
+      content: '功能开发中，敬请期待！',
+      showCancel: false
     });
   },
 
   // 导航到设置页面
   onNavigateToSettings() {
-    wx.navigateTo({
-      url: '/pages/settings/index'
+    wx.showModal({
+      title: '提示',
+      content: '功能开发中，敬请期待！',
+      showCancel: false
     });
   },
 
@@ -205,9 +225,36 @@ Page({
     this.setData({
       showLoginDialog: false
     });
-    
-    wx.navigateTo({
-      url: '/pages/login/index'
+    // 弹出模拟登录身份选择
+    const that = this;
+    wx.showActionSheet({
+      itemList: ['校友', '老师', '学生'],
+      success(res) {
+        let userType = '';
+        let role = '';
+        if (res.tapIndex === 0) { userType = 'alumni'; role = '校友'; }
+        if (res.tapIndex === 1) { userType = 'teacher'; role = '老师'; }
+        if (res.tapIndex === 2) { userType = 'student'; role = '学生'; }
+        let userInfo = that.data.userInfo || {};
+        userInfo.role = role;
+        userInfo.nickName = role + '用户';
+        userInfo.isVerified = true;
+        that.setData({
+          isLoggedIn: true,
+          userType: userType,
+          userInfo: userInfo
+        });
+        wx.setStorageSync('userType', userType);
+        wx.setStorageSync('isLoggedIn', true);
+        wx.setStorageSync('userInfo', userInfo);
+        wx.showToast({
+          title: '已登录为' + role,
+          icon: 'success'
+        });
+      },
+      fail() {
+        wx.showToast({ title: '请先登录', icon: 'none' });
+      }
     });
   },
 
@@ -216,5 +263,47 @@ Page({
     this.setData({
       showLoginDialog: false
     });
-  }
+  },
+
+  // 退出登录
+  onLogoutTap() {
+    wx.clearStorageSync();
+    wx.showToast({ title: '已退出登录', icon: 'success' });
+    setTimeout(() => { wx.reLaunch({ url: '/pages/user_profile/user_profile' }); }, 500);
+  },
+
+  onUserInfoTap() {
+    if (this.data.isLoggedIn) return;
+    // 模拟登录，选择身份
+    const that = this;
+    wx.showActionSheet({
+      itemList: ['校友', '老师', '学生'],
+      success(res) {
+        let userType = '';
+        let role = '';
+        if (res.tapIndex === 0) { userType = 'alumni'; role = '校友'; }
+        if (res.tapIndex === 1) { userType = 'teacher'; role = '老师'; }
+        if (res.tapIndex === 2) { userType = 'student'; role = '学生'; }
+        let userInfo = that.data.userInfo || {};
+        userInfo.role = role;
+        userInfo.nickName = role + '用户';
+        userInfo.isVerified = true;
+        that.setData({
+          isLoggedIn: true,
+          userType: userType,
+          userInfo: userInfo
+        });
+        wx.setStorageSync('userType', userType);
+        wx.setStorageSync('isLoggedIn', true);
+        wx.setStorageSync('userInfo', userInfo);
+        wx.showToast({
+          title: '已登录为' + role,
+          icon: 'success'
+        });
+      },
+      fail() {
+        wx.showToast({ title: '请先登录', icon: 'none' });
+      }
+    });
+  },
 }) 

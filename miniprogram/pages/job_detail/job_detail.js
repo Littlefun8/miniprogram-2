@@ -51,6 +51,12 @@ Page({
     const msg = this.data.jobDetail.recommenderMessage;
     const html = msg.replace(/\n/g, '<br/>');
     this.setData({ recommenderNodes: html });
+    // 页面加载即显示职位ID，模拟唯一ID格式
+    let jobId = options.id || this.data.jobId || '1';
+    let displayJobId = 'JOB-' + jobId.padStart(4, '0');
+    this.setData({
+      screenshotInfo: Object.assign({}, this.data.screenshotInfo, { jobId: displayJobId })
+    });
   },
 
   // 获取职位详情
@@ -95,8 +101,12 @@ Page({
     });
   },
 
-  // 扫描二维码按钮直接展开关联信息并后台记录
+  // 展开关联信息
   expandAssociation() {
+    if (!this.isLoggedIn()) {
+      this.showLoginPrompt(() => this.expandAssociation());
+      return;
+    }
     this.setData({ showAssociation: true });
     setTimeout(() => {
       wx.createSelectorQuery().select('.container').boundingClientRect(rect => {
@@ -108,7 +118,7 @@ Page({
         }
       }).exec();
     }, 100);
-    // 调用后台API记录操作
+    // 调用后台API记录操作（统计展开关联信息行为）
     wx.request({
       url: 'https://your-backend-api/record',
       method: 'POST',
@@ -122,16 +132,21 @@ Page({
     wx.showToast({ title: '关联信息已展示', icon: 'success' });
   },
 
-  // 一键保存按钮逻辑，直接读取操作者信息
+  // 一键保存按钮逻辑，直接读取操作者信息，并进行后台统计
   saveAllInfo() {
+    if (!this.isLoggedIn()) {
+      this.showLoginPrompt(() => this.saveAllInfo());
+      return;
+    }
     const that = this;
     const { name, id } = this.data.screenshotUser;
     const now = new Date();
     const time = `${now.getFullYear()}-${now.getMonth()+1}-${now.getDate()} ${now.getHours()}:${now.getMinutes()}:${now.getSeconds()}`;
-    const jobId = this.data.jobId;
+    const jobId = this.data.jobId || '1';
+    let displayJobId = 'JOB-' + String(jobId).padStart(4, '0');
     that.setData({
       screenshotUser: { name, id },
-      screenshotInfo: { time, jobId },
+      screenshotInfo: { time, jobId: displayJobId },
       showScreenshotInfo: true
     });
     setTimeout(() => {
@@ -148,9 +163,8 @@ Page({
     setTimeout(() => {
       wx.createSelectorQuery().select('.container').boundingClientRect(rect => {
         wx.createSelectorQuery().select('.container').node().exec(res2 => {
-          // 这里只做模拟
           wx.showToast({ title: '已保存至相册', icon: 'success' });
-          // 调用后台API记录操作
+          // 调用后台API记录操作（统计一键保存行为）
           wx.request({
             url: 'https://your-backend-api/record',
             method: 'POST',
@@ -164,6 +178,55 @@ Page({
         });
       }).exec();
     }, 500);
+  },
+
+  // 登录提示弹窗，点击"去登录"后弹出模拟登录身份选择
+  showLoginPrompt(cb) {
+    wx.showModal({
+      title: '提示',
+      content: '您尚未登录，请先登录后使用完整功能',
+      confirmText: '去登录',
+      cancelText: '取消',
+      success: (res) => {
+        if (res.confirm) {
+          this.simulateLogin(cb);
+        }
+      }
+    });
+  },
+
+  // 判断是否已登录
+  isLoggedIn() {
+    return wx.getStorageSync('isLoggedIn');
+  },
+
+  // 模拟登录
+  simulateLogin(cb) {
+    wx.showActionSheet({
+      itemList: ['校友', '老师', '学生'],
+      success(res) {
+        let userType = '';
+        let role = '';
+        if (res.tapIndex === 0) { userType = 'alumni'; role = '校友'; }
+        if (res.tapIndex === 1) { userType = 'teacher'; role = '老师'; }
+        if (res.tapIndex === 2) { userType = 'student'; role = '学生'; }
+        let userInfo = wx.getStorageSync('userInfo') || {};
+        userInfo.role = role;
+        userInfo.nickName = role + '用户';
+        userInfo.isVerified = true;
+        wx.setStorageSync('userType', userType);
+        wx.setStorageSync('isLoggedIn', true);
+        wx.setStorageSync('userInfo', userInfo);
+        wx.showToast({
+          title: '已登录为' + role,
+          icon: 'success'
+        });
+        if (typeof cb === 'function') setTimeout(cb, 300);
+      },
+      fail() {
+        wx.showToast({ title: '请先登录', icon: 'none' });
+      }
+    });
   },
 
   // 收藏/取消收藏
@@ -184,25 +247,35 @@ Page({
 
   // 申请职位
   applyJob() {
+    if (!this.isLoggedIn()) {
+      this.showLoginPrompt(() => this.applyJob());
+      return;
+    }
     wx.showModal({
       title: '申请确认',
       content: '确定要申请该职位吗？',
       confirmText: '确定申请',
       success: (res) => {
         if (res.confirm) {
-          // 实际项目中应该调用API提交申请
           wx.showLoading({
             title: '提交中',
             mask: true
           });
-
           // 模拟API请求
           setTimeout(() => {
             wx.hideLoading();
+            // 申请成功后同步"我的申请"数字
+            let appliesCount = wx.getStorageSync('appliesCount') || 0;
+            appliesCount = Number(appliesCount) + 1;
+            wx.setStorageSync('appliesCount', appliesCount);
+            // 触发user_profile页面刷新（如tab页可直接切换）
             wx.showToast({
               title: '申请成功',
               icon: 'success'
             });
+            // 如果user_profile在tabBar，建议用switchTab
+            // wx.switchTab({ url: '/pages/user_profile/user_profile' });
+            // 或者用事件通知/全局刷新
           }, 1500);
         }
       }

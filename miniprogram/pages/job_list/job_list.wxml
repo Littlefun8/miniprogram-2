@@ -13,6 +13,9 @@
       center
       leftIcon="search"
     />
+    <view class="scan-btn" bindtap="onScanQrcodeTap">
+      <t-icon name="qrcode" size="48rpx" color="#fff" />
+    </view>
     <view class="add-btn" bindtap="onAddJobTap">
       <t-icon name="add" size="48rpx" color="#fff" />
     </view>
