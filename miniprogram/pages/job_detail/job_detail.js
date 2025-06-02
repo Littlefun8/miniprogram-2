@@ -98,12 +98,11 @@ Page({
   // 扫描二维码按钮直接展开关联信息并后台记录
   expandAssociation() {
     this.setData({ showAssociation: true });
-    // 滚动到关联信息区域，减去底部操作栏高度 260rpx
     setTimeout(() => {
-      wx.createSelectorQuery().select('.association-section').boundingClientRect(rect => {
+      wx.createSelectorQuery().select('.container').boundingClientRect(rect => {
         if (rect) {
           wx.pageScrollTo({
-            scrollTop: rect.top + wx.getSystemInfoSync().windowScrollY - 260,
+            scrollTop: rect.height,
             duration: 300
           });
         }
@@ -129,11 +128,22 @@ Page({
     const { name, id } = this.data.screenshotUser;
     const now = new Date();
     const time = `${now.getFullYear()}-${now.getMonth()+1}-${now.getDate()} ${now.getHours()}:${now.getMinutes()}:${now.getSeconds()}`;
+    const jobId = this.data.jobId;
     that.setData({
       screenshotUser: { name, id },
-      screenshotInfo: { time },
+      screenshotInfo: { time, jobId },
       showScreenshotInfo: true
     });
+    setTimeout(() => {
+      wx.createSelectorQuery().select('.container').boundingClientRect(rect => {
+        if (rect) {
+          wx.pageScrollTo({
+            scrollTop: rect.height,
+            duration: 300
+          });
+        }
+      }).exec();
+    }, 100);
     // 延迟确保渲染完成
     setTimeout(() => {
       wx.createSelectorQuery().select('.container').boundingClientRect(rect => {
@@ -146,7 +156,7 @@ Page({
             method: 'POST',
             data: {
               userId: id,
-              jobId: that.data.jobId,
+              jobId: jobId,
               action: 'saveAllInfo',
               time
             }

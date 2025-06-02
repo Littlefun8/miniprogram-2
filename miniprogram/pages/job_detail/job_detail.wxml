@@ -1,5 +1,5 @@
 <!--job_detail.wxml-->
-<view class="container" style="padding-bottom: 260rpx;">
+<view class="container">
   <view class="job-header">
     <view class="job-title">{{jobDetail.title}}</view>
     <view class="job-salary">{{jobDetail.salary}}</view>
@@ -25,7 +25,7 @@
   </view>
 
   <!-- 内推者想说 -->
-  <view class="section recommender-section" style="position: relative; left: 0rpx; top: 8rpx">
+  <view class="section recommender-section" style="position: relative; left: 0rpx; top: -6rpx">
     <view class="section-title">
       <t-icon name="chat" size="36rpx" color="#0052d9" />
       <text>内推者想说</text>
@@ -36,19 +36,19 @@
   </view>
 
   <!-- 岗位详情 -->
-  <view class="section job-detail-section" style="height: 481rpx; display: block; box-sizing: border-box; position: relative; left: 0rpx; top: -12rpx">
+  <view class="section job-detail-section" style="height: 416rpx; display: block; box-sizing: border-box; position: relative; left: 0rpx; top: -18rpx">
     <view class="section-title">
       <t-icon name="link" size="36rpx" color="#0052d9" />
       <text>岗位详情</text>
     </view>
-    <view class="section-content" style="height: 391rpx; display: block; box-sizing: border-box">
-      <view class="job-link" bindtap="copyLink">
+    <view class="section-content" style="height: 318rpx; display: block; box-sizing: border-box; left: 0rpx; top: 0rpx">
+      <view class="job-link" bindtap="copyLink" style="height: 85rpx; display: flex; box-sizing: border-box; position: relative; left: 0rpx; top: -20rpx">
         <text class="link-text">{{jobDetail.link}}</text>
         <view class="copy-btn">复制链接</view>
       </view>
 
-      <view class="qrcode-section" style="position: relative; left: 0rpx; top: -29rpx; height: 270rpx; display: flex; box-sizing: border-box">
-        <view class="qrcode-image" style="position: relative; left: 0rpx; top: -12rpx">
+      <view class="qrcode-section" style="position: relative; left: 0rpx; top: -49rpx; height: 249rpx; display: flex; box-sizing: border-box">
+        <view class="qrcode-image" style="position: relative; left: 0rpx; top: -29rpx">
           <t-icon name="qrcode" size="80rpx" color="#999" />
         </view>
         <view class="qrcode-buttons">
@@ -59,7 +59,7 @@
               <text>扫描二维码</text>
             </view>
           </view>
-          <view class="qrcode-button" bindtap="saveAllInfo">
+          <view class="qrcode-button" bindtap="saveAllInfo" style="position: relative; left: 0rpx; top: -12rpx">
             <text class="button-title">一键保存</text>
             <view class="button-text">
               <t-icon name="download" size="28rpx" color="#0052d9" />
@@ -72,18 +72,18 @@
   </view>
 
   <!-- 发布人信息 -->
-  <view class="section publisher-section" style="position: relative; left: 0rpx; top: -18rpx">
+  <view class="section publisher-section" style="position: relative; left: 0rpx; top: -29rpx; height: 187rpx; display: block; box-sizing: border-box">
     <view class="section-title">
       <t-icon name="user" size="36rpx" color="#0052d9" />
       <text>发布人信息</text>
     </view>
-    <view class="publisher-container">
-      <view class="publisher-info">
+    <view class="publisher-container" style="height: 97rpx; display: flex; box-sizing: border-box">
+      <view class="publisher-info" style="width: 272rpx; display: flex; box-sizing: border-box">
         <t-avatar image="{{jobDetail.publisher.avatar}}" icon="user" size="small" />
         <text class="publisher-name">{{jobDetail.publisher.name}}</text>
         <t-tag variant="light" theme="primary" size="small">{{jobDetail.publisher.tag}}</t-tag>
       </view>
-      <view class="reviewer-info" wx:if="{{jobDetail.reviewer}}">
+      <view class="reviewer-info" wx:if="{{jobDetail.reviewer}}" style="width: 272rpx; display: flex; box-sizing: border-box; position: relative; left: 347rpx; top: -95rpx">
         <t-avatar image="{{jobDetail.reviewer.avatar}}" icon="user" size="small" />
         <text class="reviewer-name">{{jobDetail.reviewer.name}}</text>
         <t-tag variant="light" theme="success" size="small">{{jobDetail.reviewer.tag}}</t-tag>
@@ -101,18 +101,16 @@
         <view>教师评价：{{item.comment}}</view>
       </view>
     </view>
-    <!-- 紧跟在关联信息后面 -->
-    <view class="screenshot-info" wx:if="{{showScreenshotInfo}}">
-      <text>截图者：{{screenshotUser.name}}  学号：{{screenshotUser.id}}</text>
-      <text>操作时间：{{screenshotInfo.time}}</text>
-      <text>职位ID：{{jobId}}（搜索栏输入职位ID快速定位）</text>
-      <text>来源：酱菜就业服务平台</text>
-      <text>本截图仅供内部流转，禁止外泄</text>
-    </view>
   </view>
+  <view class="screenshot-info" wx:if="{{showScreenshotInfo}}">
+    <text>截图者：{{screenshotUser.name}}  学号：{{screenshotUser.id}}</text>
+    <text>操作时间：{{screenshotInfo.time}}</text>
+    <text>职位ID：{{screenshotInfo.jobId}}（搜索栏输入职位ID快速定位）</text>
+    <text>来源：酱菜就业服务平台</text>
+    <text>本截图仅供内部流转，禁止外泄</text>
+  </view>
+  <view style="height: 160rpx;"></view>
 </view>
-
-<!-- 底部操作栏 -->
 <view class="footer-actions">
   <view class="favor-btn {{isFavorite ? 'active' : ''}}" bindtap="toggleFavorite">
     <t-icon name="{{isFavorite ? 'heart-filled' : 'heart'}}" size="48rpx" color="{{isFavorite ? '#ff4d4f' : '#999'}}" />

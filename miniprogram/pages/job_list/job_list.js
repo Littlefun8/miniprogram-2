@@ -13,7 +13,7 @@ function getMockJobList() {
       publisher: { name: '姚经理', tag: '校友' },
       reviewer: { name: '张教授', tag: '老师' },
       likeCount: 12
-    },
+    }
     {
       id: '2',
       title: '后端开发工程师',
