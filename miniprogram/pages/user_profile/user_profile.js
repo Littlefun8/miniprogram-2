@@ -47,7 +47,6 @@ Page({
       userType: userType || ''
     });
     if (this.data.isLoggedIn) {
-      this.getUserInfo();
       this.getUserStats();
     }
   },
@@ -85,21 +84,16 @@ Page({
 
   // 获取用户信息
   getUserInfo() {
-    // 实际项目中应该调用API获取用户信息
-    // 这里使用模拟数据
-    const userInfo = {
-      avatarUrl: 'https://example.com/avatar.jpg',
-      nickName: '张三',
-      isVerified: true,
-      role: '校友'
+    // 优先读取本地存储的 userInfo
+    const userInfo = wx.getStorageSync('userInfo') || {
+      avatarUrl: '',
+      nickName: '未登录',
+      isVerified: false,
+      role: '游客'
     };
-    
     this.setData({
       userInfo: userInfo
     });
-    
-    // 保存到本地存储
-    wx.setStorageSync('userInfo', userInfo);
   },
 
   // 获取用户统计数据
@@ -313,6 +307,17 @@ Page({
       fail() {
         wx.showToast({ title: '请先登录', icon: 'none' });
       }
+    });
+  },
+
+  // 职位统计
+  onNavigateToTeacherStats() {
+    if (!this.data.isLoggedIn) {
+      this.showLoginPrompt();
+      return;
+    }
+    wx.navigateTo({
+      url: '/pages/teacher_stats/teacher_stats'
     });
   },
 }) 

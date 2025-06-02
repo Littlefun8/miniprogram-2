@@ -239,9 +239,9 @@ Page({
     }
     if (this.data.userType === 'alumni' || this.data.userType === 'teacher') {
       // 校友和老师可以发布岗位
-      wx.navigateTo({
-        url: '/pages/post_job/post_job'
-      });
+    wx.navigateTo({
+      url: '/pages/post_job/post_job'
+    });
     } else if (this.data.userType === 'student') {
       wx.showModal({
         title: '提示',

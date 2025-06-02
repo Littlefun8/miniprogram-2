@@ -91,32 +91,32 @@ Page({
       // 所有申请数据
       const allApplications = [
         {
-          id: '1',
-          jobTitle: '前端开发工程师',
-          company: '腾讯科技',
-          location: '深圳',
-          status: 'pending',
-          statusText: '待处理',
+            id: '1',
+            jobTitle: '前端开发工程师',
+            company: '腾讯科技',
+            location: '深圳',
+            status: 'pending',
+            statusText: '待处理',
           applyDate: '2024-10-26 10:00',
-          timeline: [
+            timeline: [
             { title: '提交申请', time: '2024-10-26 10:00', done: true },
-            { title: '申请审核', time: '', done: false, status: '' },
-            { title: '通过/不通过', time: '', done: false, status: '' }
-          ],
+              { title: '申请审核', time: '', done: false, status: '' },
+              { title: '通过/不通过', time: '', done: false, status: '' }
+            ],
         },
         {
-          id: '2',
-          jobTitle: '产品经理',
-          company: '阿里巴巴',
-          location: '杭州',
-          status: 'processing',
-          statusText: '处理中',
+            id: '2',
+            jobTitle: '产品经理',
+            company: '阿里巴巴',
+            location: '杭州',
+            status: 'processing',
+            statusText: '处理中',
           applyDate: '2024-10-25 14:30',
-          timeline: [
+            timeline: [
             { title: '提交申请', time: '2024-10-25 14:30', done: true },
             { title: '申请审核', time: '2024-10-26 09:00', done: true, status: '' },
-            { title: '通过/不通过', time: '', done: false, status: '' }
-          ],
+              { title: '通过/不通过', time: '', done: false, status: '' }
+            ],
         },
         {
           id: '3',
@@ -136,19 +136,19 @@ Page({
           referralContact: '微信：ByteDancer2022'
         },
         {
-          id: '4',
-          jobTitle: 'UI设计师',
-          company: '美团',
-          location: '北京',
-          status: 'completed',
-          statusText: '已完成',
+            id: '4',
+            jobTitle: 'UI设计师',
+            company: '美团',
+            location: '北京',
+            status: 'completed',
+            statusText: '已完成',
           applyDate: '2024-10-23 09:00',
-          timeline: [
+            timeline: [
             { title: '提交申请', time: '2024-10-23 09:00', done: true },
             { title: '申请审核', time: '2024-10-24 14:00', done: true, status: '' },
             { title: '通过/不通过', time: '2024-10-25 11:00', done: true, status: 'failed' }
-          ],
-          referralInfo: '很遗憾，您的申请未通过审核。请继续关注其他内推机会。'
+            ],
+            referralInfo: '很遗憾，您的申请未通过审核。请继续关注其他内推机会。'
         }
       ];
       let filtered = [];
