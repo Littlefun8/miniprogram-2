@@ -7,6 +7,7 @@
   "author": "",
   "license": "",
   "dependencies": {
+    "echarts-for-weixin": "^1.0.2",
     "tdesign-miniprogram": "^1.9.3"
   },
   "devDependencies": {

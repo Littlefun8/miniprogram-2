@@ -4,7 +4,7 @@
   <view class="user-info-section" bindtap="onUserInfoTap">
     <view class="avatar-container">
       <t-avatar 
-        image="{{userInfo.avatarUrl}}" 
+        image="{{userInfo.avatarUrl || ''}}" 
         icon="{{userInfo.avatarUrl ? '' : 'user'}}" 
         size="large" 
       />

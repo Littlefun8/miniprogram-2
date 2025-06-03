@@ -1,10 +1,11 @@
 // teacher_stats.js
+
 Page({
   data: {
     overview: {
+      totalStudents: 320,
       totalApplies: 180,
-      processed: 140,
-      pending: 40,
+      pendingApplies: 40,
       passRate: 78
     },
     timeFilters: [
@@ -23,6 +24,182 @@ Page({
       { label: '软件工程2002班', value: 'se2002' }
     ],
     showMoreFilters: false,
+    
+    // 申请状态分布数据
+    statusDistribution: [
+      { status: '待处理', count: 40, percentage: 22.2, color: '#FAA61A' },
+      { status: '已通过', count: 110, percentage: 61.1, color: '#36B37E' },
+      { status: '已拒绝', count: 30, percentage: 16.7, color: '#FF4D4F' }
+    ],
+    
+    // 申请趋势数据
+    weekTrendData: [
+      { date: '05-01', count: 15 },
+      { date: '05-08', count: 28 },
+      { date: '05-15', count: 36 },
+      { date: '05-22', count: 32 },
+      { date: '05-29', count: 40 }
+    ],
+    monthTrendData: [
+      { date: '01月', count: 45 },
+      { date: '02月', count: 52 },
+      { date: '03月', count: 69 },
+      { date: '04月', count: 85 },
+      { date: '05月', count: 96 }
+    ],
+    semesterTrendData: [
+      { date: '2月', count: 68 },
+      { date: '3月', count: 95 },
+      { date: '4月', count: 121 },
+      { date: '5月', count: 142 },
+      { date: '6月', count: 180 }
+    ],
+    allTrendData: [
+      { date: '2024-Q3', count: 120 },
+      { date: '2024-Q4', count: 156 },
+      { date: '2024-Q1', count: 198 },
+      { date: '2024-Q2', count: 245 },
+      { date: '至今', count: 320 }
+    ],
+    currentTrendData: [],
+    
+    // 岗位热度排行
+    hotJobsData: [
+      { title: '前端开发', count: 42, percentage: 26.7 },
+      { title: '后端开发', count: 38, percentage: 24.2 },
+      { title: '产品经理', count: 34, percentage: 21.7 },
+      { title: '数据分析', count: 25, percentage: 15.9 },
+      { title: 'UI设计', count: 18, percentage: 11.5 }
+    ],
+    
+    // 新增三个统计模块的数据
+    // 1. 发布内推岗位较多的校友
+    topReferralPosters: [
+      {
+        alumnusId: "A001",
+        name: "李明远",
+        graduationYear: 2010,
+        company: "蓝天科技股份有限公司",
+        department: "计算机科学与技术系",
+        referralsPostedCount: 25,
+        avatar: "https://tdesign.gtimg.com/site/avatar.jpg"
+      },
+      {
+        alumnusId: "A008",
+        name: "王芳华",
+        graduationYear: 2012,
+        company: "启航教育集团",
+        department: "外国语言文学系",
+        referralsPostedCount: 18,
+        avatar: "https://tdesign.gtimg.com/site/avatar.jpg"
+      },
+      {
+        alumnusId: "A003",
+        name: "陈志强",
+        graduationYear: 2008,
+        company: "新思路咨询有限公司",
+        department: "经济管理学院",
+        referralsPostedCount: 15,
+        avatar: "https://tdesign.gtimg.com/site/avatar.jpg"
+      },
+      {
+        alumnusId: "A012",
+        name: "张文博",
+        graduationYear: 2015,
+        company: "科技创新有限公司",
+        department: "计算机科学与技术系",
+        referralsPostedCount: 12,
+        avatar: "https://tdesign.gtimg.com/site/avatar.jpg"
+      },
+      {
+        alumnusId: "A020",
+        name: "林小雨",
+        graduationYear: 2013,
+        company: "未来科技集团",
+        department: "物理学院",
+        referralsPostedCount: 10,
+        avatar: "https://tdesign.gtimg.com/site/avatar.jpg"
+      }
+    ],
+    
+    // 2. 处理职位申请响应度低的校友
+    lowResponsivenessAlumni: [
+      {
+        alumnusId: "A015",
+        name: "张伟",
+        graduationYear: 2014,
+        company: "创新工场",
+        department: "信息工程学院",
+        pendingApplicationsCount: 8,
+        lastActiveOnReferral: "2024-05-10",
+        avatar: "https://tdesign.gtimg.com/site/avatar.jpg"
+      },
+      {
+        alumnusId: "A022",
+        name: "刘敏",
+        graduationYear: 2011,
+        company: "远大集团",
+        department: "机械工程系",
+        pendingApplicationsCount: 5,
+        lastActiveOnReferral: "2024-05-15",
+        avatar: "https://tdesign.gtimg.com/site/avatar.jpg"
+      },
+      {
+        alumnusId: "A009",
+        name: "王小明",
+        graduationYear: 2016,
+        company: "智联科技",
+        department: "计算机科学与技术系",
+        pendingApplicationsCount: 4,
+        lastActiveOnReferral: "2024-05-12",
+        avatar: "https://tdesign.gtimg.com/site/avatar.jpg"
+      }
+    ],
+    
+    // 3. 申请职位成功率较高的学生
+    highSuccessRateStudents: [
+      {
+        studentId: "S007",
+        name: "赵雪",
+        department: "计算机科学与技术系",
+        major: "软件工程",
+        applicationsMade: 10,
+        applicationsSuccessful: 7,
+        successRate: 0.70,
+        avatar: "https://tdesign.gtimg.com/site/avatar.jpg"
+      },
+      {
+        studentId: "S012",
+        name: "孙鹏",
+        department: "电子信息工程学院",
+        major: "通信工程",
+        applicationsMade: 8,
+        applicationsSuccessful: 5,
+        successRate: 0.625,
+        avatar: "https://tdesign.gtimg.com/site/avatar.jpg"
+      },
+      {
+        studentId: "S003",
+        name: "周琳",
+        department: "计算机科学与技术系",
+        major: "人工智能",
+        applicationsMade: 12,
+        applicationsSuccessful: 7,
+        successRate: 0.583,
+        avatar: "https://tdesign.gtimg.com/site/avatar.jpg"
+      },
+      {
+        studentId: "S021",
+        name: "李明宇",
+        department: "软件工程系",
+        major: "软件工程",
+        applicationsMade: 6,
+        applicationsSuccessful: 3,
+        successRate: 0.5,
+        avatar: "https://tdesign.gtimg.com/site/avatar.jpg"
+      }
+    ],
+    
     popularJobs: [
       { id: 1, title: '前端开发工程师', company: '示例科技有限公司', applicants: 28 },
       { id: 2, title: '后端开发工程师', company: '云智科技有限公司', applicants: 22 },
@@ -183,100 +360,142 @@ Page({
     },
     currentJobId: 0,
     currentFunnel: [],
-    currentJobInfo: {}
+    currentJobInfo: {},
+    trendData: [
+      { date: '05-01', count: 15 },
+      { date: '05-08', count: 28 },
+      { date: '05-15', count: 36 },
+      { date: '05-22', count: 32 },
+      { date: '05-29', count: 40 }
+    ],
+    hotData: [
+      { title: '前端开发', count: 42 },
+      { title: '后端开发', count: 38 },
+      { title: '产品经理', count: 34 },
+      { title: '数据分析', count: 25 },
+      { title: 'UI设计', count: 18 }
+    ]
   },
 
-  onLoad() {
-    // 检查用户身份，确保只有老师身份才能访问统计页面
-    const userType = wx.getStorageSync('userType');
-    const isLoggedIn = wx.getStorageSync('isLoggedIn');
+  onLoad: function() {
+    // 初始化趋势数据
+    this.updateChartData('week');
     
-    if (!isLoggedIn || userType !== 'teacher') {
-      wx.switchTab({
-        url: '/pages/application_progress/application_progress'
-      });
-      return;
-    }
-    
-    // 初始化图表数据（实际项目中应该使用图表组件）
-    this.initTrendChart();
-    
-    // 统计说明
-    this.setData({
-      explain: '每一步为上一步的子集，转化率=下一阶段人数/本阶段人数，流失率=1-转化率，平均匹配度为进入该阶段申请的关联分数均值，数据为模拟。'
+    // 设置导航栏标题
+    wx.setNavigationBarTitle({
+      title: '教师统计'
     });
     
-    // 默认展示第一个职位的转化漏斗
-    this.setData({
-      currentFunnel: this.data.jobFunnels[0],
-      currentJobInfo: this.data.jobInfoMap[0]
+    // 模拟数据加载
+    wx.showLoading({
+      title: '加载中...',
     });
+    
+    setTimeout(() => {
+      wx.hideLoading();
+    }, 500);
   },
 
-  onShow() {
-    const userType = wx.getStorageSync('userType');
-    const isLoggedIn = wx.getStorageSync('isLoggedIn');
-    
-    // 检查用户身份，确保只有老师身份才能访问统计页面
-    if (!isLoggedIn || userType !== 'teacher') {
-      wx.switchTab({
-        url: '/pages/application_progress/application_progress'
-      });
-      return;
-    }
-    
+  onShow: function() {
+    // 检查页面样式是否需要更新
+    this.checkStyleUpdate();
+  },
+  
+  // 检查样式更新
+  checkStyleUpdate: function() {
+    // 强制样式更新
     this.setData({
-      isLoggedIn: !!isLoggedIn,
-      userType: userType || ''
+      styleUpdateTimestamp: new Date().getTime()
     });
   },
-
-  // 初始化趋势图表（示例）
-  initTrendChart() {
-    // 实际项目中应该使用图表组件，例如ec-canvas
-    // 这里只是示例代码
-    const trendChartOption = {
-      // 图表配置
-    };
-    
-    this.setData({
-      trendChartOption: trendChartOption
-    });
-  },
-
-  // 时间筛选切换
-  onTimeFilterChange(e) {
+  
+  onTimeFilterChange: function(e) {
     const value = e.currentTarget.dataset.value;
-    
     this.setData({
       timeFilterActive: value
     });
+    this.updateChartData(value);
+  },
+  
+  updateChartData: function(timeRange) {
+    let trendData = [];
+    let hotJobsData = [];
     
-    // 根据选择的时间范围更新图表数据
-    this.updateTrendChart(value);
+    switch(timeRange) {
+      case 'week':
+        trendData = this.data.weekTrendData;
+        hotJobsData = [
+          { title: '前端开发', count: 42, percentage: 26.7 },
+          { title: '后端开发', count: 38, percentage: 24.2 },
+          { title: '产品经理', count: 34, percentage: 21.7 },
+          { title: '数据分析', count: 25, percentage: 15.9 },
+          { title: 'UI设计', count: 18, percentage: 11.5 }
+        ];
+        break;
+      case 'month':
+        trendData = this.data.monthTrendData;
+        hotJobsData = [
+          { title: '前端开发', count: 86, percentage: 28.0 },
+          { title: '后端开发', count: 72, percentage: 23.5 },
+          { title: '产品经理', count: 65, percentage: 21.2 },
+          { title: '数据分析', count: 48, percentage: 15.7 },
+          { title: 'UI设计', count: 36, percentage: 11.8 }
+        ];
+        break;
+      case 'semester':
+        trendData = this.data.semesterTrendData;
+        hotJobsData = [
+          { title: '前端开发', count: 120, percentage: 26.1 },
+          { title: '后端开发', count: 105, percentage: 22.8 },
+          { title: '产品经理', count: 92, percentage: 20.0 },
+          { title: '数据分析', count: 78, percentage: 17.0 },
+          { title: 'UI设计', count: 65, percentage: 14.1 }
+        ];
+        break;
+      case 'all':
+        trendData = this.data.allTrendData;
+        hotJobsData = [
+          { title: '前端开发', count: 180, percentage: 25.7 },
+          { title: '后端开发', count: 165, percentage: 23.6 },
+          { title: '产品经理', count: 140, percentage: 20.0 },
+          { title: '数据分析', count: 120, percentage: 17.1 },
+          { title: 'UI设计', count: 95, percentage: 13.6 }
+        ];
+        break;
+      default:
+        trendData = this.data.weekTrendData;
+        hotJobsData = [
+          { title: '前端开发', count: 42, percentage: 26.7 },
+          { title: '后端开发', count: 38, percentage: 24.2 },
+          { title: '产品经理', count: 34, percentage: 21.7 },
+          { title: '数据分析', count: 25, percentage: 15.9 },
+          { title: 'UI设计', count: 18, percentage: 11.5 }
+        ];
+    }
+    
+    this.setData({
+      currentTrendData: trendData,
+      hotJobsData: hotJobsData
+    });
+    
+    // 强制重新渲染以确保样式生效
+    setTimeout(() => {
+      this.checkStyleUpdate();
+    }, 100);
   },
 
-  // 更新趋势图表（示例）
-  updateTrendChart(timeRange) {
-    // 实际项目中应该根据时间范围获取数据并更新图表
-    console.log('更新图表，时间范围：', timeRange);
-  },
-
-  // 显示更多筛选弹出层
   toggleMoreFilters() {
     this.setData({
       showMoreFilters: true
     });
   },
 
-  // 关闭更多筛选弹出层
   closeMoreFilters() {
     this.setData({
       showMoreFilters: false
     });
   },
 
-  // 弹出层可见性变化处理
   onPopupVisibleChange(e) {
     if (!e.detail.visible) {
       this.setData({
@@ -285,25 +504,20 @@ Page({
     }
   },
 
-  // 状态筛选变化
   onStatusFilterChange(e) {
     const value = e.currentTarget.dataset.value;
-    
     this.setData({
       statusFilter: value
     });
   },
 
-  // 班级筛选变化
   onClassFilterChange(e) {
     const value = e.currentTarget.dataset.value;
-    
     this.setData({
       classFilter: value
     });
   },
 
-  // 重置筛选条件
   resetFilters() {
     this.setData({
       statusFilter: 'all',
@@ -311,15 +525,16 @@ Page({
     });
   },
 
-  // 应用筛选条件
   applyFilters() {
-    const { statusFilter, classFilter } = this.data;
+    this.setData({
+      showMoreFilters: false
+    });
     
-    // 实际项目中应该根据筛选条件获取数据
-    console.log('应用筛选条件：', { status: statusFilter, class: classFilter });
-    
-    // 关闭弹出层
-    this.closeMoreFilters();
+    // 这里应该根据筛选条件调用API获取数据
+    wx.showToast({
+      title: '筛选已应用',
+      icon: 'success'
+    });
   },
 
   // 导航到所有申请页面
@@ -358,6 +573,85 @@ Page({
       });
     } else {
       wx.showToast({ title: '无此岗位数据', icon: 'none' });
+    }
+  },
+
+  // 查看更多发布岗位较多的校友
+  viewMoreTopAlumni() {
+    wx.showToast({
+      title: '功能开发中',
+      icon: 'none'
+    });
+  },
+
+  // 感谢校友
+  thankAlumnus(e) {
+    const alumnusId = e.currentTarget.dataset.id;
+    // 查找对应校友信息
+    const alumnus = this.data.topReferralPosters.find(item => item.alumnusId === alumnusId);
+    if (alumnus) {
+      wx.showToast({
+        title: `已向${alumnus.name}发送感谢信息`,
+        icon: 'success'
+      });
+    }
+  },
+
+  // 查看更多响应度低的校友
+  viewMoreLowResponseAlumni() {
+    wx.showToast({
+      title: '功能开发中',
+      icon: 'none'
+    });
+  },
+
+  // 提醒校友处理申请
+  contactAlumnus(e) {
+    const alumnusId = e.currentTarget.dataset.id;
+    // 查找对应校友信息
+    const alumnus = this.data.lowResponsivenessAlumni.find(item => item.alumnusId === alumnusId);
+    if (alumnus) {
+      wx.showModal({
+        title: '提醒校友',
+        content: `确定要向${alumnus.name}发送提醒消息？`,
+        success(res) {
+          if (res.confirm) {
+            wx.showToast({
+              title: '提醒已发送',
+              icon: 'success'
+            });
+          }
+        }
+      });
+    }
+  },
+
+  // 查看更多成功率高的学生
+  viewMoreSuccessfulStudents() {
+    wx.showToast({
+      title: '功能开发中',
+      icon: 'none'
+    });
+  },
+
+  // 邀请学生分享经验
+  inviteShareExperience(e) {
+    const studentId = e.currentTarget.dataset.id;
+    // 查找对应学生信息
+    const student = this.data.highSuccessRateStudents.find(item => item.studentId === studentId);
+    if (student) {
+      wx.showModal({
+        title: '邀请分享',
+        content: `确定要邀请${student.name}分享求职经验？`,
+        success(res) {
+          if (res.confirm) {
+            wx.showToast({
+              title: '邀请已发送',
+              icon: 'success'
+            });
+          }
+        }
+      });
     }
   }
 }) 
