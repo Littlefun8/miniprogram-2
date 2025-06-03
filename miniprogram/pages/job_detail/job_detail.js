@@ -21,16 +21,22 @@ Page({
         tag: '老师'
       },
       association: {
-        teacher: '张教授 - 计算机科学与技术学院',
+        teacher: '老师陈国，软件学院讲师，近年授课课程包括《计算机网络》《软件工程》《需求工程》等。',
         students: [
           {
-            name: '李同学',
-            info: '李同学 - 2020级计算机科学与技术专业',
-            comment: '该学生在我的课堂上表现优秀，有很强的学习能力和团队协作精神。'
+            name: '贾明',
+            info: '学生贾明，软件工程223班，2023-2024学年《软件工程》课程成绩92分，平均加权成绩86分。',
+            comment: '熟悉Java编程，踏实。'
+          },
+          {
+            name: '刘晓',
+            info: '学生刘晓，商务英语223班，无相关成绩，平均加权成绩95分。',
+            comment: '辅修学生，好学。'
           }
         ]
       }
     },
+    filteredStudents: [], // 存储根据用户身份过滤后的学生信息
     qrCodeUrl: '',
     isFavorite: false,
     showAssociation: false,
@@ -118,6 +124,10 @@ Page({
       this.showLoginPrompt(() => this.expandAssociation());
       return;
     }
+    
+    // 根据用户身份过滤学生信息
+    this.filterStudentsByUserType();
+    
     this.setData({ showAssociation: true });
     setTimeout(() => {
       wx.createSelectorQuery().select('.container').boundingClientRect(rect => {
@@ -129,6 +139,7 @@ Page({
         }
       }).exec();
     }, 100);
+    
     // 调用后台API记录操作（统计展开关联信息行为）
     wx.request({
       url: 'https://your-backend-api/record',
@@ -141,6 +152,25 @@ Page({
       }
     });
     wx.showToast({ title: '关联信息已展示', icon: 'success' });
+  },
+  
+  // 根据用户身份过滤学生信息
+  filterStudentsByUserType() {
+    const userType = this.data.userType;
+    const currentUserName = this.data.screenshotUser.name;
+    let filteredStudents = [];
+    
+    if (userType === 'alumni' || userType === 'teacher') {
+      // 校友和老师可以看到所有学生信息
+      filteredStudents = this.data.jobDetail.association.students;
+    } else if (userType === 'student') {
+      // 学生只能看到自己的信息
+      filteredStudents = this.data.jobDetail.association.students.filter(
+        student => student.name === currentUserName
+      );
+    }
+    
+    this.setData({ filteredStudents: filteredStudents });
   },
 
   // 一键保存按钮逻辑，直接读取操作者信息，并进行后台统计

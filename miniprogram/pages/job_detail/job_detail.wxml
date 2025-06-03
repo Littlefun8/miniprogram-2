@@ -93,15 +93,32 @@
 
   <!-- 关联信息 -->
   <view class="section association-section" wx:if="{{showAssociation}}">
-    <view class="section-title">关联信息</view>
+    <view class="section-title">
+      <t-icon name="user-talk" size="36rpx" color="#0052d9" />
+      <text>关联信息</text>
+    </view>
     <view class="section-content">
-      <view>{{jobDetail.association.teacher}}</view>
-      <view class="student-info" wx:for="{{jobDetail.association.students}}" wx:key="name">
-        {{item.info}}
-        <view>教师评价：{{item.comment}}</view>
-      </view>
+      <!-- 老师信息（所有身份都可见） -->
+      <view class="teacher-info">{{jobDetail.association.teacher}}</view>
+      
+      <!-- 学生信息（根据身份显示不同内容） -->
+      <block wx:if="{{userType === 'alumni' || userType === 'teacher'}}">
+        <!-- 校友或老师可见全部学生信息 -->
+        <view class="student-info" wx:for="{{jobDetail.association.students}}" wx:key="name">
+          <view class="student-detail">{{item.info}}</view>
+          <view class="teacher-comment">教师评价：{{item.comment}}</view>
+        </view>
+      </block>
+      <block wx:elif="{{userType === 'student'}}">
+        <!-- 学生仅可见贾明的信息 -->
+        <view class="student-info">
+          <view class="student-detail">学生贾明，软件工程223班，2023-2024学年《软件工程》课程成绩92分，平均加权成绩86分。</view>
+          <view class="teacher-comment">教师评价：熟悉Java编程，踏实。</view>
+        </view>
+      </block>
     </view>
   </view>
+  
   <view class="screenshot-info" wx:if="{{showScreenshotInfo}}">
     <text>截图者：{{screenshotUser.name}}  学号：{{screenshotUser.id}}</text>
     <text>操作时间：{{screenshotInfo.time}}</text>

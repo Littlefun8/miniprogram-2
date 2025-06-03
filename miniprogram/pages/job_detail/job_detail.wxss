@@ -230,10 +230,34 @@ page {
   margin-bottom: 0;
 }
 
+.teacher-info {
+  font-size: 28rpx;
+  color: #333;
+  line-height: 1.6;
+  margin-bottom: 20rpx;
+}
+
 .student-info {
   border-top: 1px solid #f0f0f0;
   padding-top: 20rpx;
   margin-top: 10rpx;
+}
+
+.student-detail {
+  font-size: 28rpx;
+  color: #333;
+  line-height: 1.6;
+  margin-bottom: 8rpx;
+}
+
+.teacher-comment {
+  font-size: 28rpx;
+  color: #666;
+  line-height: 1.6;
+  background-color: #f9f9f9;
+  padding: 12rpx 16rpx;
+  border-radius: 8rpx;
+  margin-top: 8rpx;
 }
 
 /* 底部操作栏 */
