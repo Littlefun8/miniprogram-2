@@ -87,102 +87,27 @@ Page({
       isLoading: true,
     });
 
-    setTimeout(() => {
-      // 所有申请数据
-      const allApplications = [
-        {
-            id: '1',
-            jobTitle: '前端开发工程师',
-            company: '腾讯科技',
-            location: '深圳',
-            status: 'pending',
-            statusText: '待处理',
-          applyDate: '2024-10-26 10:00',
-            timeline: [
-            { title: '提交申请', time: '2024-10-26 10:00', done: true },
-              { title: '申请审核', time: '', done: false, status: '' },
-              { title: '通过/不通过', time: '', done: false, status: '' }
-            ],
-        },
-        {
-            id: '2',
-            jobTitle: '产品经理',
-            company: '阿里巴巴',
-            location: '杭州',
-            status: 'processing',
-            statusText: '处理中',
-          applyDate: '2024-10-25 14:30',
-            timeline: [
-            { title: '提交申请', time: '2024-10-25 14:30', done: true },
-            { title: '申请审核', time: '2024-10-26 09:00', done: true, status: '' },
-              { title: '通过/不通过', time: '', done: false, status: '' }
-            ],
-        },
-        {
-          id: '3',
-          jobTitle: '后端工程师',
-          company: '字节跳动',
-          location: '北京',
-          status: 'completed',
-          statusText: '已完成',
-          applyDate: '2024-10-24 11:15',
-          timeline: [
-            { title: '提交申请', time: '2024-10-24 11:15', done: true },
-            { title: '申请审核', time: '2024-10-25 10:00', done: true, status: '' },
-            { title: '通过/不通过', time: '2024-10-26 16:00', done: true, status: 'passed' }
-          ],
-          referralInfo: '恭喜您获得内推资格！',
-          referralCode: 'BYTE2024',
-          referralContact: '微信：ByteDancer2022'
-        },
-        {
-            id: '4',
-            jobTitle: 'UI设计师',
-            company: '美团',
-            location: '北京',
-            status: 'completed',
-            statusText: '已完成',
-          applyDate: '2024-10-23 09:00',
-            timeline: [
-            { title: '提交申请', time: '2024-10-23 09:00', done: true },
-            { title: '申请审核', time: '2024-10-24 14:00', done: true, status: '' },
-            { title: '通过/不通过', time: '2024-10-25 11:00', done: true, status: 'failed' }
-            ],
-            referralInfo: '很遗憾，您的申请未通过审核。请继续关注其他内推机会。'
+    // 调用云函数获取申请进度
+    wx.cloud.callFunction({
+      name: 'getApplications',
+      data: { status: this.data.activeTab },
+      success: res => {
+        if (res.result.code === 200) {
+          this.setData({
+            applications: res.result.data,
+            isLoading: false,
+            noMoreData: !res.result.data || res.result.data.length === 0
+          });
+        } else {
+          this.setData({ isLoading: false });
+          wx.showToast({ title: '获取进度失败', icon: 'none' });
         }
-      ];
-      let filtered = [];
-      if (!this.data.isLoggedIn) {
-        // 未登录仅展示后端工程师
-        filtered = allApplications.filter(app => app.id === '3');
-      } else {
-        switch (this.data.activeTab) {
-          case 'pending':
-            filtered = allApplications.filter(app => app.status === 'pending');
-            break;
-          case 'processing':
-            filtered = allApplications.filter(app => app.status === 'processing');
-            break;
-          case 'completed':
-            filtered = allApplications.filter(app => app.status === 'completed');
-            break;
-          case 'all':
-          default:
-            filtered = allApplications.slice();
-            const backendIdx = filtered.findIndex(app => app.id === '3');
-            if (backendIdx > 0) {
-              const backend = filtered.splice(backendIdx, 1)[0];
-              filtered.unshift(backend);
-            }
-            break;
-        }
+      },
+      fail: err => {
+        this.setData({ isLoading: false });
+        wx.showToast({ title: '云函数调用失败', icon: 'none' });
       }
-      this.setData({
-        applications: filtered,
-        isLoading: false,
-        noMoreData: true,
-      });
-    }, 1000);
+    });
   },
 
   onApplicationTap(e) {

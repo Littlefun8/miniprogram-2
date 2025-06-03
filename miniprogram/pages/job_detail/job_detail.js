@@ -141,11 +141,21 @@ Page({
     }, 100);
     
     // 调用后台API记录操作（统计展开关联信息行为）
+    /*
     wx.request({
       url: 'https://your-backend-api/record',
       method: 'POST',
       data: {
         userId: this.data.screenshotUser.id || '未填写',
+        jobId: this.data.jobId,
+        action: 'expandAssociation',
+        time: new Date().toISOString()
+      }
+    });
+    */
+    wx.cloud.callFunction({
+      name: 'recordUserAction',
+      data: {
         jobId: this.data.jobId,
         action: 'expandAssociation',
         time: new Date().toISOString()
@@ -206,11 +216,21 @@ Page({
         wx.createSelectorQuery().select('.container').node().exec(res2 => {
           wx.showToast({ title: '已保存至相册', icon: 'success' });
           // 调用后台API记录操作（统计一键保存行为）
+          /*
           wx.request({
             url: 'https://your-backend-api/record',
             method: 'POST',
             data: {
               userId: id,
+              jobId: jobId,
+              action: 'saveAllInfo',
+              time
+            }
+          });
+          */
+          wx.cloud.callFunction({
+            name: 'recordUserAction',
+            data: {
               jobId: jobId,
               action: 'saveAllInfo',
               time

@@ -100,14 +100,36 @@ Page({
   getUserStats() {
     // 实际项目中应该调用API获取用户统计数据
     // 这里使用模拟数据
+    /*
     const stats = {
       postsCount: 5,
       appliesCount: 8,
       favoritesCount: 12
     };
-    
     this.setData({
       stats: stats
+    });
+    */
+    // 调用云函数获取用户信息和统计数据
+    wx.cloud.callFunction({
+      name: 'getUserProfile',
+      data: {},
+      success: res => {
+        if (res.result.code === 200) {
+          const { userInfo, publishedJobs, applications } = res.result.data;
+          this.setData({
+            userInfo: userInfo,
+            stats: {
+              postsCount: publishedJobs ? publishedJobs.length : 0,
+              appliesCount: applications ? applications.length : 0,
+              favoritesCount: 0 // 如有收藏功能可补充
+            }
+          });
+        }
+      },
+      fail: err => {
+        wx.showToast({ title: '获取用户信息失败', icon: 'none' });
+      }
     });
   },
 

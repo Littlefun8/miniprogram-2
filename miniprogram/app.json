@@ -54,5 +54,6 @@
     "t-popup": "tdesign-miniprogram/popup/popup",
     "t-textarea": "tdesign-miniprogram/textarea/textarea",
     "t-dialog": "tdesign-miniprogram/dialog/dialog"
-  }
+  },
+  "cloud": true
 }
