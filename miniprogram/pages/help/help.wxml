@@ -1,0 +1,23 @@
+<!-- pages/help/help.wxml -->
+<view class="container">
+  <view class="header">
+    <text class="title">帮助中心</text>
+    <text class="subtitle">常见问题</text>
+  </view>
+
+  <view class="faq-list">
+    <view class="faq-item" wx:for="{{faqs}}" wx:key="q">
+      <view class="faq-q" bindtap="onToggle" data-idx="{{index}}">
+        <text class="faq-q-text">{{item.q}}</text>
+        <text class="faq-arrow">{{item.open ? '-' : '+'}}</text>
+      </view>
+      <view class="faq-a" wx:if="{{item.open}}">
+        <text>{{item.a}}</text>
+      </view>
+    </view>
+  </view>
+
+  <view class="contact">
+    <text class="contact-text">仍有疑问？联系我们：jiangcai@example.com</text>
+  </view>
+</view>

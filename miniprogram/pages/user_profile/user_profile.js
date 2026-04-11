@@ -132,28 +132,24 @@ Page({
     }
     wx.showModal({
       title: '提示',
-      content: '功能开发中，敬请期待！',
+      content: '收藏列表功能开发中，敬请期待！',
       showCancel: false
     })
   },
 
   // 导航到设置页面
   onNavigateToSettings() {
-    wx.showModal({
-      title: '提示',
-      content: '功能开发中，敬请期待！',
-      showCancel: false
-    })
+    wx.navigateTo({ url: '/pages/edit_profile/edit_profile' })
   },
 
   // 导航到帮助与反馈页面
   onNavigateToHelp() {
-    wx.navigateTo({ url: '/pages/help/index' })
+    wx.navigateTo({ url: '/pages/help/help' })
   },
 
   // 导航到关于我们页面
   onNavigateToAbout() {
-    wx.navigateTo({ url: '/pages/about/index' })
+    wx.navigateTo({ url: '/pages/about/about' })
   },
 
   // 显示登录对话框

@@ -7,7 +7,7 @@
 **项目名称**：酱菜内推系统 (Jiangcai Referral System)
 **项目类型**：微信小程序（原生开发，非 uni-app）
 **核心功能**：连接校友与学生的垂直招聘平台，核心流程为：校友发布职位 → 教师背书审核 → 学生申请 → 简历快照流转 → 内推权益解锁
-**当前状态**：原型开发阶段。前端页面使用 mock 数据，云函数已编写但未接入前端。
+**当前状态**：核心功能已实现。前端接入云函数，具备完整登录鉴权、职位发布/审核/申请/处理闭环、通知系统。
 
 ## 为什么用原生小程序而不是 uni-app
 
@@ -37,6 +37,7 @@
 | [docs/prd.md](../docs/prd.md) | 产品需求文档 | 业务规则、角色权限、流程定义 |
 | [docs/database-schema.md](../docs/database-schema.md) | 数据库设计 | 集合定义、字段说明、索引建议 |
 | [docs/architecture-issues.md](../docs/architecture-issues.md) | 架构问题与改进建议 | 已知问题清单、优先级排序 |
+| [docs/improvement-plan.md](../docs/improvement-plan.md) | 完整改进实施方案 | 28 Bug + 7 集合 + 14 云函数 + 5 阶段路线图 |
 
 ### Claude 工作规范（.claude/rules/）
 
@@ -53,28 +54,56 @@
 miniprogram-2/
 ├── miniprogram/                  # 小程序源码（项目根目录）
 │   ├── app.js / app.json / app.wxss
-│   ├── pages/                    # 6 个页面
+│   ├── pages/                    # 12 个页面
 │   │   ├── job_list/             # 首页-职位列表 (TabBar)
 │   │   ├── application_progress/ # 申请进度 (TabBar)
 │   │   ├── user_profile/         # 个人中心 (TabBar)
 │   │   ├── job_detail/           # 职位详情
 │   │   ├── post_job/             # 发布职位
-│   │   └── teacher_stats/        # 教师统计
-│   ├── utils/util.ts             # 工具函数
+│   │   ├── teacher_stats/        # 教师统计
+│   │   ├── audit_job/            # 教师审核职位
+│   │   ├── manage_applications/  # 校友申请管理
+│   │   ├── notifications/        # 通知列表
+│   │   ├── edit_profile/         # 编辑资料
+│   │   ├── about/                # 关于我们
+│   │   └── help/                 # 帮助中心
+│   ├── utils/
+│   │   ├── auth.js               # 统一鉴权模块
+│   │   └── util.ts               # 工具函数
 │   ├── miniprogram_npm/          # npm 构建产物
 │   └── assets/                   # 图标、字体、样式
-├── cloudfunctions/               # 云函数
-│   ├── login/                    # 用户登录/注册
-│   ├── getJobList/               # 职位列表（分页+搜索）
-│   ├── getJobDetail/             # 职位详情
-│   ├── applyJob/                 # 申请职位
-│   ├── initData/                 # 初始化种子数据
-│   └── quickstartFunctions/      # [待删除] 模板残留
+├── cloudfunctions/               # 14 个云函数
+│   ├── login/                    # OPENID 鉴权 + 自动注册
+│   ├── setUserRole/              # 首次选择角色（不可更改）
+│   ├── getJobList/               # 职位列表（分页+搜索+筛选）
+│   ├── getJobDetail/             # 职位详情（敏感字段过滤）
+│   ├── postJob/                  # 发布职位（角色校验）
+│   ├── applyJob/                 # 申请职位（简历快照+职位快照）
+│   ├── getApplications/          # 申请列表（分页）
+│   ├── updateApplicationStatus/  # 更新申请状态（权限+状态流转校验）
+│   ├── auditJob/                 # 教师审核职位
+│   ├── getNotifications/         # 获取通知
+│   ├── toggleFavorite/           # 收藏/取消收藏
+│   ├── getUserProfile/           # 用户资料+统计
+│   ├── updateProfile/            # 更新用户资料
+│   ├── recordUserAction/         # 行为埋点
+│   └── initJobs/                 # 初始化种子数据（管理员）
 ├── prototype/                    # HTML 原型页面
 ├── docs/                         # 项目文档
 ├── .claude/                      # Claude Code 配置（本目录）
 └── typings/                      # TypeScript 类型定义
 ```
+
+## 数据库集合
+
+| 集合 | 说明 | 状态 |
+|------|------|------|
+| `users` | 用户信息 | 已使用 |
+| `jobs` | 职位信息 | 已使用 |
+| `applications` | 申请记录 | 已使用 |
+| `userActions` | 行为日志 | 已使用 |
+| `notifications` | 通知 | 代码已创建，需建集合 |
+| `favorites` | 收藏 | 代码已创建，需建集合 |
 
 ## Claude 不负责什么
 
@@ -88,5 +117,6 @@ miniprogram-2/
 
 1. **集合命名**：使用 `users`、`companies`、`jobs`、`applications`（不是 PRD 旧版的 `sys_users`、`job_applications`）
 2. **字段命名**：使用 camelCase（如 `publisherId`），不用 snake_case（如 `publisher_id`）
-3. **前端目前全是 mock 数据**，修改页面逻辑时注意区分 mock 和真实数据调用
+3. **鉴权**：所有页面通过 `utils/auth.js` 统一管理登录状态，不再使用 simulateLogin
 4. **云函数使用 `wx-server-sdk`**，不要引入其他数据库驱动
+5. **云函数均有 OPENID 验证和参数校验**，新增函数需遵循相同模式

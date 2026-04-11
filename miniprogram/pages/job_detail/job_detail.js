@@ -193,13 +193,26 @@ Page({
     return auth.isLoggedIn()
   },
 
-  // 收藏/取消收藏
+  // 收藏/取消收藏（调用云函数）
   toggleFavorite() {
-    const isFavorite = !this.data.isFavorite
-    this.setData({ isFavorite })
-    wx.showToast({
-      title: isFavorite ? '已收藏' : '已取消收藏',
-      icon: 'success'
+    if (!this.data.isLoggedIn) {
+      auth.showLoginPrompt(() => {
+        this.syncAuthState()
+      })
+      return
+    }
+    wx.cloud.callFunction({
+      name: 'toggleFavorite',
+      data: { jobId: this.data.jobId },
+      success: res => {
+        if (res.result.code === 200) {
+          this.setData({ isFavorite: res.result.data.isFavorite })
+          wx.showToast({
+            title: res.result.data.isFavorite ? '已收藏' : '已取消收藏',
+            icon: 'success'
+          })
+        }
+      }
     })
   },
 

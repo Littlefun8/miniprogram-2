@@ -8,7 +8,10 @@
     "pages/teacher_stats/teacher_stats",
     "pages/audit_job/audit_job",
     "pages/manage_applications/manage_applications",
-    "pages/notifications/notifications"
+    "pages/notifications/notifications",
+    "pages/edit_profile/edit_profile",
+    "pages/about/about",
+    "pages/help/help"
   ],
   "window": {
     "navigationBarTextStyle": "black",

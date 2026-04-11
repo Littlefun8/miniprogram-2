@@ -1,0 +1,59 @@
+<!-- pages/edit_profile/edit_profile.wxml -->
+<view class="container">
+  <view class="section">
+    <text class="section-title">基本信息</text>
+    <view class="form-item">
+      <text class="label">昵称</text>
+      <input class="input" value="{{nickName}}" bindinput="onNickNameChange" placeholder="请输入昵称" />
+    </view>
+    <view class="form-item">
+      <text class="label">身份</text>
+      <text class="value">{{roleLabel}}</text>
+    </view>
+  </view>
+
+  <!-- 学生专属 -->
+  <view class="section" wx:if="{{userType === 'student'}}">
+    <text class="section-title">学生信息</text>
+    <view class="form-item">
+      <text class="label">学号</text>
+      <input class="input" value="{{profile.studentNumber}}" bindinput="onStudentNumberChange" placeholder="请输入学号" />
+    </view>
+    <view class="form-item">
+      <text class="label">班级</text>
+      <input class="input" value="{{profile.class}}" bindinput="onClassChange" placeholder="请输入班级" />
+    </view>
+    <view class="form-item">
+      <text class="label">专业</text>
+      <input class="input" value="{{profile.major}}" bindinput="onMajorChange" placeholder="请输入专业" />
+    </view>
+  </view>
+
+  <!-- 校友专属 -->
+  <view class="section" wx:if="{{userType === 'alumni'}}">
+    <text class="section-title">校友信息</text>
+    <view class="form-item">
+      <text class="label">毕业年份</text>
+      <input class="input" value="{{profile.gradYear}}" bindinput="onGradYearChange" placeholder="如 2020" type="number" />
+    </view>
+    <view class="form-item">
+      <text class="label">当前职位</text>
+      <input class="input" value="{{profile.jobTitle}}" bindinput="onJobTitleChange" placeholder="请输入职位" />
+    </view>
+  </view>
+
+  <!-- 教师专属 -->
+  <view class="section" wx:if="{{userType === 'teacher'}}">
+    <text class="section-title">教师信息</text>
+    <view class="form-item">
+      <text class="label">院系</text>
+      <input class="input" value="{{profile.dept}}" bindinput="onDeptChange" placeholder="请输入院系" />
+    </view>
+    <view class="form-item">
+      <text class="label">职称</text>
+      <input class="input" value="{{profile.teacherTitle}}" bindinput="onTeacherTitleChange" placeholder="如 讲师/副教授" />
+    </view>
+  </view>
+
+  <view class="btn-submit" bindtap="onSubmit">保存</view>
+</view>

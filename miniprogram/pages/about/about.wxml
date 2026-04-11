@@ -1,0 +1,37 @@
+<!-- pages/about/about.wxml -->
+<view class="container">
+  <view class="card">
+    <text class="app-name">酱菜内推</text>
+    <text class="version">v{{version}}</text>
+    <text class="desc">连接校友与学生的垂直招聘平台。校友发布内推职位，教师背书审核，学生一键申请。</text>
+  </view>
+
+  <view class="card">
+    <text class="card-title">核心功能</text>
+    <view class="feature-item">
+      <text class="feature-dot">&#8226;</text>
+      <text class="feature-text">校友发布内推职位，附带内推码和联系方式</text>
+    </view>
+    <view class="feature-item">
+      <text class="feature-dot">&#8226;</text>
+      <text class="feature-text">教师审核背书，确保职位真实性</text>
+    </view>
+    <view class="feature-item">
+      <text class="feature-dot">&#8226;</text>
+      <text class="feature-text">学生在线申请，简历快照自动保存</text>
+    </view>
+    <view class="feature-item">
+      <text class="feature-dot">&#8226;</text>
+      <text class="feature-text">申请通过后解锁内推码和联系方式</text>
+    </view>
+  </view>
+
+  <view class="card">
+    <text class="card-title">技术栈</text>
+    <text class="tech">微信小程序原生 + 云开发 + TDesign</text>
+  </view>
+
+  <view class="footer">
+    <text class="footer-text">联系我们：jiangcai@example.com</text>
+  </view>
+</view>
