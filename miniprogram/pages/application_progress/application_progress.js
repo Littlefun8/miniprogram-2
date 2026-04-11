@@ -1,3 +1,6 @@
+// application_progress.js
+const auth = require('../../utils/auth.js')
+
 Page({
   data: {
     activeTab: 'all',
@@ -6,219 +9,165 @@ Page({
     applications: [],
     isLoading: false,
     noMoreData: false,
+    pageNum: 1,
     isLoggedIn: false,
     userType: '',
-    showLoginDialog: false,
     userInfo: {}
   },
 
   onLoad() {
-    // 同步身份
-    const isLoggedIn = wx.getStorageSync('isLoggedIn');
-    const userType = wx.getStorageSync('userType');
-    this.setData({
-      isLoggedIn: !!isLoggedIn,
-      userType: userType || ''
-    });
-    this.getSystemInfo();
-    this.loadApplications();
+    this.syncAuthState()
+    this.getSystemInfo()
+    if (this.data.isLoggedIn) {
+      this.loadApplications()
+    }
   },
 
   onShow() {
-    const userType = wx.getStorageSync('userType');
-    const isLoggedIn = wx.getStorageSync('isLoggedIn');
-    let userInfo = wx.getStorageSync('userInfo') || {};
-    if (userType === 'alumni') userInfo.role = '校友';
-    if (userType === 'teacher') userInfo.role = '老师';
-    if (userType === 'student') userInfo.role = '学生';
-    this.setData({
-      isLoggedIn: !!isLoggedIn,
-      userType: userType || '',
-      userInfo: userInfo
-    });
-    // 若已登录，刷新进度列表
+    this.syncAuthState()
     if (this.data.isLoggedIn) {
-      this.loadApplications();
+      this.loadApplications()
     }
+  },
+
+  syncAuthState() {
+    const userInfo = auth.getUserInfo()
+    this.setData({
+      isLoggedIn: auth.isLoggedIn(),
+      userType: auth.getUserType(),
+      userInfo
+    })
   },
 
   getSystemInfo() {
     wx.getSystemInfo({
       success: (res) => {
-        const screenWidth = res.windowWidth;
-        const tabCount = 4; // Assuming 4 tabs
-        const sliderWidth = screenWidth / tabCount;
-        this.setData({
-          sliderWidth: sliderWidth,
-        });
-        this.updateSliderPosition(this.data.activeTab);
-      },
-    });
+        const screenWidth = res.windowWidth
+        const tabCount = 4
+        const sliderWidth = screenWidth / tabCount
+        this.setData({ sliderWidth })
+        this.updateSliderPosition(this.data.activeTab)
+      }
+    })
   },
 
   updateSliderPosition(tab) {
-    const tabIndex = {
-      all: 0,
-      pending: 1,
-      processing: 2,
-      completed: 3,
-    }[tab];
-    const sliderLeft = this.data.sliderWidth * tabIndex;
-    this.setData({
-      sliderLeft: sliderLeft,
-    });
+    const tabIndex = { all: 0, pending: 1, processing: 2, completed: 3 }[tab]
+    this.setData({ sliderLeft: this.data.sliderWidth * tabIndex })
   },
 
   onTabChange(e) {
-    const tab = e.currentTarget.dataset.tab;
+    const tab = e.currentTarget.dataset.tab
     this.setData({
       activeTab: tab,
-      applications: [], // Clear existing applications when tab changes
+      applications: [],
       noMoreData: false,
-    });
-    this.updateSliderPosition(tab);
-    this.loadApplications();
+      pageNum: 1
+    })
+    this.updateSliderPosition(tab)
+    this.loadApplications()
   },
 
   loadApplications() {
-    if (this.data.isLoading || this.data.noMoreData) return;
+    if (this.data.isLoading || this.data.noMoreData) return
+    this.setData({ isLoading: true })
 
-    this.setData({
-      isLoading: true,
-    });
-
-    // 调用云函数获取申请进度
     wx.cloud.callFunction({
       name: 'getApplications',
-      data: { status: this.data.activeTab },
+      data: {
+        status: this.data.activeTab,
+        pageNum: this.data.pageNum,
+        pageSize: 10
+      },
       success: res => {
         if (res.result.code === 200) {
+          const newApps = res.result.data
+          const allApps = this.data.pageNum === 1
+            ? newApps
+            : this.data.applications.concat(newApps)
           this.setData({
-            applications: res.result.data,
+            applications: allApps,
             isLoading: false,
-            noMoreData: !res.result.data || res.result.data.length === 0
-          });
+            noMoreData: !res.result.hasMore
+          })
         } else {
-          this.setData({ isLoading: false });
-          wx.showToast({ title: '获取进度失败', icon: 'none' });
+          this.setData({ isLoading: false })
+          wx.showToast({ title: '获取进度失败', icon: 'none' })
         }
       },
-      fail: err => {
-        this.setData({ isLoading: false });
-        wx.showToast({ title: '云函数调用失败', icon: 'none' });
+      fail: () => {
+        this.setData({ isLoading: false })
+        wx.showToast({ title: '云函数调用失败', icon: 'none' })
       }
-    });
+    })
   },
 
   onApplicationTap(e) {
-    const id = e.currentTarget.dataset.id;
-    console.log('Application tapped:', id);
-    // navigate to job detail or application detail page
+    const id = e.currentTarget.dataset.id
+    console.log('Application tapped:', id)
   },
 
   onViewDetailTap(e) {
     if (!this.data.isLoggedIn) {
-      this.showLoginPrompt(() => this.onViewDetailTap(e));
-      return;
+      auth.showLoginPrompt(() => {
+        this.syncAuthState()
+        this.onViewDetailTap(e)
+      })
+      return
     }
-    const id = e.currentTarget.dataset.id;
-    console.log('View detail tapped for application:', id);
-    // navigate to job detail or application detail page
+    const id = e.currentTarget.dataset.id
     wx.navigateTo({
-      url: `/pages/job_detail/job_detail?id=${id}`,
-    });
+      url: `/pages/job_detail/job_detail?id=${id}`
+    })
   },
 
   onBrowseJobsTap() {
-    console.log('Browse jobs tapped');
-    // navigate to job listing page
-    wx.switchTab({
-      url: '/pages/job_list/job_list',
-    });
+    wx.switchTab({ url: '/pages/job_list/job_list' })
   },
 
   // 复制内推码
   copyReferralCode(e) {
     if (!this.data.isLoggedIn) {
-      this.showLoginPrompt(() => this.copyReferralCode(e));
-      return;
+      auth.showLoginPrompt(() => {
+        this.syncAuthState()
+        this.copyReferralCode(e)
+      })
+      return
     }
-    const code = e.currentTarget.dataset.code;
+    const code = e.currentTarget.dataset.code
     wx.setClipboardData({
       data: code,
       success: () => {
-        wx.showToast({
-          title: '内推码已复制',
-          icon: 'success'
-        });
+        wx.showToast({ title: '内推码已复制', icon: 'success' })
       }
-    });
+    })
   },
 
   // 复制校友联系方式
   copyReferralContact(e) {
     if (!this.data.isLoggedIn) {
-      this.showLoginPrompt(() => this.copyReferralContact(e));
-      return;
+      auth.showLoginPrompt(() => {
+        this.syncAuthState()
+        this.copyReferralContact(e)
+      })
+      return
     }
-    const contact = e.currentTarget.dataset.contact;
+    const contact = e.currentTarget.dataset.contact
     wx.setClipboardData({
       data: contact,
       success: () => {
-        wx.showToast({
-          title: '联系方式已复制',
-          icon: 'success'
-        });
+        wx.showToast({ title: '联系方式已复制', icon: 'success' })
       }
-    });
+    })
   },
 
-  // 登录提示，支持回调
-  showLoginPrompt(cb) {
-    wx.showModal({
-      title: '提示',
-      content: '您尚未登录，请先登录后使用完整功能',
-      confirmText: '去登录',
-      cancelText: '取消',
-      success: (res) => {
-        if (res.confirm) {
-          this.simulateLogin(cb);
-        }
-      }
-    });
-  },
-
-  // 下拉刷新操作
   onPullDownRefresh() {
     this.setData({
       applications: [],
-      noMoreData: false
-    });
-    this.loadApplications();
-    wx.stopPullDownRefresh();
-  },
-
-  simulateLogin(cb) {
-    const that = this;
-    wx.showActionSheet({
-      itemList: ['校友', '老师', '学生'],
-      success(res) {
-        let userType = '';
-        if (res.tapIndex === 0) userType = 'alumni';
-        if (res.tapIndex === 1) userType = 'teacher';
-        if (res.tapIndex === 2) userType = 'student';
-        that.setData({
-          isLoggedIn: true,
-          userType: userType
-        });
-        wx.setStorageSync('isLoggedIn', true);
-        wx.setStorageSync('userType', userType);
-        wx.showToast({ title: '登录成功', icon: 'success' });
-        setTimeout(() => { that.onPullDownRefresh(); if (typeof cb === 'function') cb(); }, 300);
-      },
-      fail() {
-        wx.showToast({ title: '请先登录', icon: 'none' });
-      }
-    });
-  },
-});
+      noMoreData: false,
+      pageNum: 1
+    })
+    this.loadApplications()
+    wx.stopPullDownRefresh()
+  }
+})

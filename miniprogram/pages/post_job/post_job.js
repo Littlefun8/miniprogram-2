@@ -1,4 +1,6 @@
 // post_job.js
+const auth = require('../../utils/auth.js')
+
 Page({
   data: {
     formData: {
@@ -166,74 +168,87 @@ Page({
     });
   },
 
-  // 表单提交
+  // 表单提交（调用云函数）
   onSubmit() {
     const { formData, useCustomLocation, customLocation, cityList, selectedCityIndex } = this.data;
     const location = useCustomLocation ? customLocation : cityList[selectedCityIndex];
-    
+
     // 表单验证
     if (!formData.title) {
       this.showError('请输入职位名称');
       return;
     }
-    
+
     if (!formData.salary) {
       this.showError('请输入薪资范围');
       return;
     }
-    
+
     if (!location) {
       this.showError('请选择工作地点');
       return;
     }
-    
+
     if (formData.tags.length === 0) {
       this.showError('请至少选择一个标签');
       return;
     }
-    
+
     if (!formData.recommenderComment) {
       this.showError('请输入内推者想说的内容');
       return;
     }
-    
+
     if (!formData.jobLink) {
       this.showError('请输入岗位详情链接');
       return;
     }
-    
+
     if (!formData.company) {
       this.showError('请输入所属公司');
       return;
     }
-    
+
     if (!formData.publisherName) {
       this.showError('请输入发布人姓名');
       return;
     }
-    
-    // 提交表单
-    wx.showLoading({
-      title: '提交中',
-    });
-    
-    // 模拟提交
-    setTimeout(() => {
-      wx.hideLoading();
-      
-      // 提交成功后的处理
-      wx.showToast({
-        title: '职位发布成功',
-        icon: 'success',
-        duration: 2000,
-        success: () => {
-          // 延迟导航，确保提示显示完成
-          setTimeout(() => {
-            wx.navigateBack();
-          }, 2000);
+
+    // 提交表单到云函数
+    wx.showLoading({ title: '提交中' });
+
+    wx.cloud.callFunction({
+      name: 'postJob',
+      data: {
+        title: formData.title,
+        salary: formData.salary,
+        company: formData.company,
+        location: location,
+        tags: formData.tags,
+        recommenderComment: formData.recommenderComment,
+        jobLink: formData.jobLink,
+        publisherName: formData.publisherName
+      },
+      success: res => {
+        wx.hideLoading();
+        if (res.result.code === 200) {
+          wx.showToast({
+            title: '职位发布成功，等待审核',
+            icon: 'success',
+            duration: 2000,
+            success: () => {
+              setTimeout(() => { wx.navigateBack(); }, 2000);
+            }
+          });
+        } else {
+          wx.showToast({ title: res.result.message || '发布失败', icon: 'none' });
         }
-      });
-    }, 1500);
+      },
+      fail: () => {
+        wx.hideLoading();
+        wx.showToast({ title: '发布失败', icon: 'none' });
+      }
+    });
   },
   
   // 错误提示

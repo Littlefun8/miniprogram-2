@@ -1,4 +1,6 @@
 // app.js
+const auth = require('./utils/auth.js')
+
 App({
   onLaunch() {
     // 展示本地存储能力
@@ -13,6 +15,8 @@ App({
         env: 'cloud1-3g3q2srz04d1d705',
         traceUser: true
       })
+      // 静默登录：自动获取/注册用户信息
+      auth.silentLogin()
     }
   },
   globalData: {
