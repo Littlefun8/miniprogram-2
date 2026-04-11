@@ -36,12 +36,11 @@ Page({
     if (this.data.isLoading) return
     this.setData({ isLoading: true })
 
-    // 使用 getApplications 但按 publisherId 过滤
-    // 后续可新建专门的云函数
     wx.cloud.callFunction({
       name: 'getApplications',
       data: {
         status: this.data.activeTab,
+        asPublisher: true,
         pageNum: 1,
         pageSize: 20
       },
