@@ -78,6 +78,13 @@
         </view>
         <t-icon name="chevron-right" size="40rpx" color="#bbb" />
       </view>
+      <view class="menu-item" bindtap="onNavigateToNotifications">
+        <view class="menu-item-left">
+          <t-icon name="notification" size="48rpx" color="#0052d9" />
+          <text class="menu-item-text">消息通知</text>
+        </view>
+        <t-icon name="chevron-right" size="40rpx" color="#bbb" />
+      </view>
       
       <view class="menu-item" bindtap="onNavigateToTeacherStats">
         <view class="menu-item-left">

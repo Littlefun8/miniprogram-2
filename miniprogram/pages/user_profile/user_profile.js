@@ -137,6 +137,15 @@ Page({
     })
   },
 
+  // 导航到通知页面
+  onNavigateToNotifications() {
+    if (!this.data.isLoggedIn) {
+      this.showLoginDialog()
+      return
+    }
+    wx.navigateTo({ url: '/pages/notifications/notifications' })
+  },
+
   // 导航到设置页面
   onNavigateToSettings() {
     wx.navigateTo({ url: '/pages/edit_profile/edit_profile' })
