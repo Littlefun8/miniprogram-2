@@ -8,15 +8,16 @@ const _ = db.command
 exports.main = async (event, context) => {
   const wxContext = cloud.getWXContext()
   const openid = wxContext.OPENID
-  const { pageNum = 1, pageSize = 10, keyword, city, jobType, sortBy } = event
+  const { pageNum = 1, pageSize = 10, keyword, city, jobType, sortBy, status } = event
   const skip = (pageNum - 1) * pageSize
   const limit = Math.min(pageSize, 20)
 
   try {
     // 构建查询条件
     let query = {}
-    // 默认只返回已发布的职位
-    query.status = 'published'
+    // status 参数：如果前端传了就用前端的，否则默认只返回已发布的职位
+    // 教师审核页需要传 status='pending'，其他页面默认看 published
+    query.status = status || 'published'
 
     if (keyword) {
       query.title = db.RegExp({ regexp: keyword, options: 'i' })

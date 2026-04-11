@@ -7,12 +7,13 @@ const db = cloud.database()
 exports.main = async (event, context) => {
   const wxContext = cloud.getWXContext()
   const openid = wxContext.OPENID
-  const { status, pageNum = 1, pageSize = 10 } = event
+  const { status, pageNum = 1, pageSize = 10, asPublisher } = event
   const skip = (pageNum - 1) * pageSize
   const limit = Math.min(pageSize, 20)
 
   try {
-    let query = { userId: openid }
+    // asPublisher=true 时查询收到他人的申请（校友视角），否则查询自己提交的申请（学生视角）
+    let query = asPublisher ? { publisherId: openid } : { userId: openid }
     if (status && status !== 'all') {
       query.status = status
     }
