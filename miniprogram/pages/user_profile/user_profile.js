@@ -292,7 +292,9 @@ Page({
 
   // 退出登录
   onLogoutTap() {
-    wx.clearStorageSync();
+    wx.removeStorageSync('isLoggedIn');
+    wx.removeStorageSync('userType');
+    wx.removeStorageSync('userInfo');
     wx.showToast({ title: '已退出登录', icon: 'success' });
     setTimeout(() => { wx.reLaunch({ url: '/pages/user_profile/user_profile' }); }, 500);
   },

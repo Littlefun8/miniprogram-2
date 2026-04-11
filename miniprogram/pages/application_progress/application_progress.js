@@ -38,7 +38,7 @@ Page({
     });
     // 若已登录，刷新进度列表
     if (this.data.isLoggedIn) {
-      this.refreshProgressList && this.refreshProgressList();
+      this.loadApplications();
     }
   },
 
@@ -133,7 +133,7 @@ Page({
     console.log('Browse jobs tapped');
     // navigate to job listing page
     wx.switchTab({
-      url: '/pages/job/job',
+      url: '/pages/job_list/job_list',
     });
   },
 

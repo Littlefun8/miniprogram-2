@@ -157,8 +157,7 @@ Page({
       name: 'recordUserAction',
       data: {
         jobId: this.data.jobId,
-        action: 'expandAssociation',
-        time: new Date().toISOString()
+        actionType: 'expandAssociation'
       }
     });
     wx.showToast({ title: '关联信息已展示', icon: 'success' });
@@ -232,8 +231,7 @@ Page({
             name: 'recordUserAction',
             data: {
               jobId: jobId,
-              action: 'saveAllInfo',
-              time
+              actionType: 'saveAllInfo'
             }
           });
         });
@@ -257,7 +255,7 @@ Page({
   },
 
   // 判断是否已登录
-  isLoggedIn() {
+  checkLoginState() {
     return wx.getStorageSync('isLoggedIn');
   },
 
@@ -308,7 +306,7 @@ Page({
 
   // 申请职位
   applyJob() {
-    if (!this.isLoggedIn()) {
+    if (!this.checkLoginState()) {
       this.showLoginPrompt(() => this.applyJob());
       return;
     }
@@ -341,7 +339,7 @@ Page({
   onShareAppMessage() {
     return {
       title: this.data.jobDetail.title,
-      path: '/pages/job/job_detail?id=' + this.data.jobId,
+      path: '/pages/job_detail/job_detail?id=' + this.data.jobId,
       imageUrl: this.data.qrCodeUrl || ''
     };
   }

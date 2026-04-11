@@ -6,15 +6,24 @@ const db = cloud.database()
 // 云函数入口函数
 exports.main = async (event, context) => {
   const wxContext = cloud.getWXContext()
-  const userId = wxContext.OPENID
+  const openid = wxContext.OPENID
+
   try {
     // 获取用户基本信息
-    const userRes = await db.collection('users').where({ _openid: userId }).get()
+    const userRes = await db.collection('users').where({ _openid: openid }).limit(1).get()
     const userInfo = userRes.data[0] || {}
-    // 获取用户发布的职位
-    const jobsRes = await db.collection('jobs').where({ 'publisher.openid': userId }).get()
-    // 获取用户申请的职位
-    const applicationsRes = await db.collection('applications').where({ userId }).get()
+    // 获取用户发布的职位（最多20条）
+    const jobsRes = await db.collection('jobs')
+      .where({ publisherId: openid })
+      .orderBy('createTime', 'desc')
+      .limit(20)
+      .get()
+    // 获取用户申请的职位（最多20条）
+    const applicationsRes = await db.collection('applications')
+      .where({ userId: openid })
+      .orderBy('applyDate', 'desc')
+      .limit(20)
+      .get()
     return {
       code: 200,
       data: {
