@@ -1,0 +1,61 @@
+<!-- pages/manage_applications/manage_applications.wxml -->
+<view class="container">
+  <view class="header">
+    <text class="title">申请管理</text>
+  </view>
+
+  <!-- Tab 切换 -->
+  <view class="tabs">
+    <view class="tab {{activeTab === item.key ? 'tab-active' : ''}}"
+          wx:for="{{tabs}}" wx:key="key"
+          bindtap="onTabChange" data-tab="{{item.key}}">
+      {{item.label}}
+    </view>
+  </view>
+
+  <!-- 加载中 -->
+  <view wx:if="{{isLoading && applications.length === 0}}" class="loading-wrap">
+    <t-loading theme="circular" size="40rpx" text="加载中..." />
+  </view>
+
+  <!-- 空状态 -->
+  <view wx:if="{{!isLoading && applications.length === 0}}" class="empty-wrap">
+    <t-empty icon="file-copy" description="暂无申请记录" />
+  </view>
+
+  <!-- 申请列表 -->
+  <view class="app-list">
+    <view class="app-card" wx:for="{{applications}}" wx:key="_id">
+      <view class="app-header" bindtap="onViewJob" data-jobid="{{item.jobId}}">
+        <view class="app-job-info">
+          <text class="app-job-title">{{item.jobSnapshot.title || '未知职位'}}</text>
+          <text class="app-job-company">{{item.jobSnapshot.company || ''}}</text>
+        </view>
+        <view class="app-status status-{{item.status}}">
+          {{item.status === 'pending' ? '待处理' : item.status === 'processing' ? '处理中' : item.status === 'accepted' ? '已通过' : '已拒绝'}}
+        </view>
+      </view>
+
+      <view class="app-body">
+        <text class="app-time">申请时间：{{item.applyDate || item.createTime || '未知'}}</text>
+        <text class="app-remark" wx:if="{{item.remark}}">备注：{{item.remark}}</text>
+      </view>
+
+      <!-- 操作按钮 -->
+      <view class="app-actions" wx:if="{{item.status === 'pending' || item.status === 'processing'}}">
+        <view wx:if="{{item.status === 'pending'}}"
+              class="btn btn-process" catchtap="onProcess" data-app="{{item}}">
+          开始处理
+        </view>
+        <view wx:if="{{item.status === 'processing'}}"
+              class="btn btn-accept" catchtap="onAccept" data-app="{{item}}">
+          通过
+        </view>
+        <view wx:if="{{item.status === 'processing'}}"
+              class="btn btn-reject" catchtap="onReject" data-app="{{item}}">
+          拒绝
+        </view>
+      </view>
+    </view>
+  </view>
+</view>

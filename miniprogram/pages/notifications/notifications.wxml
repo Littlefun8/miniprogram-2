@@ -1,0 +1,33 @@
+<!-- pages/notifications/notifications.wxml -->
+<view class="container">
+  <view class="header">
+    <text class="title">通知</text>
+    <view wx:if="{{unreadCount > 0}}" class="mark-read" bindtap="onMarkAllRead">
+      全部已读
+    </view>
+  </view>
+
+  <!-- 加载中 -->
+  <view wx:if="{{isLoading && notifications.length === 0}}" class="loading-wrap">
+    <t-loading theme="circular" size="40rpx" text="加载中..." />
+  </view>
+
+  <!-- 空状态 -->
+  <view wx:if="{{!isLoading && notifications.length === 0}}" class="empty-wrap">
+    <t-empty icon="notification" description="暂无通知" />
+  </view>
+
+  <!-- 通知列表 -->
+  <view class="notification-list">
+    <view class="notification-card {{item.isRead ? '' : 'unread'}}"
+          wx:for="{{notifications}}" wx:key="_id"
+          bindtap="onNotificationTap" data-item="{{item}}">
+      <view class="dot" wx:if="{{!item.isRead}}"></view>
+      <view class="notification-content">
+        <text class="notification-title">{{item.title}}</text>
+        <text class="notification-body">{{item.content}}</text>
+        <text class="notification-time">{{item.createTime}}</text>
+      </view>
+    </view>
+  </view>
+</view>

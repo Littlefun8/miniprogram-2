@@ -1,0 +1,46 @@
+<!-- pages/audit_job/audit_job.wxml -->
+<view class="container">
+  <view class="header">
+    <text class="title">职位审核</text>
+    <text class="subtitle">待审核职位列表</text>
+  </view>
+
+  <!-- 加载中 -->
+  <view wx:if="{{isLoading && pendingJobs.length === 0}}" class="loading-wrap">
+    <t-loading theme="circular" size="40rpx" text="加载中..." />
+  </view>
+
+  <!-- 空状态 -->
+  <view wx:if="{{!isLoading && pendingJobs.length === 0}}" class="empty-wrap">
+    <t-empty icon="file-copy" description="暂无待审核职位" />
+  </view>
+
+  <!-- 职位列表 -->
+  <view class="job-list">
+    <view class="job-card" wx:for="{{pendingJobs}}" wx:key="id" bindtap="onJobTap" data-id="{{item.id}}">
+      <view class="job-info">
+        <text class="job-title">{{item.title}}</text>
+        <text class="job-company">{{item.company}}</text>
+        <view class="job-meta">
+          <text class="job-salary">{{item.salary}}</text>
+          <text class="job-location">{{item.location}}</text>
+        </view>
+        <view class="job-tags" wx:if="{{item.tags && item.tags.length > 0}}">
+          <t-tag wx:for="{{item.tags}}" wx:for-item="tag" wx:key="*this"
+                 theme="primary" variant="light" size="small"
+                 style="margin-right: 8rpx; margin-bottom: 8rpx;">
+            {{tag}}
+          </t-tag>
+        </view>
+      </view>
+      <view class="job-actions" catchtap="">
+        <view class="btn-approve" catchtap="onApprove" data-id="{{item.id}}" data-title="{{item.title}}">
+          通过
+        </view>
+        <view class="btn-reject" catchtap="onReject" data-id="{{item.id}}" data-title="{{item.title}}">
+          拒绝
+        </view>
+      </view>
+    </view>
+  </view>
+</view>

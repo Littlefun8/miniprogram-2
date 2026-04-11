@@ -102,17 +102,17 @@ Page({
     wx.navigateTo({ url: '/pages/verify/index' })
   },
 
-  // 导航到我的发布页面
+  // 导航到我的发布页面（校友/老师 → 申请管理，老师也可 → 审核页面）
   onNavigateToMyPosts() {
     if (!this.data.isLoggedIn) {
       this.showLoginDialog()
       return
     }
-    wx.showModal({
-      title: '提示',
-      content: '功能开发中，敬请期待！',
-      showCancel: false
-    })
+    if (this.data.userType === 'teacher') {
+      wx.navigateTo({ url: '/pages/audit_job/audit_job' })
+    } else {
+      wx.navigateTo({ url: '/pages/manage_applications/manage_applications' })
+    }
   },
 
   // 导航到我的申请页面
@@ -121,11 +121,7 @@ Page({
       this.showLoginDialog()
       return
     }
-    wx.showModal({
-      title: '提示',
-      content: '功能开发中，敬请期待！',
-      showCancel: false
-    })
+    wx.navigateTo({ url: '/pages/application_progress/application_progress' })
   },
 
   // 导航到我的收藏页面

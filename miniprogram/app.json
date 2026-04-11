@@ -5,7 +5,10 @@
     "pages/user_profile/user_profile",
     "pages/job_detail/job_detail",
     "pages/post_job/post_job",
-    "pages/teacher_stats/teacher_stats"
+    "pages/teacher_stats/teacher_stats",
+    "pages/audit_job/audit_job",
+    "pages/manage_applications/manage_applications",
+    "pages/notifications/notifications"
   ],
   "window": {
     "navigationBarTextStyle": "black",
