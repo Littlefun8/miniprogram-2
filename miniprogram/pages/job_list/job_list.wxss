@@ -109,6 +109,11 @@ page {
   margin-left: 30rpx;
 }
 
+.filter-dropdown.active {
+  color: #0052d9;
+  font-weight: 500;
+}
+
 /* 职位列表样式 */
 .job-list {
   padding: 0 24rpx;

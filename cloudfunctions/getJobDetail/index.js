@@ -33,8 +33,8 @@ exports.main = async (event, context) => {
       }
     }
 
-    // 敏感字段过滤：仅当申请被接受时返回内推码和联系方式
-    const SENSITIVE_FIELDS = ['referralCode', 'contactWechat']
+    // 敏感字段过滤：仅当申请被接受时返回内推码、联系方式和内推链接
+    const SENSITIVE_FIELDS = ['referralCode', 'contactWechat', 'jobLink']
     if (userApplicationStatus !== 'accepted') {
       for (const field of SENSITIVE_FIELDS) {
         delete jobDetail[field]
