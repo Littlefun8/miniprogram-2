@@ -153,6 +153,101 @@ Page({
       return
     }
 
+    // 硬门槛：检查资料完善度
+    this.checkProfileAndApply()
+  },
+
+  // 检查资料完善度后申请
+  checkProfileAndApply() {
+    wx.showLoading({ title: '检查中', mask: true })
+    wx.cloud.callFunction({
+      name: 'getUserProfile',
+      success: res => {
+        wx.hideLoading()
+        if (res.result.code === 200) {
+          const profile = res.result.data.profile || {}
+          const student = profile.student || {}
+          const nickName = res.result.data.nickName || ''
+
+          // 资料完善度检查
+          if (!nickName || !student.department || !student.major) {
+            wx.showModal({
+              title: '资料不完善',
+              content: '申请内推前请先完善个人资料（姓名、院系、专业）',
+              confirmText: '去完善',
+              success: (modalRes) => {
+                if (modalRes.confirm) {
+                  wx.navigateTo({ url: '/pages/edit_profile/edit_profile' })
+                }
+              }
+            })
+            return
+          }
+
+          // 软提醒：检查专业/年级匹配
+          this.checkMatchAndApply(student)
+        } else {
+          wx.showToast({ title: '获取资料失败', icon: 'none' })
+        }
+      },
+      fail: () => {
+        wx.hideLoading()
+        wx.showToast({ title: '网络错误', icon: 'none' })
+      }
+    })
+  },
+
+  // 软提醒：专业/年级匹配检查
+  checkMatchAndApply(student) {
+    const job = this.data.jobDetail
+    const expectedMajors = job.expectedMajors || ''
+    const minGrade = job.minGrade || ''
+
+    // 如果没有设定期望条件，直接申请
+    if (!expectedMajors && !minGrade) {
+      this.doApply()
+      return
+    }
+
+    // 检查专业匹配
+    let majorMismatch = false
+    if (expectedMajors) {
+      const majors = expectedMajors.split(/[,，、]/).map(m => m.trim())
+      const studentMajor = (student.major || '').toLowerCase()
+      majorMismatch = !majors.some(m => studentMajor.includes(m.toLowerCase()) || m.toLowerCase().includes(studentMajor))
+    }
+
+    // 检查年级（简单字符串匹配）
+    let gradeMismatch = false
+    if (minGrade && student.grade) {
+      // 简化处理：直接比较
+      gradeMismatch = student.grade < minGrade
+    }
+
+    if (majorMismatch || gradeMismatch) {
+      const reason = majorMismatch ? `该职位期望 ${expectedMajors} 专业同学` : ''
+      const gradeReason = gradeMismatch ? `期望${minGrade}及以上年级` : ''
+      const andStr = majorMismatch && gradeMismatch ? '，' : ''
+      const studentInfo = student.major || '未填写专业'
+
+      wx.showModal({
+        title: '匹配度提醒',
+        content: `${reason}${andStr}${gradeReason}，您的专业为「${studentInfo}」。仍可申请，但通过率可能较低。`,
+        confirmText: '继续申请',
+        cancelText: '取消',
+        success: (res) => {
+          if (res.confirm) {
+            this.doApply()
+          }
+        }
+      })
+    } else {
+      this.doApply()
+    }
+  },
+
+  // 执行申请
+  doApply() {
     wx.showModal({
       title: '申请确认',
       content: '确定要申请该职位的内推吗？',

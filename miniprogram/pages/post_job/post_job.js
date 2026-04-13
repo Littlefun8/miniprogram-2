@@ -13,7 +13,9 @@ Page({
       tags: [],
       publisherName: '',
       publisherType: '校友',
-      reviewerName: '待审核'
+      reviewerName: '待审核',
+      expectedMajors: '',
+      minGrade: ''
     },
     tagOptions: [
       { label: 'React', value: 'React', selected: false },
@@ -168,6 +170,18 @@ Page({
     });
   },
 
+  onExpectedMajorsChange(e) {
+    this.setData({
+      'formData.expectedMajors': e.detail.value
+    });
+  },
+
+  onMinGradeChange(e) {
+    this.setData({
+      'formData.minGrade': e.detail.value
+    });
+  },
+
   // 表单提交（调用云函数）
   onSubmit() {
     const { formData, useCustomLocation, customLocation, cityList, selectedCityIndex } = this.data;
@@ -227,7 +241,9 @@ Page({
         tags: formData.tags,
         recommenderComment: formData.recommenderComment,
         jobLink: formData.jobLink,
-        publisherName: formData.publisherName
+        publisherName: formData.publisherName,
+        expectedMajors: formData.expectedMajors || '',
+        minGrade: formData.minGrade || ''
       },
       success: res => {
         wx.hideLoading();

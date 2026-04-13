@@ -93,13 +93,32 @@
     </view>
     
     <!-- 所属公司 -->
-    <t-input 
-      label="所属公司" 
-      placeholder="请输入公司名称" 
-      value="{{formData.company}}" 
-      bind:change="onCompanyChange" 
+    <t-input
+      label="所属公司"
+      placeholder="请输入公司名称"
+      value="{{formData.company}}"
+      bind:change="onCompanyChange"
       required
     />
+
+    <!-- 期望条件（可选） -->
+    <view class="form-block">
+      <view class="form-block-title">期望条件（可选）</view>
+      <t-input
+        label="期望专业"
+        placeholder="如：计算机、软件工程，多个用逗号分隔"
+        value="{{formData.expectedMajors}}"
+        bind:change="onExpectedMajorsChange"
+      />
+      <view style="height: 16rpx;"></view>
+      <t-input
+        label="最低年级"
+        placeholder="如：大二、研一"
+        value="{{formData.minGrade}}"
+        bind:change="onMinGradeChange"
+      />
+      <view class="form-tips">设置后，不匹配的学生申请时会收到提醒（仍可申请）</view>
+    </view>
     
     <!-- 发布人信息 -->
     <view class="form-block">
