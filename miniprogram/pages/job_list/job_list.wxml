@@ -36,11 +36,11 @@
       >最新</view>
     </view>
     <view class="filter-actions">
-      <view class="filter-dropdown" bindtap="onCityFilterTap">
-        城市 <t-icon name="chevron-down" size="28rpx" />
+      <view class="filter-dropdown {{selectedCity !== '全部' ? 'active' : ''}}" bindtap="onCityFilterTap">
+        {{selectedCity === '全部' ? '城市' : selectedCity}} <t-icon name="chevron-down" size="28rpx" />
       </view>
-      <view class="filter-dropdown" bindtap="onJobTypeFilterTap">
-        岗位 <t-icon name="chevron-down" size="28rpx" />
+      <view class="filter-dropdown {{selectedJobType !== '全部' ? 'active' : ''}}" bindtap="onJobTypeFilterTap">
+        {{selectedJobType === '全部' ? '岗位' : selectedJobType}} <t-icon name="chevron-down" size="28rpx" />
       </view>
     </view>
   </view>

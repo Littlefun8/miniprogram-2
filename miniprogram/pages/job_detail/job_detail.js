@@ -12,17 +12,12 @@ Page({
       tags: [],
       recommenderMessage: '',
       link: '',
+      description: '',
+      requirements: '',
       publisher: { avatar: '', name: '', tag: '' },
-      reviewer: { avatar: '', name: '', tag: '' },
-      association: { teacher: '', students: [] }
+      reviewer: { avatar: '', name: '', tag: '' }
     },
-    filteredStudents: [],
-    qrCodeUrl: '',
     isFavorite: false,
-    showAssociation: false,
-    showScreenshotInfo: false,
-    screenshotUser: { name: '', id: '' },
-    screenshotInfo: { time: '' },
     recommenderNodes: '',
     isLoggedIn: false,
     userType: '',
@@ -42,11 +37,9 @@ Page({
   },
 
   syncAuthState() {
-    const userInfo = auth.getUserInfo()
     this.setData({
       isLoggedIn: auth.isLoggedIn(),
-      userType: auth.getUserType(),
-      'screenshotUser.name': userInfo.nickName || ''
+      userType: auth.getUserType()
     })
   },
 
@@ -60,12 +53,8 @@ Page({
         wx.hideLoading()
         if (res.result.code === 200) {
           const detail = res.result.data
-          // 处理内推者想说内容为 rich-text nodes
           const msg = detail.recommenderMessage || detail.recommenderComment || ''
           const html = msg.replace(/\n/g, '<br/>')
-
-          const jobId = id || '1'
-          const displayJobId = 'JOB-' + String(jobId).padStart(4, '0')
 
           this.setData({
             jobDetail: {
@@ -75,17 +64,23 @@ Page({
               date: detail.date || detail.createTime || '',
               tags: detail.tags || [],
               recommenderMessage: msg,
+              description: detail.description || '',
+              requirements: detail.requirements || '',
               link: detail.jobLink || '',
               publisher: detail.publisher || { avatar: '', name: '', tag: '' },
               reviewer: detail.reviewer || { avatar: '', name: '', tag: '' },
-              association: detail.association || { teacher: '', students: [] },
               referralCode: detail.referralCode || '',
-              contactWechat: detail.contactWechat || ''
+              contactWechat: detail.contactWechat || '',
+              jobLink: detail.jobLink || ''
             },
             recommenderNodes: html,
-            userApplicationStatus: detail.userApplicationStatus || null,
-            screenshotInfo: Object.assign({}, this.data.screenshotInfo, { jobId: displayJobId })
+            userApplicationStatus: detail.userApplicationStatus || null
           })
+
+          // 已登录时检查收藏状态
+          if (this.data.isLoggedIn) {
+            this.checkFavorite()
+          }
         } else {
           wx.showToast({ title: res.result.message || '获取职位详情失败', icon: 'none' })
         }
@@ -97,100 +92,28 @@ Page({
     })
   },
 
-  // 复制链接
-  copyLink() {
-    wx.setClipboardData({
-      data: this.data.jobDetail.link,
-      success: () => {
-        wx.showToast({ title: '链接已复制', icon: 'success' })
+  // 检查收藏状态
+  checkFavorite() {
+    wx.cloud.callFunction({
+      name: 'toggleFavorite',
+      data: { jobId: this.data.jobId, checkOnly: true },
+      success: res => {
+        if (res.result.code === 200) {
+          this.setData({ isFavorite: res.result.data.isFavorite })
+        }
       }
     })
   },
 
-  // 展开关联信息
-  expandAssociation() {
-    if (!this.data.isLoggedIn) {
-      auth.showLoginPrompt(() => {
-        this.syncAuthState()
-        this.expandAssociation()
-      })
-      return
-    }
-
-    this.filterStudentsByUserType()
-
-    this.setData({ showAssociation: true })
-    setTimeout(() => {
-      wx.createSelectorQuery().select('.container').boundingClientRect(rect => {
-        if (rect) {
-          wx.pageScrollTo({ scrollTop: rect.height, duration: 300 })
-        }
-      }).exec()
-    }, 100)
-
-    wx.cloud.callFunction({
-      name: 'recordUserAction',
-      data: { jobId: this.data.jobId, actionType: 'expandAssociation' }
+  // 复制文本
+  copyText(e) {
+    const text = e.currentTarget.dataset.text
+    wx.setClipboardData({
+      data: text,
+      success: () => {
+        wx.showToast({ title: '已复制', icon: 'success' })
+      }
     })
-    wx.showToast({ title: '关联信息已展示', icon: 'success' })
-  },
-
-  // 根据用户身份过滤学生信息
-  filterStudentsByUserType() {
-    const userType = this.data.userType
-    const currentUserName = this.data.screenshotUser.name
-    let filteredStudents = []
-    const students = this.data.jobDetail.association.students || []
-
-    if (userType === 'alumni' || userType === 'teacher') {
-      filteredStudents = students
-    } else if (userType === 'student') {
-      filteredStudents = students.filter(s => s.name === currentUserName)
-    }
-    this.setData({ filteredStudents })
-  },
-
-  // 一键保存
-  saveAllInfo() {
-    if (!this.data.isLoggedIn) {
-      auth.showLoginPrompt(() => {
-        this.syncAuthState()
-        this.saveAllInfo()
-      })
-      return
-    }
-    const { name, id } = this.data.screenshotUser
-    const now = new Date()
-    const time = `${now.getFullYear()}-${now.getMonth()+1}-${now.getDate()} ${now.getHours()}:${now.getMinutes()}:${now.getSeconds()}`
-    const jobId = this.data.jobId || '1'
-    const displayJobId = 'JOB-' + String(jobId).padStart(4, '0')
-
-    this.setData({
-      screenshotUser: { name, id },
-      screenshotInfo: { time, jobId: displayJobId },
-      showScreenshotInfo: true
-    })
-
-    setTimeout(() => {
-      wx.createSelectorQuery().select('.container').boundingClientRect(rect => {
-        if (rect) {
-          wx.pageScrollTo({ scrollTop: rect.height, duration: 300 })
-        }
-      }).exec()
-    }, 100)
-
-    setTimeout(() => {
-      wx.showToast({ title: '已保存至相册', icon: 'success' })
-      wx.cloud.callFunction({
-        name: 'recordUserAction',
-        data: { jobId, actionType: 'saveAllInfo' }
-      })
-    }, 500)
-  },
-
-  // 判断是否已登录
-  checkLoginState() {
-    return auth.isLoggedIn()
   },
 
   // 收藏/取消收藏（调用云函数）
@@ -218,15 +141,13 @@ Page({
 
   // 申请职位（调用云函数）
   applyJob() {
-    if (!this.checkLoginState()) {
+    if (!this.data.isLoggedIn) {
       auth.showLoginPrompt(() => {
         this.syncAuthState()
-        this.applyJob()
       })
       return
     }
 
-    // 如果已申请过
     if (this.data.userApplicationStatus) {
       wx.showToast({ title: '您已申请过该职位', icon: 'none' })
       return
@@ -234,7 +155,7 @@ Page({
 
     wx.showModal({
       title: '申请确认',
-      content: '确定要申请该职位吗？',
+      content: '确定要申请该职位的内推吗？',
       confirmText: '确定申请',
       success: (res) => {
         if (res.confirm) {
@@ -261,12 +182,47 @@ Page({
     })
   },
 
+  // 分享给同学
+  shareToFriend() {
+    wx.showActionSheet({
+      itemList: ['转发给微信好友', '生成职位卡片保存到相册'],
+      success: (res) => {
+        if (res.tapIndex === 0) {
+          // 触发微信转发
+          wx.showShareMenu({ withShareTicket: true })
+          wx.showToast({ title: '请点击右上角"转发"', icon: 'none' })
+        } else if (res.tapIndex === 1) {
+          this.generateCard()
+        }
+      }
+    })
+  },
+
+  // 生成职位卡片
+  generateCard() {
+    wx.showToast({ title: '职位卡片生成中...', icon: 'loading' })
+    // TODO: Canvas 绘制职位卡片图片并保存到相册
+    // 当前先用文字分享作为降级方案
+    const { title, salary, company, location } = this.data.jobDetail
+    const text = `【内推】${title} | ${salary}\n公司：${company}\n地点：${location}\n来源：酱菜内推系统`
+    wx.setClipboardData({
+      data: text,
+      success: () => {
+        wx.showToast({ title: '职位信息已复制，可粘贴分享', icon: 'success' })
+      }
+    })
+  },
+
+  // 查看其他职位
+  goToJobList() {
+    wx.switchTab({ url: '/pages/job_list/job_list' })
+  },
+
   // 分享
   onShareAppMessage() {
     return {
-      title: this.data.jobDetail.title,
-      path: '/pages/job_detail/job_detail?id=' + this.data.jobId,
-      imageUrl: this.data.qrCodeUrl || ''
+      title: '【内推】' + this.data.jobDetail.title + ' | ' + this.data.jobDetail.salary,
+      path: '/pages/job_detail/job_detail?id=' + this.data.jobId
     }
   }
 })

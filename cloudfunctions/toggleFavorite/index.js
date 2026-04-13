@@ -7,7 +7,7 @@ const db = cloud.database()
 exports.main = async (event, context) => {
   const wxContext = cloud.getWXContext()
   const openid = wxContext.OPENID
-  const { jobId } = event
+  const { jobId, checkOnly } = event
 
   if (!jobId) {
     return { code: 400, message: '缺少职位ID' }
@@ -20,7 +20,14 @@ exports.main = async (event, context) => {
       .limit(1)
       .get()
 
-    if (exist.data && exist.data.length > 0) {
+    const isFav = exist.data && exist.data.length > 0
+
+    // 仅查询状态，不切换
+    if (checkOnly) {
+      return { code: 200, data: { isFavorite: isFav } }
+    }
+
+    if (isFav) {
       // 已收藏 → 取消
       await db.collection('favorites').doc(exist.data[0]._id).remove()
       return { code: 200, data: { isFavorite: false }, message: '已取消收藏' }

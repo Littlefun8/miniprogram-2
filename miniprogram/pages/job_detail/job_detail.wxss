@@ -58,8 +58,7 @@ page {
 }
 
 /* 各部分通用样式 */
-.section,
-.screenshot-info {
+.section {
   background: #fff;
   border-radius: 16rpx;
   box-shadow: 0 2rpx 8rpx rgba(0,0,0,0.05);
@@ -85,122 +84,31 @@ page {
   line-height: 1.6;
 }
 
-/* 内推者说明部分 */
+/* 内推者有话说 */
 .recommender-section {
   background: #fff;
 }
 
-/* 岗位详情链接和二维码部分 */
-.job-link {
-  background: #f9f9f9;
-  padding: 24rpx;
-  border-radius: 8rpx;
-  margin-bottom: 30rpx;
-  font-size: 28rpx;
-  color: #0052d9;
-  word-break: break-all;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
+/* 岗位描述 */
+.desc-block {
+  margin-bottom: 24rpx;
 }
 
-.link-text {
-  flex: 1;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
-
-.copy-btn {
-  color: #0052d9;
-  background: #e6f7ff;
-  padding: 8rpx 16rpx;
-  border-radius: 8rpx;
-  margin-left: 20rpx;
-  font-size: 24rpx;
-  white-space: nowrap;
-}
-
-.qrcode-section {
-  display: flex;
-  margin-bottom: 20rpx;
-  background: #fff;
-  border-radius: 16rpx;
-  padding: 30rpx;
-  box-shadow: 0 2rpx 8rpx rgba(0, 0, 0, 0.05);
-}
-
-.qrcode-image {
-  width: 240rpx;
-  height: 240rpx;
-  background-color: #f5f5f5;
-  border: 1px solid #e0e0e0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin-right: 30rpx;
-  position: relative;
-  overflow: hidden;
-}
-
-.qrcode-image::after {
-  content: '';
-  position: absolute;
-  width: 60rpx;
-  height: 60rpx;
-  background-color: #fff;
-  border-radius: 8rpx;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  z-index: 1;
-}
-
-.qrcode {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
-
-.qrcode-buttons {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-}
-
-.qrcode-button {
-  background: #f5f5f5;
-  border-radius: 12rpx;
-  padding: 20rpx 0;
-  margin-bottom: 20rpx;
-  text-align: center;
-  font-size: 28rpx;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-}
-
-.qrcode-button:last-child {
+.desc-block:last-child {
   margin-bottom: 0;
 }
 
-.qrcode-button .button-title {
-  font-size: 24rpx;
-  color: #999;
-  margin-bottom: 4rpx;
+.desc-label {
+  font-size: 28rpx;
+  font-weight: bold;
+  color: #333;
+  margin-bottom: 12rpx;
 }
 
-.qrcode-button .button-text {
-  color: #0052d9;
-  font-weight: 500;
-  display: flex;
-  align-items: center;
-}
-
-.qrcode-button .button-text text {
-  margin-left: 8rpx;
+.desc-text {
+  font-size: 28rpx;
+  color: #666;
+  line-height: 1.8;
 }
 
 /* 发布人信息 */
@@ -223,41 +131,118 @@ page {
   margin: 0 12rpx;
 }
 
-/* 关联信息部分 */
-.association-section {
-  border-left: 6rpx solid #0052d9;
-  margin-top: -8px;
-  margin-bottom: 0;
+/* 内推通道区域 */
+.referral-section {
+  border-top: none;
 }
 
-.teacher-info {
+/* 锁定状态 */
+.referral-locked {
+  padding: 10rpx 0;
+}
+
+.locked-card {
+  background: #f5f5f5;
+  border-radius: 12rpx;
+  padding: 30rpx;
+  display: flex;
+  justify-content: space-around;
+}
+
+.locked-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12rpx;
+}
+
+.locked-text {
+  font-size: 26rpx;
+  color: #bbb;
+}
+
+.locked-hint {
+  font-size: 24rpx;
+  color: #999;
+  text-align: center;
+  margin-top: 20rpx;
+}
+
+/* 状态徽章 */
+.status-badge {
+  display: flex;
+  align-items: center;
+  gap: 12rpx;
+  padding: 24rpx;
+  border-radius: 12rpx;
   font-size: 28rpx;
+  font-weight: 500;
+}
+
+.pending-badge {
+  background: #fff7e6;
+  color: #d48806;
+}
+
+.success-badge {
+  background: #f0fff4;
+  color: #389e0d;
+}
+
+.reject-badge {
+  background: #fff2f0;
+  color: #cf1322;
+}
+
+.status-hint {
+  font-size: 24rpx;
+  color: #999;
+  margin-top: 16rpx;
+}
+
+/* 解锁卡片 */
+.unlocked-card {
+  background: #f9f9f9;
+  border-radius: 12rpx;
+  padding: 20rpx 24rpx;
+  margin-top: 20rpx;
+}
+
+.unlocked-label {
+  font-size: 24rpx;
+  color: #999;
+  margin-bottom: 12rpx;
+}
+
+.unlocked-value-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.unlocked-value {
+  font-size: 30rpx;
   color: #333;
-  line-height: 1.6;
-  margin-bottom: 20rpx;
+  font-weight: 500;
+  flex: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  margin-right: 20rpx;
 }
 
-.student-info {
-  border-top: 1px solid #f0f0f0;
-  padding-top: 20rpx;
-  margin-top: 10rpx;
+.link-value {
+  color: #0052d9;
+  font-size: 26rpx;
 }
 
-.student-detail {
-  font-size: 28rpx;
-  color: #333;
-  line-height: 1.6;
-  margin-bottom: 8rpx;
-}
-
-.teacher-comment {
-  font-size: 28rpx;
-  color: #666;
-  line-height: 1.6;
-  background-color: #f9f9f9;
-  padding: 12rpx 16rpx;
+.copy-btn {
+  color: #0052d9;
+  background: #e6f7ff;
+  padding: 8rpx 20rpx;
   border-radius: 8rpx;
-  margin-top: 8rpx;
+  font-size: 24rpx;
+  white-space: nowrap;
 }
 
 /* 底部操作栏 */
@@ -293,16 +278,3 @@ page {
 .apply-btn {
   flex: 1;
 }
-
-.screenshot-info {
-  margin-top: 16rpx;
-  padding: 24rpx;
-  background: #f9f9f9;
-  border-radius: 12rpx;
-  font-size: 24rpx;
-  color: #888;
-  line-height: 1.8;
-  display: flex;
-  flex-direction: column;
-  gap: 8rpx;
-} 
