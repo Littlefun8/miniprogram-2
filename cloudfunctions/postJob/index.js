@@ -11,7 +11,8 @@ exports.main = async (event, context) => {
   const {
     title, salary, company, location, tags,
     recommenderComment, jobLink, publisherName,
-    description, requirements, referralCode, contactWechat
+    description, requirements, referralCode, contactWechat,
+    expectedMajors, minGrade
   } = event
 
   // 参数校验
@@ -47,6 +48,8 @@ exports.main = async (event, context) => {
       requirements: requirements || '',
       referralCode: referralCode || '',
       contactWechat: contactWechat || '',
+      expectedMajors: expectedMajors || '',
+      minGrade: minGrade || '',
       publisherId: openid,
       publisher: {
         openid: openid,
