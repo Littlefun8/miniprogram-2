@@ -52,21 +52,13 @@
 
 ## P1 -- 功能缺失（当前活跃）
 
-### P1-1: 教师统计页数据未接入 ⚠️ 当前最高优先级
+~~### P1-1: 教师统计页数据未接入~~
 
-**现状**：`teacher_stats` 页面包含大量统计模块（概览、趋势、排名等），全部使用硬编码 mock 数据。页面中有 `Math.random()` 生成的模拟数据。
-
-**影响**：教师看到的是虚假数据，无法了解真实的平台运营情况。
-
-**建议**：新建 `getTeacherStats` 云函数，通过聚合查询从 `jobs` 和 `applications` 集合中计算真实数据。
-
-**涉及文件**：
-- `cloudfunctions/getTeacherStats/index.js`（新建）
-- `miniprogram/pages/teacher_stats/teacher_stats.js`（改造）
+**已解决**（2026-04-14）：新建 `getTeacherStats` 云函数，前端已接入，移除所有 mock 数据。
 
 ### P1-2: 职位卡片 Canvas 绘制
 
-**现状**：`job_detail.js:299` 有 TODO 注释，分享功能当前为文字复制降级方案。
+**现状**：`job_detail.js` 分享功能当前为文字复制降级方案。
 
 **建议**：使用 Canvas 绘制职位信息卡片图片，保存到相册。
 
@@ -80,14 +72,9 @@
 
 ## P2 -- 代码质量
 
-### P2-1: 教师统计页导航到不存在的页面
+~~### P2-1: 教师统计页导航到不存在的页面~~
 
-**现状**：`teacher_stats.js` 中有 3 个导航调用指向不存在的页面：
-- `/pages/all_applications/index`（line 578）
-- `/pages/application_detail/index`（line 588）
-- `/pages/handle_application/index`（line 597）
-
-**建议**：改为导航到已有的 `manage_applications` 页面，或创建新页面。
+**已解决**（2026-04-14）：前端改造中已将导航改为 `manage_applications` 页面。
 
 ### P2-2: user_profile 导航到不存在的 verify 页面
 
