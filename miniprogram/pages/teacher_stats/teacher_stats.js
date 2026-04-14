@@ -91,6 +91,7 @@ Page({
             highSuccessRateStudents: d.highSuccessRateStudents || [],
             recentApplications: d.recentApplications || [],
             currentTrendData: d.trendData || [],
+            trendMaxCount: (d.trendData || []).reduce((max, item) => Math.max(max, item.count || 0), 0),
             funnelStages: d.funnelStages || []
           })
 

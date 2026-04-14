@@ -520,7 +520,12 @@ page {
   background-color: #fff7e6;
 }
 
-.application-status.approved {
+.application-status.processing {
+  color: #0052d9;
+  background-color: #e6f7ff;
+}
+
+.application-status.accepted {
   color: #52c41a;
   background-color: #f6ffed;
 }
