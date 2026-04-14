@@ -1,0 +1,9 @@
+{
+  "name": "getTeacherStats",
+  "version": "1.0.0",
+  "description": "教师统计页数据聚合查询",
+  "main": "index.js",
+  "dependencies": {
+    "wx-server-sdk": "~2.6.3"
+  }
+}
