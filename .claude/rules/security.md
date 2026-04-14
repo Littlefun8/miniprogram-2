@@ -7,7 +7,7 @@
 ### 当前实际权限
 
 - 所有云函数使用管理员权限（绕过 Security Rules）
-- 前端暂无直接数据库操作（全部使用 mock 数据）
+- 前端仅 `notifications` 页面使用 `wx.cloud.database()` 直接更新已读状态，其余全部通过云函数操作
 
 ### 目标权限规则（待实现）
 
@@ -20,9 +20,6 @@
 }
 ```
 
-- 所有登录用户可读已发布职位
-- 仅职位发布者可修改自己的职位
-
 #### applications 集合
 
 ```json
@@ -32,33 +29,41 @@
 }
 ```
 
-- 申请人和职位发布者可读申请记录
-- 写入仅通过云函数操作
-
 ## 敏感字段保护
 
-以下字段在未满足条件时不得返回给前端：
+以下字段在未满足条件时不得返回给前端（`getJobDetail` 云函数中已实现过滤）：
 
 | 集合 | 字段 | 解锁条件 |
 |------|------|----------|
 | `jobs` | `referralCode` | 申请状态为 `accepted`（已通过） |
 | `jobs` | `contactWechat` | 申请状态为 `accepted`（已通过） |
+| `jobs` | `jobLink` | 申请状态为 `accepted`（已通过） |
 
-> 注意：当前代码中这些字段尚未实现。`initData` 未创建这些字段，前端 mock 中仅在"已完成"状态的申请里展示。
+> 已实现：`getJobDetail` 云函数会查询当前用户对该职位的申请状态，非 `accepted` 时删除上述字段后返回。
 
 ## 用户身份校验
 
-### 当前方案
+### 当前方案（已实现）
 
-- 使用 `wx.showActionSheet()` 模拟登录，用户自行选择角色
-- 角色存储在 `wx.Storage`：`userType`（`'alumni'` | `'teacher'` | `'student'`）
-- **无后端校验**，任何用户可伪装任何角色
-
-### 目标方案
-
-- 通过 `login` 云函数使用 OPENID 鉴权
+- `app.js` 的 `onLaunch` 调用 `auth.silentLogin()` 静默登录
+- 静默登录调用 `login` 云函数，使用 OPENID 自动注册/获取用户信息
+- 首次用户通过 `interactiveLogin()` 选择角色，调用 `setUserRole` 云函数（不可更改）
 - 角色信息存储在 `users` 集合的 `userType` 字段
-- 云函数内部通过 `cloud.getWXContext().OPENID` 获取真实身份
+- 本地缓存通过 `utils/auth.js` 管理（`isLoggedIn`、`userType`、`userInfo`）
+
+### 待改进
+
+- 无真实身份验证（校友/教师身份无法核实）
+- `/pages/verify/index` 身份认证页面尚未创建
+- userType 虽不可更改，但选择时无审核
+
+## 已知安全风险
+
+| 风险 | 级别 | 说明 |
+|------|------|------|
+| `notifications` 页面直接操作数据库 | 中 | 使用 `wx.cloud.database()` 更新已读状态，未走云函数 |
+| 无身份验证 | 中 | 校友/教师角色无实名认证，用户自选 |
+| `getJobList` 无 OPENID 校验 | 低 | 职位列表为公开数据，暂无安全风险 |
 
 ## 禁止的安全操作
 

@@ -5,16 +5,36 @@
 1. **前端优先原则**：能用前端 `wx.cloud.database()` + Security Rules 完成的操作，不写云函数
 2. **云函数仅用于**：跨集合事务、敏感字段过滤、权限校验、复杂聚合查询
 3. **每个云函数独立部署**：`cloudfunctions/` 下每个目录是一个独立云函数，有自己的 `package.json`
+4. **统一依赖**：所有云函数依赖 `wx-server-sdk: ~2.6.3`，不引入其他数据库驱动
 
-## 已有云函数清单
+## 已有云函数清单（17 个）
 
-| 函数名 | 路径 | 功能 | 输入 |
-|--------|------|------|------|
-| `login` | `cloudfunctions/login/` | 用户登录/注册 | `{ userInfo, userType }` |
-| `getJobList` | `cloudfunctions/getJobList/` | 分页职位列表 | `{ pageNum, pageSize, keyword }` |
-| `getJobDetail` | `cloudfunctions/getJobDetail/` | 职位详情 | `{ id }` |
-| `applyJob` | `cloudfunctions/applyJob/` | 申请职位 | `{ jobId }` |
-| `initData` | `cloudfunctions/initData/` | 种子数据 | 无 |
+### 核心业务
+
+| 函数名 | 功能 | 输入参数 | 权限校验 |
+|--------|------|----------|----------|
+| `login` | OPENID 鉴权 + 自动注册 | 无（使用 OPENID） | OPENID |
+| `setUserRole` | 首次选择角色（不可更改） | `{ userType }` | OPENID |
+| `getJobList` | 分页职位列表 | `{ pageNum, pageSize, keyword, city, jobType, sortBy, status }` | 无 |
+| `getJobDetail` | 职位详情（敏感字段过滤） | `{ id }` | OPENID |
+| `postJob` | 发布职位 | `{ title, salary, company, location, tags, ... }` | 校友/教师 |
+| `applyJob` | 申请职位（简历快照） | `{ jobId, endorsementData? }` | OPENID |
+| `getApplications` | 申请列表（分页） | `{ status, pageNum, pageSize, asPublisher }` | OPENID |
+| `updateApplicationStatus` | 更新申请状态 | `{ applicationId, status, remark? }` | 发布者 |
+| `auditJob` | 教师审核职位 | `{ jobId, action, rejectReason? }` | 教师 |
+| `getNotifications` | 获取通知 | `{ pageNum, pageSize }` | OPENID |
+| `toggleFavorite` | 收藏/取消收藏 | `{ jobId, checkOnly? }` | OPENID |
+| `getUserProfile` | 用户资料+统计 | 无（使用 OPENID） | OPENID |
+| `updateProfile` | 更新用户资料 | `{ nickName?, avatarUrl?, profile? }` | OPENID |
+| `recordUserAction` | 行为埋点 | `{ jobId, actionType, stayDuration? }` | OPENID |
+| `getJobAssociation` | 职位关联信息 | `{ jobId }` | OPENID |
+
+### 管理员工具
+
+| 函数名 | 功能 | 输入参数 | 权限校验 |
+|--------|------|----------|----------|
+| `initJobs` | 初始化种子数据（清空+重置） | 无 | admin |
+| `createIndexes` | 创建数据库索引 | 无 | admin |
 
 ## 云函数模板
 
@@ -28,34 +48,56 @@ exports.main = async (event, context) => {
 
   try {
     // 业务逻辑
-    return { code: 0, data: {} }
+    return { code: 200, data: {}, message: '操作成功' }
   } catch (err) {
     console.error(err)
-    return { code: -1, message: err.message }
+    return { code: 500, message: err.message }
   }
 }
+```
+
+## 统一响应格式
+
+```javascript
+// 成功
+{ code: 200, data: { ... }, message: '操作成功' }
+
+// 错误码体系
+// 400 - 请求参数错误
+// 401 - 未登录
+// 403 - 无权限（角色不匹配）
+// 404 - 资源不存在
+// 409 - 状态冲突（如重复申请、非法状态流转）
+// 500 - 服务器错误
 ```
 
 ## 命名规范
 
 - 获取数据：`get` + 实体名（如 `getJobList`、`getJobDetail`）
 - 创建/操作：动词 + 实体名（如 `applyJob`、`auditJob`）
-- 更新状态：`update` + 实体名 + 属性（如 `updateJobStatus`）
+- 更新状态：`update` + 实体名 + 属性（如 `updateApplicationStatus`）
 
-## 已知问题（云函数层面）
+## 安全规范
 
-1. `getJobDetail` 读取 `publisher.type` 但写入的字段是 `userType`，会导致 undefined
-2. `getJobDetail` 读取 `company.logo` 但 `initData` 从未写入该字段
-3. `applyJob` 中 `applications.status` 为字符串 `'pending'`，需要确认与前端 mock 的状态枚举一致
-4. `quickstartFunctions/` 为空目录，需删除
+- 所有云函数通过 `cloud.getWXContext().OPENID` 获取用户身份
+- 敏感操作需校验 `userType`（如 `auditJob` 校验教师身份）
+- 使用白名单字段，不直接透传 `event` 到数据库写入
+- 分页查询限制 `pageSize` 最大值为 20
 
-## 待实现的云函数
+## 状态机
 
-根据业务需求，以下云函数尚未编写但 PRD 中有设计：
+### jobs 状态流转
 
-- `auditJob` -- 教师审核职位背书
-- `processApplication` -- 校友处理申请
-- `updateProfile` -- 用户更新个人信息
-- `logBehavior` -- 记录用户行为埋点
+```
+pending（待审核）→ published（招聘中）→ closed（已关闭）
+                 → rejected（被驳回）
+```
 
-详见 [docs/prd.md](../../docs/prd.md) 中的云函数设计章节。
+### applications 状态流转
+
+```
+pending（待处理）→ processing（处理中）→ accepted（已通过）
+                                     → rejected（不合适）
+```
+
+> 注意：状态流转为单向，禁止回退。`updateApplicationStatus` 云函数中有状态机校验。
