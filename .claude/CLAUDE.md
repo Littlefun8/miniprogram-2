@@ -68,7 +68,7 @@ miniprogram-2/
 │   │   ├── user_profile/         # 个人中心 (TabBar) ✅ 已接入云函数
 │   │   ├── job_detail/           # 职位详情 ✅ 已接入云函数
 │   │   ├── post_job/             # 发布职位 ✅ 已接入云函数
-│   │   ├── teacher_stats/        # 教师统计 ⚠️ 全部 mock 数据
+│   │   ├── teacher_stats/        # 教师统计 ✅ 已接入云函数
 │   │   ├── audit_job/            # 教师审核职位 ✅ 已接入云函数
 │   │   ├── manage_applications/  # 校友申请管理 ✅ 已接入云函数
 │   │   ├── notifications/        # 通知列表 ✅ 已接入云函数
@@ -80,7 +80,7 @@ miniprogram-2/
 │   │   └── util.ts               # 工具函数
 │   ├── miniprogram_npm/          # npm 构建产物（勿手动修改）
 │   └── assets/                   # 图标、字体、样式
-├── cloudfunctions/               # 17 个云函数
+├── cloudfunctions/               # 18 个云函数
 │   ├── login/                    # OPENID 鉴权 + 自动注册
 │   ├── setUserRole/              # 首次选择角色（不可更改）
 │   ├── getJobList/               # 职位列表（分页+搜索+筛选+按角色过滤）
@@ -96,6 +96,7 @@ miniprogram-2/
 │   ├── updateProfile/            # 更新用户资料
 │   ├── recordUserAction/         # 行为埋点（view/apply/share）
 │   ├── getJobAssociation/        # 获取职位关联信息（含角色过滤）
+│   ├── getTeacherStats/          # 教师统计页数据聚合（教师/管理员）
 │   ├── createIndexes/            # 创建数据库索引（管理员一次性操作）
 │   └── initJobs/                 # 初始化种子数据（管理员：清空+重置）
 ├── tests/                        # 单元测试
@@ -138,12 +139,12 @@ miniprogram-2/
 | 内推通道 | `getJobDetail` | `job_detail` | 4 种状态驱动 |
 | 申请门槛 | `applyJob` + 前端 | `job_detail` + `post_job` | 硬门槛+软提醒 |
 | 帮助/关于 | 无 | `help` + `about` | 静态页面 |
+| 教师统计 | `getTeacherStats` | `teacher_stats` | 数据聚合+状态分布+趋势+漏斗 |
 
 ### 未完成功能
 
 | 功能 | 优先级 | 说明 |
 |------|--------|------|
-| **教师统计页（teacher_stats）** | P1 | 全部使用硬编码 mock 数据，未接入云函数 |
 | **职位卡片生成** | P2 | 分享功能当前为文字复制降级方案，需 Canvas 绘制图片 |
 | **数据库索引** | P2 | `createIndexes` 云函数已编写，需在云开发控制台手动执行或调试面板调用 |
 | **ECharts 图表** | P2 | ECharts 已引入但 teacher_stats 暂用 CSS 表格展示 |

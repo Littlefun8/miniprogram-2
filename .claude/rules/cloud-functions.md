@@ -7,7 +7,7 @@
 3. **每个云函数独立部署**：`cloudfunctions/` 下每个目录是一个独立云函数，有自己的 `package.json`
 4. **统一依赖**：所有云函数依赖 `wx-server-sdk: ~2.6.3`，不引入其他数据库驱动
 
-## 已有云函数清单（17 个）
+## 已有云函数清单（18 个）
 
 ### 核心业务
 
@@ -28,6 +28,7 @@
 | `updateProfile` | 更新用户资料 | `{ nickName?, avatarUrl?, profile? }` | OPENID |
 | `recordUserAction` | 行为埋点 | `{ jobId, actionType, stayDuration? }` | OPENID |
 | `getJobAssociation` | 职位关联信息 | `{ jobId }` | OPENID |
+| `getTeacherStats` | 教师统计页数据聚合 | `{ timeRange }` | 教师/管理员 |
 
 ### 管理员工具
 
