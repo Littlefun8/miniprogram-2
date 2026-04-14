@@ -7,11 +7,11 @@
         <view class="stats-label">总学生数</view>
       </view>
       <view class="stats-card">
-        <view class="stats-value">{{overview.totalApplies}}</view>
+        <view class="stats-value">{{overview.totalApplications}}</view>
         <view class="stats-label">总申请数</view>
       </view>
       <view class="stats-card">
-        <view class="stats-value">{{overview.pendingApplies}}</view>
+        <view class="stats-value">{{overview.pendingCount}}</view>
         <view class="stats-label">待处理申请</view>
       </view>
       <view class="stats-card">
@@ -65,7 +65,7 @@
         <view class="table-cell date-cell">{{item.date}}</view>
         <view class="table-cell count-cell">{{item.count}}</view>
         <view class="table-cell bar-cell">
-          <view class="trend-bar" style="width: {{item.count / 100 * 100}}%;"></view>
+          <view class="trend-bar" style="width: {{trendMaxCount > 0 ? (item.count / trendMaxCount * 100) : 0}}%;"></view>
         </view>
       </view>
     </view>
@@ -99,19 +99,19 @@
     </view>
     
     <view class="stats-card-list">
-      <view class="alumni-card" wx:for="{{topReferralPosters}}" wx:key="alumnusId">
+      <view class="alumni-card" wx:for="{{topReferralPosters}}" wx:key="name">
         <view class="alumni-info">
           <t-avatar image="{{item.avatar}}" size="medium" />
           <view class="alumni-details">
             <view class="alumni-name">{{item.name}}</view>
             <view class="alumni-company">{{item.company}}</view>
-            <view class="alumni-department">{{item.graduationYear}}届 · {{item.department}}</view>
+            <view class="alumni-department" wx:if="{{item.department}}">{{item.department}}</view>
           </view>
         </view>
         <view class="alumni-stats">
           <view class="alumni-value">{{item.referralsPostedCount}}</view>
           <view class="alumni-label">发布岗位数</view>
-          <view class="thank-btn" bindtap="thankAlumnus" data-id="{{item.alumnusId}}">感谢校友</view>
+          <view class="thank-btn" bindtap="thankAlumnus" data-id="{{item.name}}">感谢校友</view>
         </view>
       </view>
     </view>
@@ -125,7 +125,7 @@
     </view>
     
     <view class="stats-card-list">
-      <view class="alumni-card" wx:for="{{lowResponsivenessAlumni}}" wx:key="alumnusId">
+      <view class="alumni-card" wx:for="{{lowResponsivenessAlumni}}" wx:key="name">
         <view class="alumni-info">
           <t-avatar image="{{item.avatar}}" size="medium" />
           <view class="alumni-details">
@@ -135,11 +135,7 @@
           </view>
         </view>
         <view class="alumni-stats">
-          <view class="alumni-activity">
-            <view class="activity-label">最后活跃</view>
-            <view class="activity-time">{{item.lastActiveOnReferral}}</view>
-          </view>
-          <view class="contact-btn" bindtap="contactAlumnus" data-id="{{item.alumnusId}}">提醒校友</view>
+          <view class="contact-btn" bindtap="contactAlumnus" data-id="{{item.name}}">提醒校友</view>
         </view>
       </view>
     </view>
@@ -153,12 +149,12 @@
     </view>
     
     <view class="stats-card-list">
-      <view class="student-card" wx:for="{{highSuccessRateStudents}}" wx:key="studentId">
+      <view class="student-card" wx:for="{{highSuccessRateStudents}}" wx:key="name">
         <view class="student-info">
           <t-avatar image="{{item.avatar}}" size="medium" />
           <view class="student-details">
             <view class="student-name">{{item.name}}</view>
-            <view class="student-major">{{item.department}} · {{item.major}}</view>
+            <view class="student-major" wx:if="{{item.department}}">{{item.department}}<block wx:if="{{item.major}}"> · {{item.major}}</block></view>
             <view class="student-rate">成功率: <text class="success-rate">{{item.successRate * 100}}%</text></view>
           </view>
         </view>
@@ -171,7 +167,7 @@
             <view class="success-count">{{item.applicationsSuccessful}}</view>
             <view class="application-label">成功数</view>
           </view>
-          <view class="invite-btn" bindtap="inviteShareExperience" data-id="{{item.studentId}}">邀请分享</view>
+          <view class="invite-btn" bindtap="inviteShareExperience" data-id="{{item.name}}">邀请分享</view>
         </view>
       </view>
     </view>
