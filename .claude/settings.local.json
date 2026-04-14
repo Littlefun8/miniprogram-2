@@ -4,7 +4,27 @@
       "Bash(git checkout:*)",
       "Bash(git reset:*)",
       "Bash(git restore:*)",
-      "Bash(git add:*)"
+      "Bash(git add:*)",
+      "Bash(git commit -m \"$\\(cat <<''EOF''\nfeat: 重构项目文档体系，基于实际代码建立 Claude Code 配置\n\n- 新建 .claude/CLAUDE.md 索引入口，含项目概况、技术栈、文档索引、关键约束\n- 新建 .claude/rules/ 四份规范：代码风格、云函数开发、安全权限、测试策略\n- 重写 docs/prd.md：技术栈改为原生小程序，集合名改为 users/applications，状态改为字符串枚举，标注各功能实现状态\n- 重写 docs/database-schema.md：三层结构（实际 schema → mock 数据 → 目标统一方案），附差异对照表和索引建议\n- 新建 docs/architecture-issues.md：5 个 P0 阻塞问题 + 5 个 P1 功能缺失 + 6 个 P2 代码质量问题，含改进路线\n- 新建 README.md：项目总览、功能列表、结构说明、开发环境配置、开发状态\n\n🤖 Generated with [Claude Code]\\(https://claude.com/claude-code\\)\n\nCo-Authored-By: Claude <noreply@anthropic.com>\nEOF\n\\)\")",
+      "Bash(git push:*)",
+      "Bash(git commit:*)",
+      "Bash(git -C \"D:\\\\miniprogram-2\" status)",
+      "Bash(git -C \"D:/miniprogram-2\" diff --stat)",
+      "Bash(cat:*)",
+      "Skill(brainstorming)",
+      "Bash(ls:*)",
+      "Bash(git -C \"D:\\\\miniprogram-2\" log --oneline -10)",
+      "Bash(git -C \"D:\\\\miniprogram-2\" diff --stat)",
+      "Bash(git -C \"D:\\\\miniprogram-2\" diff --stat --cached)",
+      "Bash(git -C \"D:\\\\miniprogram-2\" diff .claude/CLAUDE.md)",
+      "Bash(git -C \"D:\\\\miniprogram-2\" diff .claude/rules/cloud-functions.md)",
+      "Bash(git -C \"D:\\\\miniprogram-2\" diff .claude/rules/security.md)",
+      "Bash(git -C \"D:\\\\miniprogram-2\" diff .claude/rules/testing.md)",
+      "Bash(git -C \"D:\\\\miniprogram-2\" diff docs/prd.md)",
+      "Bash(git -C \"D:\\\\miniprogram-2\" diff docs/architecture-issues.md)",
+      "Bash(git -C \"D:\\\\miniprogram-2\" diff docs/handover-2026-04-13.md)",
+      "Bash(git -C \"D:\\\\miniprogram-2\" diff miniprogram/pages/teacher_stats/teacher_stats.js)",
+      "Bash(git -C \"D:/miniprogram-2\" status -- miniprogram/pages/teacher_stats/)"
     ]
   }
 }
