@@ -1,0 +1,12 @@
+flowchart TD
+  A[开始] --> B[校友填写职位表单]
+  B --> C{必填字段完整?}
+  C -- 否 --> C1[提示补全信息] --> B
+  C -- 是 --> D[调用 postJob 云函数]
+  D --> E{角色合法? alumni/teacher}
+  E -- 否 --> E1[返回403并提示] --> Z[结束]
+  E -- 是 --> F[白名单构建 jobData]
+  F --> G[写入 jobs, status=pending]
+  G --> H[返回发布成功待审核]
+  H --> Z[结束]
+

@@ -1,15 +1,27 @@
 # 酱菜内推系统的设计与实现
 
 ## 图表插入说明
-- 图 3-1：`04-diagrams/system-architecture.png`
-- 图 3-2：`04-diagrams/usecase-overall.png`
+- 图 2-1：`04-diagrams/ch2-usecase-overview.png`
+- 图 2-2：`04-diagrams/ch2-activity-post-job.png`
+- 图 2-3：`04-diagrams/ch2-activity-apply-job.png`
+- 图 2-4：`04-diagrams/ch2-activity-audit-job.png`
+- 图 2-5：`04-diagrams/ch2-activity-sensitive-unlock.png`
+- 图 3-1：`04-diagrams/ch3-architecture-layered.png`
+- 图 3-2：`04-diagrams/ch3-call-sequence-apply-unlock.png`
 - 图 3-3：`04-diagrams/application-state-machine.png`
 - 图 4-1：`04-diagrams/core-publish-audit-flow.png`
 - 图 4-2：`04-diagrams/er-model.png`
 
 ## 必做表插入说明
 - 表 2-1：`05-tables/table-role-function.md`
-- 表 2-2：`05-tables/table-nonfunctional-requirements.md`
+- 表 2-2：`05-tables/table-ch2-module-breakdown.md`
+- 表 2-3：`05-tables/table-ch2-usecase-spec.md`
+- 表 2-4：`05-tables/table-nonfunctional-requirements.md`
+- 表 2-5：`05-tables/table-ch2-requirement-traceability.md`
+- 表 2-6：`05-tables/table-ch2-iteration-backlog.md`
+- 表 3-1：`05-tables/table-ch3-architecture-tradeoff.md`
+- 表 3-2：`05-tables/table-ch3-module-callchain.md`
+- 表 3-3：`05-tables/table-ch3-interface-samples.md`
 - 表 4-1：`05-tables/table-cloudfunction-responsibility.md`
 - 表 4-2：`05-tables/table-db-design.md`
 
@@ -119,20 +131,62 @@ WeChat Mini Program; Tencent Cloud Development; campus referral; state machine; 
 
 系统的核心参与者包括学生、校友、教师三类角色。学生是内推申请的主体，关注的是岗位获取效率、申请流程便利性以及申请进度可追踪性；校友是岗位信息的发布者与申请处理者，关注的是职位录入效率、申请管理效率以及对候选人的快速反馈能力；教师是职位背书审核者与统计观察者，关注的是岗位真实性、审核可控性以及整体运行态势。三类角色共同构成了系统的业务闭环，同时也决定了系统必须采用服务端权限控制和状态管理机制。
 
-## 2.2 功能需求分析
-从业务链路看，系统功能需求可以划分为身份管理、职位管理、申请管理、通知管理和统计管理五个层次。
+## 2.2 功能性需求分析
+为保证本章可复现、可审计，功能需求采用“需求编号 + 用例编号 + 证据绑定”的方式描述。需求编号统一为 `REQ-F-*`，用例编号统一为 `UC-*`。系统总用例关系如图2-1所示；核心业务活动流如图2-2至图2-5所示。模块分解见表2-2，详细用例规约见表2-3。
 
-### 2.2.1 身份管理需求
-系统应支持用户首次访问时的自动注册与身份绑定，使用户无需额外安装应用即可进入平台。用户首次选择角色后，系统应保留该角色信息并作为后续权限判断的依据。为降低使用门槛，系统提供静默登录与交互式登录两种方式：前者用于首次初始化与日常唤起，后者用于明确角色选择场景。
+### 2.2.1 用户与身份管理模块（REQ-F-01）
+该模块目标是完成用户身份初始化、角色确定与本地会话同步，确保后续业务权限判断具备可信输入。
 
-### 2.2.2 职位管理需求
-校友应能够在小程序中发布职位信息，发布内容至少包括职位名称、薪资范围、工作地点、标签、职位描述、任职要求及内推相关说明。教师应能够对待审核职位执行通过或拒绝操作，并在审核结果中体现原因或审核信息。学生端仅允许查看已通过审核且处于可展示状态的职位，从而保证岗位信息的公开范围与审核结果一致。
+子功能包括：
+1. **自动注册与登录（REQ-F-01-01）**：用户进入系统后，通过云函数自动识别并创建档案；
+2. **首次角色设置（REQ-F-01-02）**：新用户在首次交互时选择角色，角色用于后续权限控制；
+3. **静默登录（REQ-F-01-03）**：应用启动后自动恢复会话状态，减少重复登录操作；
+4. **本地状态同步（REQ-F-01-04）**：将 userType、userInfo 等关键状态缓存到本地。
 
-### 2.2.3 申请管理需求
-学生在浏览职位后可发起申请，系统需要对重复投递进行控制，并在申请时固化简历快照，以保证申请当时的个人信息不会因后续修改而失真。校友端应支持按申请状态查看与处理申请记录，并能够对申请结果进行分阶段更新，从而使申请流程具有可追踪性。
+对应代码证据：`miniprogram/utils/auth.js`、`cloudfunctions/login/index.js`、`cloudfunctions/setUserRole/index.js`。
 
-### 2.2.4 通知与统计需求
-当职位审核结果或申请状态发生变化时，系统应能够通知相关用户，以减少跨角色沟通成本。教师端应能够查看平台运行统计，包括申请总量、状态分布、热门岗位、活跃校友以及高成功率学生等信息，为教学指导与就业分析提供数据支持。
+### 2.2.2 职位发布与审核模块（REQ-F-02）
+该模块目标是建立“发布-审核-生效”的双阶段机制，提升岗位信息可信度。
+
+子功能包括：
+1. **职位发布（REQ-F-02-01）**：校友提交职位信息，后端白名单写入 jobs 集合；
+2. **教师审核（REQ-F-02-02）**：教师对 pending 职位执行通过/拒绝；
+3. **列表过滤（REQ-F-02-03）**：学生端默认仅展示 published 职位；
+4. **审核通知（REQ-F-02-04）**：审核结果写入通知记录并推送发布者。
+
+发布与审核活动流如图2-2所示。对应代码证据：`cloudfunctions/postJob/index.js`、`cloudfunctions/auditJob/index.js`、`cloudfunctions/getJobList/index.js`。
+
+### 2.2.3 职位申请与处理模块（REQ-F-03）
+该模块目标是实现申请过程标准化和状态可追踪。
+
+子功能包括：
+1. **申请提交（REQ-F-03-01）**：学生对职位发起申请；
+2. **重复拦截（REQ-F-03-02）**：同一用户对同一职位不得重复申请；
+3. **简历快照（REQ-F-03-03）**：申请时固化简历数据，确保历史一致；
+4. **状态流转（REQ-F-03-04）**：`pending -> processing -> accepted/rejected`；
+5. **进度查询（REQ-F-03-05）**：学生/校友按视角查询申请记录。
+
+申请与处理活动流如图2-3、图2-4所示。对应代码证据：`cloudfunctions/applyJob/index.js`、`cloudfunctions/updateApplicationStatus/index.js`、`cloudfunctions/getApplications/index.js`。
+
+### 2.2.4 职位详情与敏感信息控制模块（REQ-F-04）
+该模块目标是在不影响公开浏览的前提下，按业务状态分级开放敏感字段。
+
+子功能包括：
+1. **详情获取（REQ-F-04-01）**：返回职位基础字段与申请状态；
+2. **敏感字段门控（REQ-F-04-02）**：仅 accepted 申请人可见 `referralCode/contactWechat/jobLink`；
+3. **状态驱动页面展示（REQ-F-04-03）**：详情页按申请状态切换 UI。
+
+敏感字段解锁活动流如图2-5所示。对应代码证据：`cloudfunctions/getJobDetail/index.js`、`miniprogram/pages/job_detail/job_detail.js`。
+
+### 2.2.5 教师统计与通知模块（REQ-F-05）
+该模块目标是为教师提供运行态势分析，并为多角色提供关键结果反馈。
+
+子功能包括：
+1. **统计聚合（REQ-F-05-01）**：输出 overview、趋势、分布、排行；
+2. **角色限制（REQ-F-05-02）**：仅 teacher/admin 可访问统计接口；
+3. **通知列表（REQ-F-05-03）**：分页返回通知及未读统计。
+
+对应代码证据：`cloudfunctions/getTeacherStats/index.js`、`cloudfunctions/getNotifications/index.js`、`miniprogram/pages/teacher_stats/teacher_stats.js`。
 
 ## 2.3 非功能需求分析
 
@@ -145,13 +199,33 @@ WeChat Mini Program; Tencent Cloud Development; campus referral; state machine; 
 ### 2.3.3 可维护性与扩展性需求
 为了适应后续迭代，系统需要在结构上保持清晰的模块边界。前端采用页面组织方式，后端采用“一类业务对应一个云函数”的方式，有利于独立开发与部署。数据字段与状态值采用统一命名规范，可减少前后端联调中的语义偏差。此外，系统保留了图表增强、身份认证完善与推荐能力扩展等后续发展空间。
 
-## 2.4 用例分析
-从用例视角看，学生的主要用例包括浏览职位、收藏职位、提交申请和查看申请进度；校友的主要用例包括发布职位、管理申请和通知反馈；教师的主要用例包括审核职位和查看统计。三类用例共同构成一条从职位发布到申请处理再到结果反馈的闭环链路。
+## 2.4 用例分析与规约
+为了达到与优秀范文同等的细化水平，本系统将关键用例写成结构化规约：包括 ID、参与者、触发条件、前置条件、后置条件、基本事件流和扩展事件流。详细规约见表2-3，核心覆盖如下：
 
-在论文表达上，建议采用“总用例图 + 角色功能矩阵表”的组合方式：总用例图用于说明角色边界和系统边界，角色功能矩阵表用于补充功能细节和权限说明。这样既能满足论文的图形表达要求，又能提升可读性。
+- `UC-S01` 浏览职位
+- `UC-S02` 申请职位
+- `UC-A01` 发布职位
+- `UC-A02` 处理申请
+- `UC-T01` 审核职位
+- `UC-T02` 查看统计
 
-## 2.5 本章小结
-本章从高校就业内推场景出发，分析了系统的核心角色、功能需求与非功能需求，并明确了系统的用例边界。需求分析结果表明，本系统不仅需要实现基础信息流转，还必须在身份、权限和状态流转层面形成完整约束，这为后续章节的系统设计提供了直接依据。
+上述用例不仅用于论文描述，也可直接作为测试场景和验收脚本输入，从而实现“需求-设计-实现-验证”的链路闭环。
+
+## 2.5 需求可追踪矩阵
+为保证可复现性，本章建立“需求ID -> 页面 -> 云函数 -> 关键校验 -> 输出”的追踪关系，详见表2-5。通过该矩阵，可将论文中的每一条需求直接映射到仓库中可定位的实现文件，避免“文档描述存在、代码落地缺失”的问题。
+
+## 2.6 现状问题与敏捷改进建议
+在需求对照实现的过程中，系统仍存在可优化点。为便于后续迭代，本章采用“现状-证据-影响-改进-验收”的五段式记录改进项，详细清单见 `10-ENGINEERING-IMPROVEMENTS.md`。本轮建议优先处理：
+
+1. 申请状态更新时补齐 timeline 追加逻辑；
+2. 统一云函数环境配置策略，降低多环境部署风险；
+3. 将通知已读操作收敛到云函数入口，统一权限边界。
+
+上述建议均可拆分为短迭代任务，适合按 Sprint 方式敏捷上线。
+
+## 2.7 本章小结
+本章以高颗粒度方式完成了需求分析：不仅定义了角色与功能，还构建了模块分解、用例规约、活动流和可追踪矩阵。相较于传统“概念性需求描述”，本章更强调可复现与可验证，为后续概要设计、详细设计和实现章节提供了直接、可落地的输入。
+
 
 
 
@@ -169,7 +243,16 @@ WeChat Mini Program; Tencent Cloud Development; campus referral; state machine; 
 ## 3.1 总体架构设计
 本系统采用微信小程序前端、腾讯云函数服务层和云数据库存储层组成的三层架构。前端负责页面渲染、用户交互与基础状态展示；云函数负责承载主要业务逻辑、权限控制与数据聚合；云数据库负责保存用户、职位、申请、通知等结构化业务数据。页面层通过 `wx.cloud.callFunction` 与后端交互，使客户端无需直接处理敏感规则，从而降低了前端逻辑复杂度。
 
-从设计理念上看，该架构兼顾了毕业设计场景下的开发效率与工程规范性。一方面，云开发模式减少了服务器部署与环境运维成本；另一方面，服务端集中处理权限、状态与数据一致性问题，使系统更符合软件工程中“分层解耦、职责清晰”的设计原则。
+从设计理念上看，该架构兼顾了毕业设计场景下的开发效率与工程规范性。一方面，云开发模式减少了服务器部署与环境运维成本；另一方面，服务端集中处理权限、状态与数据一致性问题，使系统更符合软件工程中“分层解耦、职责清晰”的设计原则。第3章架构分层图如图3-1所示，设计权衡分析见表3-1。
+
+### 3.1.1 架构权衡分析
+为了避免“能跑但不可持续”的实现方式，本系统在概要设计阶段对多项架构维度进行权衡，重点关注安全性、响应性能、开发效率、可维护性、扩展性和运维一致性。综合对比后，采用“前端轻逻辑 + 云函数重规则 + 数据层结构化”的策略。权衡结果如下：
+
+1. **安全性优先**：关键写操作和敏感信息控制放在云函数执行，避免前端绕过；
+2. **性能可控**：列表类接口统一分页，并限制单页上限；
+3. **开发效率平衡**：依托云开发减少基础设施成本，聚焦业务实现；
+4. **维护成本可控**：云函数一功能一目录，便于独立调试和部署；
+5. **扩展路径明确**：可在现有模块上增量扩展认证、图表和推荐能力。
 
 ## 3.2 功能模块划分
 结合业务流程与页面结构，系统可划分为以下六个功能模块。
@@ -192,6 +275,15 @@ WeChat Mini Program; Tencent Cloud Development; campus referral; state machine; 
 ### 3.2.6 统计模块
 统计模块面向教师提供数据概览、趋势分析和排行展示。它将分散的业务数据聚合为可读信息，帮助教师理解系统运行情况。
 
+### 3.2.7 模块边界与依赖关系
+模块之间并非任意耦合，而是通过页面入口与云函数接口形成有向调用链。模块边界约束如下：
+
+- 页面层只负责参数收集、展示和反馈，不直接处理核心权限判断；
+- 云函数层负责身份识别、状态流转和敏感字段门控；
+- 数据层只承载持久化，不在页面层进行跨集合业务拼装。
+
+模块调用关系详见表3-2。该表将“入口页面 -> 云函数 -> 数据集合 -> 关键规则”一并列出，便于后续开发和测试团队按链路定位问题。
+
 ## 3.3 核心业务流程设计
 
 ### 3.3.1 职位发布与审核流程
@@ -203,13 +295,31 @@ WeChat Mini Program; Tencent Cloud Development; campus referral; state machine; 
 ### 3.3.3 敏感信息解锁流程
 职位详情中的内推码、联系微信和职位链接属于敏感字段。系统在详情云函数中先判断当前用户是否已对该职位申请且状态为 accepted，再决定是否返回这些字段。此设计将“信息解锁”与“申请结果”直接关联，使业务规则清晰且可验证。
 
+### 3.3.4 关键调用时序（申请后解锁）
+在“申请职位 -> 校友处理 -> 学生查看解锁信息”的链路中，系统至少涉及四个关键接口：`applyJob`、`updateApplicationStatus`、`getApplications`、`getJobDetail`。其中 `applyJob` 负责创建初始申请，`updateApplicationStatus` 负责推进状态，`getJobDetail` 负责按状态门控敏感字段。该时序如图3-2所示。
+
 ## 3.4 前后端职责划分
 系统在职责划分上遵循“前端负责展示、后端负责规则、数据库负责存储”的基本原则。前端主要负责页面渲染、参数收集和用户交互反馈；云函数负责身份识别、角色校验、状态更新和数据聚合；云数据库负责持久化保存各类业务对象。该分工能够避免将复杂业务逻辑散落在多个页面中，从而降低维护成本。
 
 在实际实现中，涉及权限和状态变化的操作均由云函数承接，前端不直接写入核心业务数据。这种设计既符合小程序云开发的使用模式，也更符合企业级系统设计中对安全边界的要求。
 
-## 3.5 本章小结
-本章从体系结构、功能模块和核心流程三个层面完成了系统概要设计。通过明确模块边界与职责分工，系统形成了从用户身份到业务状态再到数据存储的完整链路，为下一章详细设计提供了明确的展开方向。
+## 3.5 接口概要设计
+为保证接口设计可复用、可测试，本系统统一采用 `{ code, data, message, total, hasMore }` 的返回结构约定。列表类接口在此基础上返回分页元信息，详情类接口返回单体业务对象，写操作接口返回操作结果与必要 ID。
+
+接口概要设计见表3-3，重点覆盖以下高频接口：
+
+- `getJobList`：职位列表分页与筛选；
+- `postJob`：职位发布与白名单写入；
+- `applyJob`：申请提交、快照创建、防重复校验；
+- `updateApplicationStatus`：状态机驱动的状态更新；
+- `getJobDetail`：详情查询与敏感字段门控；
+- `getTeacherStats`：教师统计聚合。
+
+该设计使前端在调用不同接口时保持一致的错误处理和状态反馈逻辑，降低了页面层复杂度。
+
+## 3.6 本章小结
+本章在总体架构、模块边界、核心流程和接口概要四个层面完成了系统概要设计，并通过权衡分析与调用链描述增强了设计可解释性。相较于仅描述“系统由哪些模块组成”的常规写法，本章进一步回答了“为什么这么设计、模块如何协作、如何与代码实现对齐”的问题，为第4章详细设计提供了可验证的前置输入。
+
 
 
 
@@ -464,10 +574,15 @@ WeChat Mini Program; Tencent Cloud Development; campus referral; state machine; 
 # 图表编号与图注清单
 
 ## 必做图
+- 图2-1 系统总用例图（需求视角）
+- 图2-2 职位发布活动图
+- 图2-3 申请提交活动图
+- 图2-4 职位审核活动图
+- 图2-5 敏感信息解锁活动图
 - 图3-1 系统总体架构图
-- 图3-2 系统总用例图
+- 图3-2 申请后解锁调用时序图
 - 图3-3 申请状态流转图
-- 图4-1 职位发布与审核流程图
+- 图4-1 职位发布与审核流程图（实现视角）
 - 图4-2 数据库实体关系图
 
 ## 可选图
@@ -478,9 +593,25 @@ WeChat Mini Program; Tencent Cloud Development; campus referral; state machine; 
 
 ## 必做表
 - 表2-1 角色功能矩阵
-- 表2-2 非功能需求表
+- 表2-2 功能模块分解表
+- 表2-3 核心用例规约表
+- 表2-4 非功能需求量化表
+- 表2-5 需求可追踪矩阵
+- 表2-6 需求驱动迭代任务清单
 - 表4-1 核心云函数职责表
 - 表4-2 数据库集合与关键字段表
+
+## 图文件落点
+- 图2-1：`04-diagrams/ch2-usecase-overview.png`
+- 图2-2：`04-diagrams/ch2-activity-post-job.png`
+- 图2-3：`04-diagrams/ch2-activity-apply-job.png`
+- 图2-4：`04-diagrams/ch2-activity-audit-job.png`
+- 图2-5：`04-diagrams/ch2-activity-sensitive-unlock.png`
+- 图3-1：`04-diagrams/ch3-architecture-layered.png`
+- 图3-2：`04-diagrams/ch3-call-sequence-apply-unlock.png`
+- 图3-3：`04-diagrams/application-state-machine.png`
+- 图4-1：`04-diagrams/core-publish-audit-flow.png`
+- 图4-2：`04-diagrams/er-model.png`
 
 ## 图注写作原则
 - 图注必须简短、具体、与正文一致。
@@ -489,52 +620,171 @@ WeChat Mini Program; Tencent Cloud Development; campus referral; state machine; 
 
 
 
----
-
-# 表：角色功能矩阵
-
-| 角色 | 核心功能 | 输入 | 输出 | 约束 |
-|---|---|---|---|---|
-| 学生 | 浏览职位 | 搜索词、筛选条件 | 职位列表 | 仅显示 published 职位 |
-| 学生 | 申请职位 | jobId、个人资料 | 申请记录 | 防重复申请、资料完整度校验 |
-| 学生 | 查看进度 | 状态筛选 | 申请进度列表 | 按 userId 查询 |
-| 校友 | 发布职位 | 职位表单 | 待审核职位 | 仅 alumni/teacher 可发布 |
-| 校友 | 处理申请 | applicationId、目标状态 | 状态更新结果 | 需满足状态机规则 |
-| 教师 | 审核职位 | jobId、approve/reject | 审核结果 | 仅 teacher 可审核 |
-| 教师 | 查看统计 | 时间范围 | 聚合统计数据 | 仅 teacher/admin 可访问 |
-
 
 
 ---
 
-# 表：非功能需求分析
+# 表2-1 角色功能矩阵
 
-| 类别 | 需求描述 | 设计策略 |
-|---|---|---|
-| 安全性 | 防止越权访问与敏感信息泄露 | OPENID 鉴权 + 服务端角色校验 + 敏感字段门控 |
-| 性能 | 列表查询响应可控 | 统一分页、限制 pageSize 上限 |
-| 可维护性 | 便于迭代与问题定位 | 云函数按业务拆分、一函数一职责 |
-| 可扩展性 | 支持后续功能增强 | 模块化页面结构 + 结构化数据模型 |
-| 可用性 | 低学习成本、流程连贯 | 小程序轻交互 + 状态驱动页面展示 |
+| 角色 | 功能ID | 用例ID | 功能描述 | 输入 | 输出 | 关键约束 | 代码证据 |
+|---|---|---|---|---|---|---|---|
+| 学生 | REQ-F-02-03 | UC-S01 | 浏览与筛选职位 | 搜索词、筛选条件 | 职位列表 | 仅显示 published 职位 | `getJobList/index.js`, `job_list.js` |
+| 学生 | REQ-F-03-01 | UC-S02 | 发起职位申请 | jobId、资料信息 | 申请记录 | 防重复、资料完整度校验 | `applyJob/index.js`, `job_detail.js` |
+| 学生 | REQ-F-03-05 | UC-S03 | 查看申请进度 | 状态筛选 | 申请进度列表 | 按用户视角查询 | `getApplications/index.js` |
+| 学生 | REQ-F-04-02 | UC-C01 | 解锁敏感信息 | jobId | 含/不含敏感字段的详情 | 仅 accepted 可见敏感字段 | `getJobDetail/index.js` |
+| 校友 | REQ-F-02-01 | UC-A01 | 发布职位 | 职位表单 | 待审核职位ID | 仅 alumni/teacher 可发布 | `postJob/index.js` |
+| 校友 | REQ-F-03-04 | UC-A02 | 处理申请状态 | applicationId、目标状态 | 更新结果 | 发布者权限 + 状态机规则 | `updateApplicationStatus/index.js` |
+| 教师 | REQ-F-02-02 | UC-T01 | 审核职位 | jobId、approve/reject | 审核结果与通知 | 仅 teacher 可审核 | `auditJob/index.js` |
+| 教师 | REQ-F-05-01 | UC-T02 | 查看统计 | timeRange | overview/trend 等聚合数据 | 仅 teacher/admin 可访问 | `getTeacherStats/index.js` |
+
 
 
 
 ---
 
-# 表：核心云函数职责说明
+# 表2-2 功能模块分解表（需求章节）
 
-| 云函数 | 主要职责 | 关键校验 | 关键输出 |
+| 模块 | 需求编号 | 子功能 | 输入 | 输出 | 约束/校验 | 代码证据 |
+|---|---|---|---|---|---|---|
+| 用户与身份管理 | REQ-F-01 | 自动注册与登录 | OPENID | userInfo/userType | 身份来源仅服务端上下文 | `login/index.js`, `auth.js` |
+| 用户与身份管理 | REQ-F-01 | 首次角色设置 | userType | role 持久化 | 合法角色枚举校验 | `setUserRole/index.js` |
+| 职位发布与审核 | REQ-F-02 | 职位发布 | 表单字段 | pending 职位记录 | 角色校验 + 白名单写入 | `postJob/index.js` |
+| 职位发布与审核 | REQ-F-02 | 教师审核 | jobId/action | 审核结果/通知 | 仅 teacher 可审核 | `auditJob/index.js` |
+| 申请与处理 | REQ-F-03 | 申请提交 | jobId | 申请记录 | 职位状态可申请 + 防重复 | `applyJob/index.js` |
+| 申请与处理 | REQ-F-03 | 状态流转 | applicationId/status | 状态更新结果 | 状态机合法性校验 | `updateApplicationStatus/index.js` |
+| 详情与敏感字段 | REQ-F-04 | 敏感信息门控 | jobId | 详情对象 | accepted 才返回敏感字段 | `getJobDetail/index.js` |
+| 统计与通知 | REQ-F-05 | 教师统计 | timeRange | overview/trend 等 | teacher/admin 角色校验 | `getTeacherStats/index.js` |
+| 统计与通知 | REQ-F-05 | 通知查询 | pageNum/pageSize | 列表 + 未读数 | userId 过滤 + 分页 | `getNotifications/index.js` |
+
+
+
+---
+
+# 表2-3 核心用例规约表
+
+| ID | 用例名称 | 参与者 | 触发条件 | 前置条件 | 后置条件 | 基本事件流 | 扩展事件流 |
+|---|---|---|---|---|---|---|---|
+| UC-S01 | 浏览职位 | 学生 | 进入职位列表页 | 用户可未登录 | 返回职位列表 | 1) 进入列表页；2) 输入搜索/筛选；3) 拉取列表并展示 | 查询失败时提示重试 |
+| UC-S02 | 申请职位 | 学生 | 点击“申请职位” | 已登录，资料完整 | 生成申请记录（pending） | 1) 打开详情页；2) 点击申请；3) 校验资料；4) 提交申请 | 已申请过则提示并终止 |
+| UC-S03 | 查看申请进度 | 学生 | 进入进度页 | 已登录 | 返回个人申请列表 | 1) 进入进度页；2) 按状态筛选；3) 查看时间线 | 网络异常时显示失败提示 |
+| UC-A01 | 发布职位 | 校友 | 点击“发布职位” | 已登录且角色合法 | 生成 pending 职位 | 1) 填表；2) 提交；3) 服务端校验并写入 | 字段缺失时提示必填项 |
+| UC-A02 | 处理申请 | 校友 | 在管理页点击处理 | 申请属于本人职位 | 更新申请状态 | 1) 查看申请；2) 选择目标状态；3) 提交更新 | 非法状态流转则拒绝更新 |
+| UC-T01 | 审核职位 | 教师 | 审核 pending 职位 | 已登录且角色为 teacher | 职位发布或拒绝 | 1) 查看待审职位；2) 选择通过/拒绝；3) 写入结果与通知 | 非 pending 职位禁止审核 |
+| UC-T02 | 查看统计 | 教师 | 进入统计页 | 已登录且角色合法 | 返回聚合统计数据 | 1) 选择时间范围；2) 调用统计接口；3) 展示结果 | 无权限则返回 403 |
+| UC-C01 | 解锁敏感信息 | 通过申请的学生 | 打开职位详情 | 申请状态为 accepted | 返回敏感字段 | 1) 查询申请状态；2) 状态通过时返回敏感字段 | 非 accepted 自动隐藏字段 |
+
+
+
+---
+
+# 表2-4 非功能需求量化表
+
+| 类别 | 需求编号 | 需求描述 | 量化/判定标准 | 设计策略 | 证据位置 |
+|---|---|---|---|---|---|
+| 安全性 | REQ-NF-01 | 防止越权访问与敏感信息泄露 | 关键写操作均走云函数；敏感字段需状态门控 | OPENID 鉴权 + 角色校验 + 敏感字段门控 | `postJob`, `auditJob`, `getJobDetail` |
+| 性能 | REQ-NF-02 | 列表查询稳定可控 | 分页查询，`limit <= 20` | 统一分页参数与上限控制 | `getJobList`, `getApplications`, `getNotifications` |
+| 可维护性 | REQ-NF-03 | 便于定位问题与迭代 | 一功能一云函数，接口结构统一 | 模块化函数目录 + 统一返回结构 | `cloudfunctions/*/index.js` |
+| 可扩展性 | REQ-NF-04 | 支持后续能力扩展 | 新模块可按函数和页面独立扩展 | 页面分层 + 结构化数据模型 | `miniprogram/pages/*`, `docs/database-schema.md` |
+| 可用性 | REQ-NF-05 | 流程连贯、反馈明确 | 关键流程有状态反馈和提示 | 状态驱动页面展示 + 提示机制 | `job_detail.js`, `manage_applications` |
+
+
+
+
+---
+
+# 表2-5 需求可追踪矩阵
+
+| 需求ID | 需求描述 | 页面入口 | 云函数 | 关键校验 | 关键输出 | 验收要点 |
+|---|---|---|---|---|---|---|
+| REQ-F-01-01 | 自动注册登录 | app 启动 | `login` | OPENID 获取 | userInfo | 首次进入自动建档 |
+| REQ-F-01-02 | 角色设置 | 个人中心登录弹窗 | `setUserRole` | 合法角色校验 | userType | 角色写入并可读取 |
+| REQ-F-02-01 | 发布职位 | `post_job` | `postJob` | alumni/teacher 权限 | pending 职位ID | 非法角色发布失败 |
+| REQ-F-02-02 | 教师审核 | `audit_job` | `auditJob` | teacher 权限 + 状态校验 | 审核结果 | 审核后状态正确 |
+| REQ-F-02-03 | 列表过滤 | `job_list` | `getJobList` | status 默认 published | 列表/分页 | 学生只见发布职位 |
+| REQ-F-03-01 | 申请提交 | `job_detail` | `applyJob` | 可申请状态 + 防重复 | 申请成功 | 重复申请被拒绝 |
+| REQ-F-03-04 | 状态流转 | `manage_applications` | `updateApplicationStatus` | 发布者权限 + 状态机 | 更新结果 | 非法跃迁被拦截 |
+| REQ-F-04-02 | 敏感字段门控 | `job_detail` | `getJobDetail` | accepted 检查 | 详情对象 | 非 accepted 不返回敏感字段 |
+| REQ-F-05-01 | 教师统计 | `teacher_stats` | `getTeacherStats` | teacher/admin 校验 | overview/trend | 无权限无法访问 |
+| REQ-F-05-03 | 通知查询 | `notifications` | `getNotifications` | userId 过滤 + 分页 | 列表/未读数 | 未读数统计正确 |
+
+
+
+---
+
+# 表2-6 需求驱动迭代任务清单
+
+| 优先级 | 任务 | 现状证据 | 目标改进 | 验收标准 | 预计迭代 |
+|---|---|---|---|---|---|
+| P0 | 状态更新追加 timeline | `updateApplicationStatus` 未追加 timeline | 每次状态变更写入时间线 | timeline 节点随状态增长 | Sprint 1 |
+| P0 | 统一云环境初始化策略 | 多数函数硬编码 env，个别动态环境 | 统一动态环境/集中配置 | 全部函数初始化方式一致 | Sprint 1 |
+| P1 | 通知已读收敛到云函数 | 通知有前端直写场景 | 新增 `markNotificationsRead` | 通知写操作全走云函数 | Sprint 2 |
+| P1 | 教师统计图表增强 | 统计可视化表达有限 | 接入更完整图表交互 | 至少 3 个交互图表上线 | Sprint 2 |
+| P2 | 分享卡片图片化 | 职位卡片为文字降级方案 | Canvas 生成分享图 | 可保存并分享岗位卡片 | Sprint 3 |
+| P2 | 身份认证增强 | 角色主要依赖首次选择 | 增加认证审核流程 | 角色可信度可审计 | Sprint 3 |
+
+
+
+---
+
+# 表3-1 架构权衡分析表
+
+| 维度 | 方案A：前端承载较多业务 | 方案B：云函数承载核心规则（采用） | 结论 |
 |---|---|---|---|
-| login | 用户登录与自动注册 | OPENID 获取 | 用户基础信息 |
-| setUserRole | 首次角色设置 | 合法角色枚举 | userType |
-| postJob | 发布职位 | 角色校验、必填校验 | 待审核职位ID |
-| auditJob | 教师审核职位 | 教师角色、状态校验 | 发布/拒绝结果 |
-| getJobList | 获取职位列表 | 分页与筛选参数 | 列表、total、hasMore |
-| getJobDetail | 获取职位详情 | jobId 校验、敏感字段门控 | 职位详情 |
-| applyJob | 提交申请 | 职位状态、防重复 | 申请成功结果 |
-| updateApplicationStatus | 更新申请状态 | 发布者权限、状态机 | 状态更新结果 |
-| getApplications | 查询申请列表 | 视角参数 asPublisher | 列表、分页信息 |
-| getTeacherStats | 教师统计聚合 | 角色校验 | overview、trend 等 |
+| 安全性 | 前端可被绕过，权限风险较高 | 服务端统一校验，边界清晰 | 采用方案B |
+| 性能 | 前端计算分散，接口定义不统一 | 后端聚合更集中，分页策略统一 | 采用方案B |
+| 开发效率 | 前期快，后期联调成本高 | 前期设计稍重，后期迭代稳定 | 采用方案B |
+| 可维护性 | 页面逻辑膨胀，复用差 | 云函数职责单一，便于定位问题 | 采用方案B |
+| 扩展性 | 新功能容易侵入旧页面 | 可按函数与模块增量扩展 | 采用方案B |
+| 运维一致性 | 环境差异难控 | 可通过云函数统一治理 | 采用方案B |
+
+
+
+---
+
+# 表3-2 模块调用链与边界表
+
+| 业务链路 | 页面入口 | 云函数调用链 | 关键数据集合 | 边界规则 |
+|---|---|---|---|---|
+| 职位列表查询 | `pages/job_list/job_list.js` | `getJobList` | `jobs` | 默认只查 published，统一分页 |
+| 职位发布审核 | `pages/post_job` -> `pages/audit_job` | `postJob` -> `auditJob` | `jobs`, `notifications` | 发布者/审核者角色分离 |
+| 学生申请处理 | `pages/job_detail` -> `pages/manage_applications` | `applyJob` -> `updateApplicationStatus` | `applications`, `jobs` | 状态机合法性校验 |
+| 详情信息门控 | `pages/job_detail` | `getJobDetail` | `jobs`, `applications` | accepted 才返回敏感字段 |
+| 教师统计聚合 | `pages/teacher_stats` | `getTeacherStats` | `users`, `applications`, `jobs` | 仅 teacher/admin 可访问 |
+
+
+
+---
+
+# 表3-3 核心接口样例表
+
+| 接口名 | 调用入口 | 请求参数示例 | 响应结构示例 | 鉴权来源 | 状态/规则约束 | 代码证据 |
+|---|---|---|---|---|---|---|
+| getJobList | `job_list.js` | `{ pageNum, pageSize, keyword, city }` | `{ code, data, total, hasMore }` | OPENID（上下文） | 默认 status=published | `getJobList/index.js` |
+| postJob | `post_job.js` | `{ title, salary, company, location, ... }` | `{ code, message, id }` | OPENID + userType | 仅 alumni/teacher | `postJob/index.js` |
+| applyJob | `job_detail.js` | `{ jobId }` | `{ code, message }` | OPENID | 防重复 + 职位状态可申请 | `applyJob/index.js` |
+| updateApplicationStatus | `manage_applications.js` | `{ applicationId, status, remark }` | `{ code, message }` | OPENID | 发布者权限 + 状态机 | `updateApplicationStatus/index.js` |
+| getJobDetail | `job_detail.js` | `{ id }` | `{ code, data }` | OPENID | accepted 才回敏感字段 | `getJobDetail/index.js` |
+| getTeacherStats | `teacher_stats.js` | `{ timeRange }` | `{ code, data: { overview, trendData, ... } }` | OPENID + userType | teacher/admin 可访问 | `getTeacherStats/index.js` |
+
+
+
+---
+
+# 表4-1 核心云函数职责说明
+
+| 云函数 | 需求映射 | 主要职责 | 关键校验 | 关键输出 | 代码证据 |
+|---|---|---|---|---|---|
+| login | REQ-F-01 | 用户登录与自动注册 | OPENID 获取 | 用户基础信息 | `cloudfunctions/login/index.js` |
+| setUserRole | REQ-F-01 | 首次角色设置 | 合法角色枚举 | userType | `cloudfunctions/setUserRole/index.js` |
+| postJob | REQ-F-02 | 发布职位 | 角色校验、必填校验、白名单写入 | 待审核职位ID | `cloudfunctions/postJob/index.js` |
+| auditJob | REQ-F-02 | 教师审核职位 | 教师角色、pending 状态校验 | 发布/拒绝结果与通知 | `cloudfunctions/auditJob/index.js` |
+| getJobList | REQ-F-02 | 获取职位列表 | 分页与筛选参数 | 列表、total、hasMore | `cloudfunctions/getJobList/index.js` |
+| getJobDetail | REQ-F-04 | 获取职位详情 | jobId 校验、敏感字段门控 | 职位详情 | `cloudfunctions/getJobDetail/index.js` |
+| applyJob | REQ-F-03 | 提交申请 | 职位状态、防重复、资料相关校验 | 申请成功结果 | `cloudfunctions/applyJob/index.js` |
+| updateApplicationStatus | REQ-F-03 | 更新申请状态 | 发布者权限、状态机合法性 | 状态更新结果 | `cloudfunctions/updateApplicationStatus/index.js` |
+| getApplications | REQ-F-03 | 查询申请列表 | 视角参数 asPublisher | 列表、分页信息 | `cloudfunctions/getApplications/index.js` |
+| getTeacherStats | REQ-F-05 | 教师统计聚合 | teacher/admin 角色校验 | overview、trend、funnel 等 | `cloudfunctions/getTeacherStats/index.js` |
+
 
 
 

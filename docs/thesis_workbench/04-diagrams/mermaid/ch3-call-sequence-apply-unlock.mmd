@@ -1,0 +1,23 @@
+sequenceDiagram
+  participant S as 学生
+  participant JD as job_detail页面
+  participant AJ as applyJob
+  participant MA as manage_applications页面
+  participant UAS as updateApplicationStatus
+  participant GJD as getJobDetail
+  participant DB as 云数据库
+
+  S->>JD: 点击申请职位
+  JD->>AJ: callFunction({ jobId })
+  AJ->>DB: 写入applications(status=pending)
+  AJ-->>JD: 申请成功
+
+  MA->>UAS: 更新状态为processing/accepted
+  UAS->>DB: 校验并更新状态
+  UAS-->>MA: 状态更新成功
+
+  S->>JD: 重新打开职位详情
+  JD->>GJD: callFunction({ id })
+  GJD->>DB: 查询申请状态
+  GJD-->>JD: accepted返回敏感字段
+

@@ -1,0 +1,42 @@
+flowchart TB
+  subgraph UI[前端页面层]
+    A1[job_list]
+    A2[job_detail]
+    A3[manage_applications]
+    A4[teacher_stats]
+  end
+
+  subgraph SVC[云函数服务层]
+    B1[getJobList]
+    B2[getJobDetail]
+    B3[postJob]
+    B4[auditJob]
+    B5[applyJob]
+    B6[updateApplicationStatus]
+    B7[getTeacherStats]
+  end
+
+  subgraph DATA[数据存储层]
+    C1[(users)]
+    C2[(jobs)]
+    C3[(applications)]
+    C4[(notifications)]
+  end
+
+  A1 --> B1
+  A2 --> B2
+  A2 --> B5
+  A3 --> B6
+  A4 --> B7
+  B3 --> C2
+  B4 --> C2
+  B4 --> C4
+  B5 --> C3
+  B6 --> C3
+  B1 --> C2
+  B2 --> C2
+  B2 --> C3
+  B7 --> C1
+  B7 --> C2
+  B7 --> C3
+

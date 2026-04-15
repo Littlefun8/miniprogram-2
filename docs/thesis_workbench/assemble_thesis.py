@@ -24,8 +24,13 @@ sections = []
 sections.append("# 酱菜内推系统的设计与实现\n")
 sections.append(
     "## 图表插入说明\n"
-    "- 图 3-1：`04-diagrams/system-architecture.png`\n"
-    "- 图 3-2：`04-diagrams/usecase-overall.png`\n"
+    "- 图 2-1：`04-diagrams/ch2-usecase-overview.png`\n"
+    "- 图 2-2：`04-diagrams/ch2-activity-post-job.png`\n"
+    "- 图 2-3：`04-diagrams/ch2-activity-apply-job.png`\n"
+    "- 图 2-4：`04-diagrams/ch2-activity-audit-job.png`\n"
+    "- 图 2-5：`04-diagrams/ch2-activity-sensitive-unlock.png`\n"
+    "- 图 3-1：`04-diagrams/ch3-architecture-layered.png`\n"
+    "- 图 3-2：`04-diagrams/ch3-call-sequence-apply-unlock.png`\n"
     "- 图 3-3：`04-diagrams/application-state-machine.png`\n"
     "- 图 4-1：`04-diagrams/core-publish-audit-flow.png`\n"
     "- 图 4-2：`04-diagrams/er-model.png`\n"
@@ -33,7 +38,14 @@ sections.append(
 sections.append(
     "## 必做表插入说明\n"
     "- 表 2-1：`05-tables/table-role-function.md`\n"
-    "- 表 2-2：`05-tables/table-nonfunctional-requirements.md`\n"
+    "- 表 2-2：`05-tables/table-ch2-module-breakdown.md`\n"
+    "- 表 2-3：`05-tables/table-ch2-usecase-spec.md`\n"
+    "- 表 2-4：`05-tables/table-nonfunctional-requirements.md`\n"
+    "- 表 2-5：`05-tables/table-ch2-requirement-traceability.md`\n"
+    "- 表 2-6：`05-tables/table-ch2-iteration-backlog.md`\n"
+    "- 表 3-1：`05-tables/table-ch3-architecture-tradeoff.md`\n"
+    "- 表 3-2：`05-tables/table-ch3-module-callchain.md`\n"
+    "- 表 3-3：`05-tables/table-ch3-interface-samples.md`\n"
     "- 表 4-1：`05-tables/table-cloudfunction-responsibility.md`\n"
     "- 表 4-2：`05-tables/table-db-design.md`\n"
 )
@@ -54,7 +66,21 @@ sections.append((DIAGRAMS / "00-figure-caption-index.md").read_text(encoding="ut
 sections.append("\n---\n")
 sections.append((TABLES / "table-role-function.md").read_text(encoding="utf-8"))
 sections.append("\n---\n")
+sections.append((TABLES / "table-ch2-module-breakdown.md").read_text(encoding="utf-8"))
+sections.append("\n---\n")
+sections.append((TABLES / "table-ch2-usecase-spec.md").read_text(encoding="utf-8"))
+sections.append("\n---\n")
 sections.append((TABLES / "table-nonfunctional-requirements.md").read_text(encoding="utf-8"))
+sections.append("\n---\n")
+sections.append((TABLES / "table-ch2-requirement-traceability.md").read_text(encoding="utf-8"))
+sections.append("\n---\n")
+sections.append((TABLES / "table-ch2-iteration-backlog.md").read_text(encoding="utf-8"))
+sections.append("\n---\n")
+sections.append((TABLES / "table-ch3-architecture-tradeoff.md").read_text(encoding="utf-8"))
+sections.append("\n---\n")
+sections.append((TABLES / "table-ch3-module-callchain.md").read_text(encoding="utf-8"))
+sections.append("\n---\n")
+sections.append((TABLES / "table-ch3-interface-samples.md").read_text(encoding="utf-8"))
 sections.append("\n---\n")
 sections.append((TABLES / "table-cloudfunction-responsibility.md").read_text(encoding="utf-8"))
 sections.append("\n---\n")
@@ -62,3 +88,5 @@ sections.append((TABLES / "table-db-design.md").read_text(encoding="utf-8"))
 
 OUTPUT.write_text("\n".join(sections), encoding="utf-8")
 print(f"Wrote {OUTPUT}")
+
+
