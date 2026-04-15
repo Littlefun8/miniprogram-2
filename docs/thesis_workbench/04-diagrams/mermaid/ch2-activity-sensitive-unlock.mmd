@@ -1,0 +1,12 @@
+flowchart TD
+  A[开始] --> B[用户请求职位详情]
+  B --> C[调用 getJobDetail]
+  C --> D[查询申请记录]
+  D --> E{申请状态为accepted?}
+  E -- 否 --> E1[删除 referralCode/contactWechat/jobLink]
+  E -- 是 --> E2[保留敏感字段]
+  E1 --> F[返回详情]
+  E2 --> F
+  F --> Z[结束]
+
+

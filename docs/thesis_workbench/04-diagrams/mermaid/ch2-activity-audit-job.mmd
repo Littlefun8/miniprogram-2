@@ -1,0 +1,14 @@
+flowchart TD
+  A[开始] --> B[教师进入审核页]
+  B --> C[选择待审职位]
+  C --> D{action=approve/reject}
+  D --> E[调用 auditJob]
+  E --> F{teacher权限且职位为pending?}
+  F -- 否 --> F1[返回错误并提示] --> Z[结束]
+  F -- 是 --> G{approve?}
+  G -- 是 --> G1[更新status=published并写通知]
+  G -- 否 --> G2[更新status=rejected并写通知]
+  G1 --> H[返回审核完成]
+  G2 --> H
+  H --> Z[结束]
+
