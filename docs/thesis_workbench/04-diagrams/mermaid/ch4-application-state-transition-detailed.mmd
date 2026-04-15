@@ -1,0 +1,15 @@
+stateDiagram-v2
+  [*] --> pending : applyJob 创建
+
+  pending --> processing : 校友处理
+  processing --> accepted : 校友通过
+  processing --> rejected : 校友拒绝
+
+  pending --> accepted : 禁止(409)
+  pending --> rejected : 禁止(409)
+  accepted --> pending : 禁止(409)
+  rejected --> pending : 禁止(409)
+
+  accepted --> [*]
+  rejected --> [*]
+

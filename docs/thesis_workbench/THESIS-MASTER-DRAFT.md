@@ -11,6 +11,8 @@
 - 图 3-3：`04-diagrams/application-state-machine.png`
 - 图 4-1：`04-diagrams/core-publish-audit-flow.png`
 - 图 4-2：`04-diagrams/er-model.png`
+- 图 4-3：`04-diagrams/ch4-permission-validation-flow.png`
+- 图 4-4：`04-diagrams/ch4-application-state-transition-detailed.png`
 
 ## 必做表插入说明
 - 表 2-1：`05-tables/table-role-function.md`
@@ -24,6 +26,11 @@
 - 表 3-3：`05-tables/table-ch3-interface-samples.md`
 - 表 4-1：`05-tables/table-cloudfunction-responsibility.md`
 - 表 4-2：`05-tables/table-db-design.md`
+- 表 4-3：`05-tables/table-ch4-field-constraints.md`
+- 表 4-4：`05-tables/table-ch4-state-transition-rules.md`
+- 表 4-5：`05-tables/table-ch4-error-codes.md`
+- 表 4-6：`05-tables/table-ch4-security-control-points.md`
+- 表 4-7：`05-tables/table-ch4-code-evidence-binding-template.md`
 
 
 ---
@@ -339,6 +346,15 @@ WeChat Mini Program; Tencent Cloud Development; campus referral; state machine; 
 
 从设计目标上看，鉴权模块并不仅仅是“判断能不能访问”，而是要完成身份注册、角色绑定、权限校验三项职责：用户首次登录时自动建立基础档案；首次角色选择后将角色信息持久化；后续业务调用时根据角色决定是否允许发布、审核或统计查询。该设计使系统形成“身份确定 + 角色确定 + 权限确定”的三层控制链路。
 
+为了保证权限校验流程可复现，本章将校验链路明确拆分为四步：
+
+1. 获取 OPENID（身份可信源）；
+2. 查询用户角色并校验接口权限；
+3. 对涉及资源归属的接口校验 owner；
+4. 在通过权限后再执行业务规则校验。
+
+权限校验流程如图4-3所示，关键安全控制点见表4-6。
+
 ## 4.2 职位模块详细设计
 职位模块是整个系统的业务入口，其详细设计围绕发布、审核、查询和详情四类操作展开。
 
@@ -350,6 +366,9 @@ WeChat Mini Program; Tencent Cloud Development; campus referral; state machine; 
 
 ### 4.2.3 职位查询与详情设计
 职位列表接口默认只返回 published 职位，并支持分页、关键词和筛选条件。职位详情接口则在返回完整岗位信息的同时，根据当前用户申请状态判断是否展示敏感字段。列表与详情的分工使系统既能满足公开浏览，又能支持细粒度信息解锁。
+
+### 4.2.4 字段级约束设计
+仅有流程设计并不足以保证实现一致性，因此系统在详细设计阶段进一步定义关键字段约束，包括字段必填性、枚举范围、写入来源与门控策略。字段级约束表见表4-3。其核心目标是避免“字段存在但语义不一致”的实现偏差，尤其是在 `jobs.status`、`applications.status`、`publisherId/userId` 等关键字段上保持严格一致。
 
 ## 4.3 申请与状态机模块设计
 申请模块的设计目标是保证申请过程可追踪、可控制且不可重复。学生申请时，系统首先校验目标职位是否处于可申请状态，然后检查是否已经提交过该职位申请，若已存在则直接拒绝重复申请。通过该方式，系统避免同一用户对同一职位重复投递，减少数据冗余与后续处理成本。
@@ -365,20 +384,41 @@ WeChat Mini Program; Tencent Cloud Development; campus referral; state machine; 
 
 状态更新接口仅允许状态按上述路径推进，不允许从终态回退，也不允许跨阶段跳转。通过显式状态机约束，系统可以避免非法写入和业务绕过。
 
+状态迁移细化规则见表4-4，状态迁移图如图4-4所示。该图不仅展示允许路径，也显式标注禁止路径及其返回码（如 409），用于指导接口实现与测试用例设计。
+
 ## 4.4 敏感字段控制设计
 职位详情中的 `referralCode`、`contactWechat` 和 `jobLink` 属于仅在特定条件下可见的敏感字段。系统在详情云函数中先查询当前用户对该职位的申请状态，只有当状态为 accepted 时才返回这些字段，否则在服务端直接删除后返回。这种“服务端门控”比前端隐藏更可靠，因为前端隐藏仅影响展示，不影响数据传输。
 
 该设计的目标不仅是保护敏感信息，更重要的是把“权益解锁”与“申请结果”建立强绑定关系。换言之，系统不是简单地展示岗位详情，而是把详情视为一种按条件分级开放的信息资源。
 
-## 4.5 数据库与索引设计
+## 4.5 错误码与异常处理策略
+在详细设计层面，错误码不仅是接口返回字段，还承担“规则可观测性”职责。系统采用分层错误码策略：参数问题返回 400，未登录/未注册返回 401，无权限返回 403，资源不存在返回 404，业务冲突返回 409，服务异常返回 500。完整映射见表4-5。
+
+该策略的价值在于：
+
+1. 前端可根据错误类别执行差异化提示与恢复动作；
+2. 测试可按错误码构建边界用例；
+3. 日志可按错误码进行问题聚类与回归分析。
+
+## 4.6 数据库与索引设计
 系统采用云数据库保存业务数据，核心集合包括 `users`、`jobs`、`applications`、`notifications`、`favorites` 和 `userActions`。在字段设计上，系统统一采用 camelCase 命名，并使用字符串枚举表达状态值，从而保持前后端语义一致。
 
 在索引设计上，系统重点围绕高频查询路径进行优化：职位列表按状态和时间排序；申请列表按用户与状态筛选；通知列表按用户与已读状态筛选。`createIndexes` 云函数用于批量创建索引，并作为运维入口留存，保证系统在部署后仍能按需补齐数据库索引。
 
 从工程角度看，该数据库设计体现了“面向查询路径设计结构”的原则，即数据库结构并非只依据业务名词组织，还需要结合实际访问模式进行索引与冗余字段设计，以降低后续查询成本。
 
-## 4.6 本章小结
-本章从身份权限、职位模块、申请状态机、敏感字段控制以及数据库索引五个方面展开了系统详细设计。相关设计既确保了关键业务流程的正确性，也为后续系统实现提供了清晰的功能边界和数据边界。
+## 4.7 设计结论与代码证据绑定
+为避免详细设计停留在文档层，本章引入“设计结论 -> 代码证据”绑定机制。绑定模板见表4-7，推荐最小证据粒度为“文件路径 + 关键符号 + 返回码/状态约束”。例如：
+
+- 状态机约束绑定 `updateApplicationStatus` 中的状态迁移校验；
+- 敏感字段门控绑定 `getJobDetail` 中敏感字段删除逻辑；
+- 白名单写入绑定 `postJob` 与 `applyJob` 的对象构建逻辑。
+
+该机制可直接用于论文答辩时的“设计依据说明”和后续敏捷迭代时的影响评估。
+
+## 4.8 本章小结
+本章在原有详细设计基础上，进一步补齐了字段级约束、状态迁移规则、错误码策略和安全控制点，并通过图表与证据绑定提升了设计可复现性。相较于仅描述业务流程的详细设计，本章更强调“规则可执行、异常可处理、结论可追踪”，使设计文档能够直接支撑实现、测试与迭代。
+
 
 
 
@@ -584,6 +624,8 @@ WeChat Mini Program; Tencent Cloud Development; campus referral; state machine; 
 - 图3-3 申请状态流转图
 - 图4-1 职位发布与审核流程图（实现视角）
 - 图4-2 数据库实体关系图
+- 图4-3 权限校验流程图
+- 图4-4 申请状态迁移细化图
 
 ## 可选图
 - 图5-1 职位列表页界面示意图
@@ -612,11 +654,14 @@ WeChat Mini Program; Tencent Cloud Development; campus referral; state machine; 
 - 图3-3：`04-diagrams/application-state-machine.png`
 - 图4-1：`04-diagrams/core-publish-audit-flow.png`
 - 图4-2：`04-diagrams/er-model.png`
+- 图4-3：`04-diagrams/ch4-permission-validation-flow.png`
+- 图4-4：`04-diagrams/ch4-application-state-transition-detailed.png`
 
 ## 图注写作原则
 - 图注必须简短、具体、与正文一致。
 - 每张图在正文首次出现时必须先说明用途，再插入图。
 - 若某图暂时无法可靠绘制，可先用表格替代，不要硬凑低质量图。
+
 
 
 
@@ -800,4 +845,82 @@ WeChat Mini Program; Tencent Cloud Development; campus referral; state machine; 
 | notifications | 通知信息 | userId, type, title, isRead | 审核与流程消息触达 |
 | favorites | 收藏关系 | userId, jobId | 学生收藏职位 |
 | userActions | 行为日志 | userId, jobId, actionType, weight | 行为埋点与后续分析 |
+
+
+
+---
+
+# 表4-3 关键字段约束表
+
+| 集合 | 字段 | 类型/示例 | 约束规则 | 写入时机 | 校验位置 |
+|---|---|---|---|---|---|
+| jobs | title | String | 必填，非空 | 发布职位 | `postJob` 参数校验 |
+| jobs | status | pending/published/rejected | 仅允许枚举值 | 发布/审核 | `postJob`/`auditJob` |
+| jobs | publisherId | String(OPENID) | 不信任前端传值，服务端填充 | 发布职位 | `postJob` |
+| jobs | referralCode | String | 敏感字段，详情按状态门控返回 | 发布职位 | `getJobDetail` |
+| jobs | contactWechat | String | 敏感字段，详情按状态门控返回 | 发布职位 | `getJobDetail` |
+| jobs | jobLink | String | 敏感字段，详情按状态门控返回 | 发布职位 | `getJobDetail` |
+| applications | jobId | String | 必填，关联职位 | 申请创建 | `applyJob` |
+| applications | userId | String(OPENID) | 服务端上下文获取 | 申请创建 | `applyJob` |
+| applications | status | pending/processing/accepted/rejected | 严格状态机约束 | 申请创建/状态更新 | `applyJob`/`updateApplicationStatus` |
+| applications | timeline | Array | 状态历史节点，建议每次变更追加 | 申请创建/状态更新 | `applyJob`/后续优化点 |
+| notifications | userId | String | 必填，目标用户 | 审核/状态变化 | `auditJob`/其他通知函数 |
+| users | userType | student/alumni/teacher/admin | 合法枚举校验 | 角色设置 | `setUserRole` |
+
+
+
+---
+
+# 表4-4 申请状态迁移规则表
+
+| 当前状态 | 目标状态 | 允许/禁止 | 触发角色 | 返回码建议 | 规则说明 |
+|---|---|---|---|---|---|
+| pending | processing | 允许 | 校友（发布者） | 200 | 进入处理阶段 |
+| pending | accepted | 禁止 | 校友（发布者） | 409 | 不允许越级通过 |
+| pending | rejected | 禁止 | 校友（发布者） | 409 | 不允许越级拒绝 |
+| processing | accepted | 允许 | 校友（发布者） | 200 | 审核通过终态 |
+| processing | rejected | 允许 | 校友（发布者） | 200 | 审核拒绝终态 |
+| accepted | * | 禁止 | 任意 | 409 | accepted 为终态 |
+| rejected | * | 禁止 | 任意 | 409 | rejected 为终态 |
+
+
+
+---
+
+# 表4-5 详细设计错误码约束表
+
+| 场景 | 典型错误码 | 触发条件 | 用户侧处理建议 | 代码证据 |
+|---|---|---|---|---|
+| 参数缺失 | 400 | 缺必要参数（如 jobId、applicationId） | 提示并阻止提交 | `applyJob`、`updateApplicationStatus` |
+| 未登录/未注册 | 401 | 用户记录不存在 | 引导重新登录/初始化账号 | `postJob`、`auditJob` |
+| 无权限 | 403 | 角色不匹配或非资源所有者 | 提示无权操作 | `auditJob`、`updateApplicationStatus` |
+| 资源不存在 | 404 | job/app 不存在 | 提示数据已变更并刷新 | `getJobDetail`、`updateApplicationStatus` |
+| 业务冲突 | 409 | 重复申请或非法状态迁移 | 提示业务冲突，保持现状态 | `applyJob`、`updateApplicationStatus` |
+| 服务异常 | 500 | 云函数异常 | 提示稍后重试并记录日志 | 多数云函数 catch 返回 |
+
+
+
+---
+
+# 表4-6 安全控制点设计表
+
+| 控制点ID | 控制点描述 | 所在环节 | 控制方式 | 代码证据 | 风险备注 |
+|---|---|---|---|---|---|
+| SEC-01 | 身份来源可信 | 所有云函数入口 | `getWXContext().OPENID` | `cloudfunctions/*/index.js` | 禁止信任前端 userId |
+| SEC-02 | 角色权限控制 | 发布/审核/统计 | 查询 `users.userType` 并校验 | `postJob`、`auditJob`、`getTeacherStats` | 角色漂移需审计 |
+| SEC-03 | 资源归属控制 | 申请状态更新 | 校验 `job.publisherId === OPENID` | `updateApplicationStatus` | 防止越权处理 |
+| SEC-04 | 写入字段白名单 | 职位发布/申请创建 | 构建白名单对象，不展开 event | `postJob`、`applyJob` | 防字段注入 |
+| SEC-05 | 敏感字段门控 | 职位详情 | accepted 才返回敏感字段 | `getJobDetail` | 防敏感信息泄露 |
+| SEC-06 | 状态机防绕过 | 申请处理 | 显式状态迁移表校验 | `updateApplicationStatus` | 防非法跃迁 |
+
+
+
+---
+
+# 表4-7 设计结论与代码证据绑定模板
+
+| 设计点ID | 设计结论 | 代码路径 | 关键符号/函数 | 返回码/状态 | 一致性结论 | 备注 |
+|---|---|---|---|---|---|---|
+| DS-XX | 示例：申请状态必须遵守状态机 | `cloudfunctions/updateApplicationStatus/index.js` | `VALID_STATUS_TRANSITIONS` | 409 | 一致/需改进 | 可补 timeline 追加 |
+| DS-XX | 示例：敏感字段仅 accepted 可见 | `cloudfunctions/getJobDetail/index.js` | `SENSITIVE_FIELDS` 删除逻辑 | 200 | 一致 | 建议补访问日志 |
 

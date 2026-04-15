@@ -11,6 +11,8 @@
 - 图3-3 申请状态流转图
 - 图4-1 职位发布与审核流程图（实现视角）
 - 图4-2 数据库实体关系图
+- 图4-3 权限校验流程图
+- 图4-4 申请状态迁移细化图
 
 ## 可选图
 - 图5-1 职位列表页界面示意图
@@ -39,11 +41,14 @@
 - 图3-3：`04-diagrams/application-state-machine.png`
 - 图4-1：`04-diagrams/core-publish-audit-flow.png`
 - 图4-2：`04-diagrams/er-model.png`
+- 图4-3：`04-diagrams/ch4-permission-validation-flow.png`
+- 图4-4：`04-diagrams/ch4-application-state-transition-detailed.png`
 
 ## 图注写作原则
 - 图注必须简短、具体、与正文一致。
 - 每张图在正文首次出现时必须先说明用途，再插入图。
 - 若某图暂时无法可靠绘制，可先用表格替代，不要硬凑低质量图。
+
 
 
 

@@ -34,6 +34,8 @@ sections.append(
     "- 图 3-3：`04-diagrams/application-state-machine.png`\n"
     "- 图 4-1：`04-diagrams/core-publish-audit-flow.png`\n"
     "- 图 4-2：`04-diagrams/er-model.png`\n"
+    "- 图 4-3：`04-diagrams/ch4-permission-validation-flow.png`\n"
+    "- 图 4-4：`04-diagrams/ch4-application-state-transition-detailed.png`\n"
 )
 sections.append(
     "## 必做表插入说明\n"
@@ -48,6 +50,11 @@ sections.append(
     "- 表 3-3：`05-tables/table-ch3-interface-samples.md`\n"
     "- 表 4-1：`05-tables/table-cloudfunction-responsibility.md`\n"
     "- 表 4-2：`05-tables/table-db-design.md`\n"
+    "- 表 4-3：`05-tables/table-ch4-field-constraints.md`\n"
+    "- 表 4-4：`05-tables/table-ch4-state-transition-rules.md`\n"
+    "- 表 4-5：`05-tables/table-ch4-error-codes.md`\n"
+    "- 表 4-6：`05-tables/table-ch4-security-control-points.md`\n"
+    "- 表 4-7：`05-tables/table-ch4-code-evidence-binding-template.md`\n"
 )
 
 for file in ordered_files:
@@ -85,8 +92,19 @@ sections.append("\n---\n")
 sections.append((TABLES / "table-cloudfunction-responsibility.md").read_text(encoding="utf-8"))
 sections.append("\n---\n")
 sections.append((TABLES / "table-db-design.md").read_text(encoding="utf-8"))
+sections.append("\n---\n")
+sections.append((TABLES / "table-ch4-field-constraints.md").read_text(encoding="utf-8"))
+sections.append("\n---\n")
+sections.append((TABLES / "table-ch4-state-transition-rules.md").read_text(encoding="utf-8"))
+sections.append("\n---\n")
+sections.append((TABLES / "table-ch4-error-codes.md").read_text(encoding="utf-8"))
+sections.append("\n---\n")
+sections.append((TABLES / "table-ch4-security-control-points.md").read_text(encoding="utf-8"))
+sections.append("\n---\n")
+sections.append((TABLES / "table-ch4-code-evidence-binding-template.md").read_text(encoding="utf-8"))
 
 OUTPUT.write_text("\n".join(sections), encoding="utf-8")
 print(f"Wrote {OUTPUT}")
+
 
 
