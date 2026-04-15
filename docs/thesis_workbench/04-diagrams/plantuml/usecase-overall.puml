@@ -1,0 +1,25 @@
+@startuml
+left to right direction
+actor 学生
+actor 校友
+actor 教师
+
+rectangle 酱菜内推系统 {
+  usecase "浏览职位" as UC1
+  usecase "申请职位" as UC2
+  usecase "查看申请进度" as UC3
+  usecase "发布职位" as UC4
+  usecase "处理申请" as UC5
+  usecase "审核职位" as UC6
+  usecase "查看统计" as UC7
+}
+
+学生 --> UC1
+学生 --> UC2
+学生 --> UC3
+校友 --> UC4
+校友 --> UC5
+教师 --> UC6
+教师 --> UC7
+@enduml
+

@@ -1,0 +1,6 @@
+flowchart LR
+  A[微信小程序页面层\njob_list/job_detail/manage_applications/teacher_stats] --> B[云函数调用层\nwx.cloud.callFunction]
+  B --> C[业务云函数层\nlogin/postJob/applyJob/auditJob/getJobDetail/updateApplicationStatus/getTeacherStats]
+  C --> D[(云数据库)]
+  C --> E[权限与状态控制\nOPENID校验/角色校验/状态机/敏感字段门控]
+

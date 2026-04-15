@@ -1,0 +1,21 @@
+@startuml
+autonumber
+actor 校友
+actor 教师
+participant 小程序页面
+participant postJob
+participant auditJob
+database 云数据库
+
+校友 -> 小程序页面: 填写并提交职位
+小程序页面 -> postJob: callFunction(postJob, formData)
+postJob -> 云数据库: 写入jobs(status=pending)
+postJob --> 小程序页面: 发布成功(待审核)
+
+教师 -> 小程序页面: 审核职位
+小程序页面 -> auditJob: callFunction(auditJob, action)
+auditJob -> 云数据库: 更新status(published/rejected)
+auditJob -> 云数据库: 写入通知
+auditJob --> 小程序页面: 审核完成
+@enduml
+
