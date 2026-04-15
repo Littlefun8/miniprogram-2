@@ -1,0 +1,9 @@
+erDiagram
+  users ||--o{ jobs : publishes
+  users ||--o{ applications : submits
+  jobs ||--o{ applications : receives
+  users ||--o{ notifications : receives
+  users ||--o{ favorites : collects
+  jobs ||--o{ favorites : collected_by
+  users ||--o{ userActions : performs
+

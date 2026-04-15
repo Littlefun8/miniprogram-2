@@ -1,0 +1,9 @@
+flowchart TD
+  A[校友提交职位] --> B[postJob写入jobs\nstatus=pending]
+  B --> C[教师审核职位]
+  C -->|通过| D[status=published\n写入endorserInfo]
+  C -->|拒绝| E[status=rejected\n写入rejectReason]
+  D --> F[通知发布者]
+  E --> F
+  D --> G[学生可见职位]
+
