@@ -1,0 +1,13 @@
+@startuml
+start
+:职位审核或申请处理完成;
+:系统生成通知记录;
+:用户进入通知列表;
+:调用 getNotifications;
+:查看处理结果;
+:教师进入统计页面;
+:调用 getTeacherStats;
+:查看运行统计信息;
+stop
+@enduml
+

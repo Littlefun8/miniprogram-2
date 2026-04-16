@@ -1,16 +1,18 @@
-# 表4-1 核心云函数职责说明
+# 表4-1 主要云函数与功能对应表
 
-| 云函数 | 需求映射 | 主要职责 | 关键校验 | 关键输出 | 代码证据 |
+| 云函数名称 | 对应需求 | 主要功能 | 输入信息 | 输出信息 | 约束说明 |
 |---|---|---|---|---|---|
-| login | REQ-F-01 | 用户登录与自动注册 | OPENID 获取 | 用户基础信息 | `cloudfunctions/login/index.js` |
-| setUserRole | REQ-F-01 | 首次角色设置 | 合法角色枚举 | userType | `cloudfunctions/setUserRole/index.js` |
-| postJob | REQ-F-02 | 发布职位 | 角色校验、必填校验、白名单写入 | 待审核职位ID | `cloudfunctions/postJob/index.js` |
-| auditJob | REQ-F-02 | 教师审核职位 | 教师角色、pending 状态校验 | 发布/拒绝结果与通知 | `cloudfunctions/auditJob/index.js` |
-| getJobList | REQ-F-02 | 获取职位列表 | 分页与筛选参数 | 列表、total、hasMore | `cloudfunctions/getJobList/index.js` |
-| getJobDetail | REQ-F-04 | 获取职位详情 | jobId 校验、敏感字段门控 | 职位详情 | `cloudfunctions/getJobDetail/index.js` |
-| applyJob | REQ-F-03 | 提交申请 | 职位状态、防重复、资料相关校验 | 申请成功结果 | `cloudfunctions/applyJob/index.js` |
-| updateApplicationStatus | REQ-F-03 | 更新申请状态 | 发布者权限、状态机合法性 | 状态更新结果 | `cloudfunctions/updateApplicationStatus/index.js` |
-| getApplications | REQ-F-03 | 查询申请列表 | 视角参数 asPublisher | 列表、分页信息 | `cloudfunctions/getApplications/index.js` |
-| getTeacherStats | REQ-F-05 | 教师统计聚合 | teacher/admin 角色校验 | overview、trend、funnel 等 | `cloudfunctions/getTeacherStats/index.js` |
+| `login` | REQ-F-01 | 用户登录与自动注册 | 用户身份信息 | 用户基础信息 | 身份识别基于 OPENID |
+| `setUserRole` | REQ-F-01 | 用户角色设置 | 角色参数 | 角色设置结果 | 角色值需满足系统枚举 |
+| `postJob` | REQ-F-02 | 职位发布 | 职位表单数据 | 待审核职位记录 | 发布操作受角色约束 |
+| `auditJob` | REQ-F-02 | 职位审核 | 职位编号与审核动作 | 审核结果 | 审核操作由教师角色执行 |
+| `getJobList` | REQ-F-02 | 职位列表查询 | 查询条件与分页参数 | 职位列表数据 | 列表结果按发布状态过滤 |
+| `getJobDetail` | REQ-F-04 | 职位详情查询 | 职位编号 | 职位详情数据 | 敏感信息按业务状态展示 |
+| `applyJob` | REQ-F-03 | 职位申请提交 | 职位编号与申请信息 | 申请记录 | 系统拦截重复申请 |
+| `updateApplicationStatus` | REQ-F-03 | 申请处理结果更新 | 申请编号与处理结果 | 更新结果 | 处理操作受角色与流程约束 |
+| `getApplications` | REQ-F-03 | 申请进度查询 | 查询视角与分页参数 | 申请列表数据 | 按角色视角返回查询结果 |
+| `getTeacherStats` | REQ-F-05 | 教师统计查询 | 统计查询条件 | 统计结果数据 | 统计查询受角色权限限制 |
+
+来源：作者根据系统实现整理
 
 

@@ -1,0 +1,19 @@
+@startuml
+left to right direction
+actor 学生
+actor 校友
+actor 教师
+
+rectangle 职位管理模块 {
+  usecase "发布职位" as UC1
+  usecase "审核职位" as UC2
+  usecase "浏览职位" as UC3
+  usecase "查看职位详情" as UC4
+}
+
+校友 --> UC1
+教师 --> UC2
+学生 --> UC3
+学生 --> UC4
+@enduml
+

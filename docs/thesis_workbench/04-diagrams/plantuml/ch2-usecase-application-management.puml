@@ -1,0 +1,16 @@
+@startuml
+left to right direction
+actor 学生
+actor 校友
+
+rectangle 申请与进度管理模块 {
+  usecase "提交申请" as UC1
+  usecase "处理申请" as UC2
+  usecase "查看进度" as UC3
+}
+
+学生 --> UC1
+学生 --> UC3
+校友 --> UC2
+@enduml
+

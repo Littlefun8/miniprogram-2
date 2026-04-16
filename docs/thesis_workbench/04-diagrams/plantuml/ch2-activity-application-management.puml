@@ -1,0 +1,24 @@
+@startuml
+start
+:学生打开职位详情;
+:点击申请职位;
+:系统检查登录状态;
+if (已登录?) then (是)
+  :校验申请资料完整性;
+  if (资料完整?) then (是)
+    :调用 applyJob;
+    :记录申请信息;
+    :生成初始申请状态;
+    :校友查看申请列表;
+    :调用 updateApplicationStatus;
+    :更新处理结果;
+    :学生查看申请进度;
+  else (否)
+    :提示完善个人资料;
+  endif
+else (否)
+  :引导用户登录;
+endif
+stop
+@enduml
+
