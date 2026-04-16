@@ -1,0 +1,31 @@
+@startuml
+left to right direction
+skinparam packageStyle rectangle
+
+package "酱菜内推系统" {
+  package "用户与权限管理模块" {
+    [登录]
+    [角色确认]
+    [会话恢复]
+  }
+
+  package "职位管理模块" {
+    [职位发布]
+    [职位审核]
+    [职位列表]
+    [职位详情]
+  }
+
+  package "申请与进度管理模块" {
+    [申请提交]
+    [申请处理]
+    [进度查询]
+  }
+
+  package "通知与统计模块" {
+    [通知查看]
+    [统计查看]
+  }
+}
+@enduml
+

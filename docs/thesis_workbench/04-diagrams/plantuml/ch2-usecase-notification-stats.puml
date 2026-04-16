@@ -1,0 +1,20 @@
+@startuml
+left to right direction
+actor 学生
+actor 校友
+actor 教师
+
+rectangle 通知与统计模块 {
+  usecase "查看通知" as UC1
+  usecase "查看处理结果" as UC2
+  usecase "查看统计" as UC3
+}
+
+学生 --> UC1
+学生 --> UC2
+校友 --> UC1
+校友 --> UC2
+教师 --> UC1
+教师 --> UC3
+@enduml
+

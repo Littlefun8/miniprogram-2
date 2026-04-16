@@ -1,0 +1,23 @@
+@startuml
+left to right direction
+actor 学生
+actor 校友
+actor 教师
+
+rectangle 用户与权限管理模块 {
+  usecase "登录" as UC1
+  usecase "角色确认" as UC2
+  usecase "会话恢复" as UC3
+}
+
+学生 --> UC1
+学生 --> UC2
+学生 --> UC3
+校友 --> UC1
+校友 --> UC2
+校友 --> UC3
+教师 --> UC1
+教师 --> UC2
+教师 --> UC3
+@enduml
+

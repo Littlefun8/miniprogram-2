@@ -15,7 +15,6 @@ ordered_files = [
     CHAPTERS / "ch04-系统详细设计.md",
     CHAPTERS / "ch05-系统实现.md",
     CHAPTERS / "ch06-系统运行与应用效果.md",
-    CHAPTERS / "ch07-总结与展望.md",
     CHAPTERS / "ch08-参考文献模板.md",
     CHAPTERS / "ch09-致谢模板.md",
 ]
@@ -30,12 +29,19 @@ sections.append(
     "- 图 2-4：`04-diagrams/ch2-activity-audit-job.png`\n"
     "- 图 2-5：`04-diagrams/ch2-activity-sensitive-unlock.png`\n"
     "- 图 3-1：`04-diagrams/ch3-architecture-layered.png`\n"
-    "- 图 3-2：`04-diagrams/ch3-call-sequence-apply-unlock.png`\n"
-    "- 图 3-3：`04-diagrams/application-state-machine.png`\n"
-    "- 图 4-1：`04-diagrams/core-publish-audit-flow.png`\n"
-    "- 图 4-2：`04-diagrams/er-model.png`\n"
-    "- 图 4-3：`04-diagrams/ch4-permission-validation-flow.png`\n"
-    "- 图 4-4：`04-diagrams/ch4-application-state-transition-detailed.png`\n"
+    "- 图 3-2：`04-diagrams/usecase-overall.png`\n"
+    "- 图 3-3：`04-diagrams/ch2-activity-post-job.png`（在正文中重编号使用）\n"
+    "- 图 3-4：`04-diagrams/ch2-activity-apply-job.png`（在正文中重编号使用）\n"
+    "- 图 3-5：`04-diagrams/ch2-activity-sensitive-unlock.png`（在正文中重编号使用）\n"
+    "- 图 3-6：`04-diagrams/ch3-call-sequence-apply-unlock.png`\n"
+    "- 图 4-1：`04-diagrams/system-architecture.png`\n"
+    "- 图 4-2：`04-diagrams/ch3-call-sequence-apply-unlock.png`（页面状态示意可替换）\n"
+    "- 图 4-3：`04-diagrams/usecase-overall.png`（布局示意可替换）\n"
+    "- 图 4-4：`04-diagrams/core-publish-audit-flow.png`\n"
+    "- 图 5-1：`04-diagrams/ch2-activity-apply-job.png`（在正文中重编号使用）\n"
+    "- 图 5-2：`04-diagrams/ch3-call-sequence-apply-unlock.png`（在正文中重编号使用）\n"
+    "- 图 5-3：`04-diagrams/ch2-activity-audit-job.png`（在正文中重编号使用）\n"
+    "- 图 5-4：`04-diagrams/ch2-activity-sensitive-unlock.png`（在正文中重编号使用）\n"
 )
 sections.append(
     "## 必做表插入说明\n"
