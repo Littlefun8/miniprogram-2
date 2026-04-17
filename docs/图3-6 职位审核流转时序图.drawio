@@ -1,0 +1,119 @@
+<mxfile host="app.diagrams.net">
+  <diagram name="第 1 页" id="eZ_X_5ihL_Mx0LXsFMEg">
+    <mxGraphModel dx="1288" dy="703" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1200" pageHeight="1100" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="actor_user" parent="1" style="shape=umlLifeline;participant=umlActor;perimeter=lifelinePerimeter;whiteSpace=wrap;html=1;container=1;collapsible=0;recursiveResize=0;verticalAlign=top;spacingTop=36;outlineConnect=0;size=50;" value="教师" vertex="1">
+          <mxGeometry height="900" width="40" x="20" y="40" as="geometry" />
+        </mxCell>
+        <mxCell id="actor_client" parent="1" style="shape=umlLifeline;perimeter=lifelinePerimeter;whiteSpace=wrap;html=1;container=1;collapsible=0;recursiveResize=0;outlineConnect=0;" value="审核页面&#xa;(微信客户端)" vertex="1">
+          <mxGeometry height="900" width="100" x="190" y="40" as="geometry" />
+        </mxCell>
+        <mxCell id="actor_func" parent="1" style="shape=umlLifeline;perimeter=lifelinePerimeter;whiteSpace=wrap;html=1;container=1;collapsible=0;recursiveResize=0;outlineConnect=0;" value="auditJob&#xa;(云函数)" vertex="1">
+          <mxGeometry height="900" width="100" x="370" y="40" as="geometry" />
+        </mxCell>
+        <mxCell id="actor_users" parent="1" style="shape=umlLifeline;perimeter=lifelinePerimeter;whiteSpace=wrap;html=1;container=1;collapsible=0;recursiveResize=0;outlineConnect=0;" value="Users&#xa;(集合)" vertex="1">
+          <mxGeometry height="900" width="100" x="550" y="40" as="geometry" />
+        </mxCell>
+        <mxCell id="actor_jobs" parent="1" style="shape=umlLifeline;perimeter=lifelinePerimeter;whiteSpace=wrap;html=1;container=1;collapsible=0;recursiveResize=0;outlineConnect=0;" value="Jobs&#xa;(集合)" vertex="1">
+          <mxGeometry height="900" width="100" x="730" y="40" as="geometry" />
+        </mxCell>
+        <mxCell id="actor_notifs" parent="1" style="shape=umlLifeline;perimeter=lifelinePerimeter;whiteSpace=wrap;html=1;container=1;collapsible=0;recursiveResize=0;outlineConnect=0;" value="Notifications&#xa;(集合)" vertex="1">
+          <mxGeometry height="900" width="100" x="910" y="40" as="geometry" />
+        </mxCell>
+        <mxCell id="c_act" parent="1" style="html=1;points=[[0,0,0,0,5],[0,1,0,0,-5],[1,0,0,0,5],[1,1,0,0,-5]];perimeter=orthogonalPerimeter;outlineConnect=0;targetShapes=umlLifeline;portConstraint=eastwest;newEdgeStyle={&quot;curved&quot;:0,&quot;rounded&quot;:0};" value="" vertex="1">
+          <mxGeometry height="740" width="10" x="235" y="100" as="geometry" />
+        </mxCell>
+        <mxCell id="f_act" parent="1" style="html=1;points=[[0,0,0,0,5],[0,1,0,0,-5],[1,0,0,0,5],[1,1,0,0,-5]];perimeter=orthogonalPerimeter;outlineConnect=0;targetShapes=umlLifeline;portConstraint=eastwest;newEdgeStyle={&quot;curved&quot;:0,&quot;rounded&quot;:0};" value="" vertex="1">
+          <mxGeometry height="620" width="10" x="415" y="140" as="geometry" />
+        </mxCell>
+        <mxCell id="u_act1" parent="1" style="html=1;points=[[0,0,0,0,5],[0,1,0,0,-5],[1,0,0,0,5],[1,1,0,0,-5]];perimeter=orthogonalPerimeter;outlineConnect=0;targetShapes=umlLifeline;portConstraint=eastwest;newEdgeStyle={&quot;curved&quot;:0,&quot;rounded&quot;:0};" value="" vertex="1">
+          <mxGeometry height="40" width="10" x="595" y="180" as="geometry" />
+        </mxCell>
+        <mxCell id="j_act1" parent="1" style="html=1;points=[[0,0,0,0,5],[0,1,0,0,-5],[1,0,0,0,5],[1,1,0,0,-5]];perimeter=orthogonalPerimeter;outlineConnect=0;targetShapes=umlLifeline;portConstraint=eastwest;newEdgeStyle={&quot;curved&quot;:0,&quot;rounded&quot;:0};" value="" vertex="1">
+          <mxGeometry height="40" width="10" x="775" y="260" as="geometry" />
+        </mxCell>
+        <mxCell id="j_act2" parent="1" style="html=1;points=[[0,0,0,0,5],[0,1,0,0,-5],[1,0,0,0,5],[1,1,0,0,-5]];perimeter=orthogonalPerimeter;outlineConnect=0;targetShapes=umlLifeline;portConstraint=eastwest;newEdgeStyle={&quot;curved&quot;:0,&quot;rounded&quot;:0};" value="" vertex="1">
+          <mxGeometry height="40" width="10" x="775" y="380" as="geometry" />
+        </mxCell>
+        <mxCell id="n_act1" parent="1" style="html=1;points=[[0,0,0,0,5],[0,1,0,0,-5],[1,0,0,0,5],[1,1,0,0,-5]];perimeter=orthogonalPerimeter;outlineConnect=0;targetShapes=umlLifeline;portConstraint=eastwest;newEdgeStyle={&quot;curved&quot;:0,&quot;rounded&quot;:0};" value="" vertex="1">
+          <mxGeometry height="40" width="10" x="955" y="460" as="geometry" />
+        </mxCell>
+        <mxCell id="j_act3" parent="1" style="html=1;points=[[0,0,0,0,5],[0,1,0,0,-5],[1,0,0,0,5],[1,1,0,0,-5]];perimeter=orthogonalPerimeter;outlineConnect=0;targetShapes=umlLifeline;portConstraint=eastwest;newEdgeStyle={&quot;curved&quot;:0,&quot;rounded&quot;:0};" value="" vertex="1">
+          <mxGeometry height="40" width="10" x="775" y="580" as="geometry" />
+        </mxCell>
+        <mxCell id="n_act2" parent="1" style="html=1;points=[[0,0,0,0,5],[0,1,0,0,-5],[1,0,0,0,5],[1,1,0,0,-5]];perimeter=orthogonalPerimeter;outlineConnect=0;targetShapes=umlLifeline;portConstraint=eastwest;newEdgeStyle={&quot;curved&quot;:0,&quot;rounded&quot;:0};" value="" vertex="1">
+          <mxGeometry height="40" width="10" x="955" y="660" as="geometry" />
+        </mxCell>
+        <mxCell id="msg1" edge="1" parent="1" source="actor_user" style="html=1;verticalAlign=bottom;endArrow=block;rounded=0;exitX=0.5;exitY=0.066667;entryX=0;entryY=0;" target="c_act" value="1. 提交审核动作 (approve/reject)">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="msg2" edge="1" parent="1" source="c_act" style="html=1;verticalAlign=bottom;endArrow=block;rounded=0;exitX=1;exitY=0.054054;entryX=0;entryY=0;" target="f_act" value="2. 调用 auditJob 传入 action">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="msg3" edge="1" parent="1" source="f_act" style="html=1;verticalAlign=bottom;endArrow=block;rounded=0;exitX=1;exitY=0.064516;entryX=0;entryY=0;" target="u_act1" value="3. 校验调用者身份 (必须为教师)">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="msg4" edge="1" parent="1" source="u_act1" style="html=1;verticalAlign=bottom;endArrow=open;dashed=1;endSize=8;rounded=0;exitX=0;exitY=1;entryX=1;entryY=0.129032;" target="f_act" value="4. 返回身份结果">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="msg5" edge="1" parent="1" source="f_act" style="html=1;verticalAlign=bottom;endArrow=block;rounded=0;exitX=1;exitY=0.193548;entryX=0;entryY=0;" target="j_act1" value="5. 检查职位当前状态 (必须为 pending)">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="msg6" edge="1" parent="1" source="j_act1" style="html=1;verticalAlign=bottom;endArrow=open;dashed=1;endSize=8;rounded=0;exitX=0;exitY=1;entryX=1;entryY=0.258065;" target="f_act" value="6. 返回状态结果">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="frame_alt" parent="1" style="shape=umlFrame;whiteSpace=wrap;html=1;pointerEvents=0;width=40;height=20;" value="alt" vertex="1">
+          <mxGeometry height="410" width="660" x="320" y="330" as="geometry" />
+        </mxCell>
+        <mxCell id="label_approve" parent="1" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontStyle=1" value="[通过 (approve)]" vertex="1">
+          <mxGeometry height="20" width="100" x="322" y="356" as="geometry" />
+        </mxCell>
+        <mxCell id="msg7" edge="1" parent="1" source="f_act" style="html=1;verticalAlign=bottom;endArrow=block;rounded=0;exitX=1;exitY=0.387097;entryX=0;entryY=0;" target="j_act2" value="7. 更新职位状态为 published">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="msg8" edge="1" parent="1" source="j_act2" style="html=1;verticalAlign=bottom;endArrow=open;dashed=1;endSize=8;rounded=0;exitX=0;exitY=1;entryX=1;entryY=0.451613;" target="f_act" value="8. 更新成功">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="msg9" edge="1" parent="1" source="f_act" style="html=1;verticalAlign=bottom;endArrow=block;rounded=0;exitX=1;exitY=0.516129;entryX=0;entryY=0;" target="n_act1" value="9. 写入审核通过通知">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="msg10" edge="1" parent="1" source="n_act1" style="html=1;verticalAlign=bottom;endArrow=open;dashed=1;endSize=8;rounded=0;exitX=0;exitY=1;entryX=1;entryY=0.580645;" target="f_act" value="10. 写入成功">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="divider_alt" parent="1" style="line;strokeWidth=1;dashed=1;html=1;whiteSpace=wrap;" value="" vertex="1">
+          <mxGeometry height="10" width="660" x="320" y="530" as="geometry" />
+        </mxCell>
+        <mxCell id="label_reject" parent="1" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontStyle=1" value="[驳回 (reject)]" vertex="1">
+          <mxGeometry height="20" width="100" x="322" y="540" as="geometry" />
+        </mxCell>
+        <mxCell id="msg11" edge="1" parent="1" source="f_act" style="html=1;verticalAlign=bottom;endArrow=block;rounded=0;exitX=1;exitY=0.709677;entryX=0;entryY=0;" target="j_act3" value="11. 更新职位状态为 rejected">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="msg12" edge="1" parent="1" source="j_act3" style="html=1;verticalAlign=bottom;endArrow=open;dashed=1;endSize=8;rounded=0;exitX=0;exitY=1;entryX=1;entryY=0.774194;" target="f_act" value="12. 更新成功">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="msg13" edge="1" parent="1" source="f_act" style="html=1;verticalAlign=bottom;endArrow=block;rounded=0;exitX=1;exitY=0.838710;entryX=0;entryY=0;" target="n_act2" value="13. 写入驳回通知 (含驳回原因)">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="msg14" edge="1" parent="1" source="n_act2" style="html=1;verticalAlign=bottom;endArrow=open;dashed=1;endSize=8;rounded=0;exitX=0;exitY=1;entryX=1;entryY=0.903226;" target="f_act" value="14. 写入成功">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="msg15" edge="1" parent="1" source="f_act" style="html=1;verticalAlign=bottom;endArrow=open;dashed=1;endSize=8;rounded=0;exitX=0;exitY=1.000000;entryX=1;entryY=0.891892;" target="c_act" value="15. 返回审核结果">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="msg16" edge="1" parent="1" source="c_act" style="html=1;verticalAlign=bottom;endArrow=block;rounded=0;exitX=1;exitY=0.945946;entryX=1;entryY=1.000000;" target="c_act" value="16. 刷新职位审核列表视图">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="245" y="800" />
+              <mxPoint x="280" y="800" />
+              <mxPoint x="280" y="840" />
+              <mxPoint x="245" y="840" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
