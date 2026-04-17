@@ -1,0 +1,137 @@
+<mxfile host="app.diagrams.net">
+  <diagram name="第 1 页" id="eZ_X_5ihL_Mx0LXsFMEg">
+    <mxGraphModel dx="1471" dy="803" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1000" pageHeight="760" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="layer_role" parent="1" style="shape=rect;whiteSpace=wrap;html=1;fillColor=none;strokeColor=#b85450;" vertex="1">
+          <mxGeometry height="120" width="950" x="40" y="20" as="geometry" />
+        </mxCell>
+        <mxCell id="layer_role_hdr" parent="1" style="shape=rect;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;fontSize=14;fontStyle=1;align=center;verticalAlign=middle;" value="对&lt;br&gt;象&lt;br&gt;层" vertex="1">
+          <mxGeometry height="120" width="40" x="40" y="20" as="geometry" />
+        </mxCell>
+        <mxCell id="layer_role_sub" parent="1" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=top;fontSize=12;fontColor=#b85450;fontStyle=0;" value="[角色权限视角]" vertex="1">
+          <mxGeometry height="20" width="100" x="85" y="24" as="geometry" />
+        </mxCell>
+        <mxCell id="layer_app" parent="1" style="shape=rect;whiteSpace=wrap;html=1;fillColor=none;strokeColor=#6c8ebf;" vertex="1">
+          <mxGeometry height="120" width="950" x="40" y="160" as="geometry" />
+        </mxCell>
+        <mxCell id="layer_app_hdr" parent="1" style="shape=rect;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=14;fontStyle=1;align=center;verticalAlign=middle;" value="表&lt;br&gt;现&lt;br&gt;层" vertex="1">
+          <mxGeometry height="120" width="40" x="40" y="160" as="geometry" />
+        </mxCell>
+        <mxCell id="layer_app_sub" parent="1" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=top;fontSize=12;fontColor=#6c8ebf;fontStyle=0;" value="[微信小程序端]" vertex="1">
+          <mxGeometry height="20" width="100" x="85" y="164" as="geometry" />
+        </mxCell>
+        <mxCell id="layer_biz" parent="1" style="shape=rect;whiteSpace=wrap;html=1;fillColor=none;strokeColor=#82b366;" vertex="1">
+          <mxGeometry height="200" width="950" x="40" y="325" as="geometry" />
+        </mxCell>
+        <mxCell id="layer_biz_hdr" parent="1" style="shape=rect;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;fontSize=14;fontStyle=1;align=center;verticalAlign=middle;" value="业&lt;br&gt;务&lt;br&gt;层" vertex="1">
+          <mxGeometry height="200" width="40" x="40" y="325" as="geometry" />
+        </mxCell>
+        <mxCell id="layer_biz_sub" parent="1" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=top;fontSize=12;fontColor=#82b366;fontStyle=0;" value="[云函数服务端]" vertex="1">
+          <mxGeometry height="20" width="100" x="85" y="330" as="geometry" />
+        </mxCell>
+        <mxCell id="layer_db" parent="1" style="shape=rect;whiteSpace=wrap;html=1;fillColor=none;strokeColor=#d6b656;" vertex="1">
+          <mxGeometry height="120" width="950" x="40" y="571" as="geometry" />
+        </mxCell>
+        <mxCell id="layer_db_hdr" parent="1" style="shape=rect;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=14;fontStyle=1;align=center;verticalAlign=middle;" value="数&lt;br&gt;据&lt;br&gt;层" vertex="1">
+          <mxGeometry height="120" width="40" x="40" y="571" as="geometry" />
+        </mxCell>
+        <mxCell id="layer_db_sub" parent="1" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=top;fontSize=12;fontColor=#d6b656;fontStyle=0;" value="[云数据库]" vertex="1">
+          <mxGeometry height="20" width="100" x="85" y="576" as="geometry" />
+        </mxCell>
+        <mxCell id="role_student" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#666666;align=center;verticalAlign=middle;" value="&lt;b&gt;学生&lt;/b&gt;&lt;hr/&gt;浏览职位&lt;br&gt;提交申请&lt;br&gt;查看进度" vertex="1">
+          <mxGeometry height="78" width="170" x="166" y="50" as="geometry" />
+        </mxCell>
+        <mxCell id="role_alumni" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#666666;align=center;verticalAlign=middle;" value="&lt;b&gt;校友&lt;/b&gt;&lt;hr/&gt;发布职位&lt;br&gt;处理申请" vertex="1">
+          <mxGeometry height="78" width="170" x="419" y="50" as="geometry" />
+        </mxCell>
+        <mxCell id="role_teacher" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#666666;align=center;verticalAlign=middle;" value="&lt;b&gt;教师（管理员）&lt;/b&gt;&lt;hr&gt;审核职位&lt;br&gt;统计观察" vertex="1">
+          <mxGeometry height="78" width="210" x="666" y="50" as="geometry" />
+        </mxCell>
+        <mxCell id="app_user" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#6c8ebf;align=center;verticalAlign=middle;" value="&lt;b&gt;用户与权限视图&lt;/b&gt;&lt;hr/&gt;登录授权提示&lt;br&gt;角色页面分流" vertex="1">
+          <mxGeometry height="70" width="200" x="110" y="192" as="geometry" />
+        </mxCell>
+        <mxCell id="app_job" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#6c8ebf;align=center;verticalAlign=middle;" value="&lt;b&gt;职位管理视图&lt;/b&gt;&lt;hr/&gt;动态表单组件&lt;br&gt;详情字段门控" vertex="1">
+          <mxGeometry height="70" width="200" x="330" y="192" as="geometry" />
+        </mxCell>
+        <mxCell id="app_apply" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#6c8ebf;align=center;verticalAlign=middle;" value="&lt;b&gt;申请与进度视图&lt;/b&gt;&lt;hr/&gt;投递交互入口&lt;br&gt;进度时间线展示" vertex="1">
+          <mxGeometry height="70" width="200" x="550" y="192" as="geometry" />
+        </mxCell>
+        <mxCell id="app_stat" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#6c8ebf;align=center;verticalAlign=middle;" value="&lt;b&gt;通知与统计视图&lt;/b&gt;&lt;hr/&gt;通知读取组件&lt;br&gt;聚合结果展示" vertex="1">
+          <mxGeometry height="70" width="200" x="770" y="192" as="geometry" />
+        </mxCell>
+        <mxCell id="biz_user" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#82b366;align=center;verticalAlign=middle;" value="&lt;b&gt;用户权限模块&lt;/b&gt;&lt;hr/&gt;• 登录鉴权与静默校验&lt;br&gt;• 首次角色写入与冲突拦截&lt;br&gt;• 用户资料读取与更新" vertex="1">
+          <mxGeometry height="140" width="200" x="110" y="359" as="geometry" />
+        </mxCell>
+        <mxCell id="biz_job" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#82b366;align=center;verticalAlign=middle;" value="&lt;b&gt;职位管理模块&lt;/b&gt;&lt;hr/&gt;• 职位发布与参数校验&lt;br&gt;• 职位审核与状态流转&lt;br&gt;• 列表分页与详情字段门控" vertex="1">
+          <mxGeometry height="140" width="200" x="330" y="359" as="geometry" />
+        </mxCell>
+        <mxCell id="biz_apply" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#82b366;align=center;verticalAlign=middle;" value="&lt;b&gt;申请进度模块&lt;/b&gt;&lt;hr/&gt;• 申请提交与防重复校验&lt;br&gt;• 处理权限校验与状态机流转&lt;br&gt;• 多视角进度查询与分页返回" vertex="1">
+          <mxGeometry height="140" width="200" x="550" y="359" as="geometry" />
+        </mxCell>
+        <mxCell id="biz_stat" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#82b366;align=center;verticalAlign=middle;" value="&lt;b&gt;通知统计模块&lt;/b&gt;&lt;hr/&gt;• 通知生成、读取与未读统计&lt;br&gt;• 教师权限校验与统计聚合&lt;br&gt;• 趋势、分布与漏斗结果返回" vertex="1">
+          <mxGeometry height="140" width="200" x="770" y="359" as="geometry" />
+        </mxCell>
+        <mxCell id="db_user" parent="1" style="shape=cylinder3;boundedLbl=1;backgroundOutline=1;size=10;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#d6b656;align=center;verticalAlign=middle;" value="&lt;b&gt;Users 集合&lt;/b&gt;&lt;hr/&gt;用户身份 / 角色 / 资料" vertex="1">
+          <mxGeometry height="70" width="200" x="109" y="600" as="geometry" />
+        </mxCell>
+        <mxCell id="db_job" parent="1" style="shape=cylinder3;boundedLbl=1;backgroundOutline=1;size=10;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#d6b656;align=center;verticalAlign=middle;" value="&lt;b&gt;Jobs 集合&lt;/b&gt;&lt;hr/&gt;职位状态 / 展示字段" vertex="1">
+          <mxGeometry height="70" width="200" x="329" y="600" as="geometry" />
+        </mxCell>
+        <mxCell id="db_apply" parent="1" style="shape=cylinder3;boundedLbl=1;backgroundOutline=1;size=10;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#d6b656;align=center;verticalAlign=middle;" value="&lt;b&gt;Applications 集合&lt;/b&gt;&lt;hr/&gt;防重记录 / 流转时间线" vertex="1">
+          <mxGeometry height="70" width="200" x="549" y="600" as="geometry" />
+        </mxCell>
+        <mxCell id="db_stat" parent="1" style="shape=cylinder3;boundedLbl=1;backgroundOutline=1;size=10;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#d6b656;align=center;verticalAlign=middle;" value="&lt;b&gt;Notifications 集合&lt;/b&gt;&lt;hr/&gt;通知消息 / 未读状态" vertex="1">
+          <mxGeometry height="70" width="200" x="769" y="600" as="geometry" />
+        </mxCell>
+        <mxCell id="arrow_rpc" edge="1" parent="1" source="layer_app" style="endArrow=block;endFill=1;startArrow=block;startFill=1;html=1;strokeWidth=2;strokeColor=#4A86E8;entryX=0.5;entryY=0;entryDx=0;entryDy=0;exitX=0.5;exitY=1;exitDx=0;exitDy=0;" target="layer_biz">
+          <mxGeometry height="50" relative="1" width="50" as="geometry">
+            <mxPoint x="500" y="280" as="sourcePoint" />
+            <mxPoint x="500" y="330" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="lbl_rpc" connectable="0" parent="arrow_rpc" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];backgroundColor=#ffffff;fontStyle=1;fontColor=#4A86E8;" value="wx.cloud.callFunction（请求与结果返回）" vertex="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="2" y="1" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="arrow_db" edge="1" parent="1" source="layer_biz" style="endArrow=block;endFill=1;startArrow=block;startFill=1;html=1;strokeWidth=2;strokeColor=#D6B656;entryX=0.5;entryY=0;entryDx=0;entryDy=0;exitX=0.5;exitY=1;exitDx=0;exitDy=0;" target="layer_db">
+          <mxGeometry height="50" relative="1" width="50" as="geometry">
+            <mxPoint x="500" y="540" as="sourcePoint" />
+            <mxPoint x="500" y="571" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="lbl_db_op" connectable="0" parent="arrow_db" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];backgroundColor=#ffffff;fontStyle=1;fontColor=#D6B656;" value="CRUD 读写 / 身份校验 / 防重校验 / 聚合查询" vertex="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="col_arrow_1" edge="1" parent="1" style="endArrow=block;endFill=1;html=1;strokeWidth=1;strokeColor=#999999;">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="213" y="140" as="sourcePoint" />
+            <mxPoint x="213" y="190" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="col_arrow_2" edge="1" parent="1" style="endArrow=block;endFill=1;html=1;strokeWidth=1;strokeColor=#999999;">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="433" y="140" as="sourcePoint" />
+            <mxPoint x="433" y="190" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="col_arrow_3" edge="1" parent="1" style="endArrow=block;endFill=1;html=1;strokeWidth=1;strokeColor=#999999;">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="653" y="140" as="sourcePoint" />
+            <mxPoint x="653" y="190" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="col_arrow_4" edge="1" parent="1" style="endArrow=block;endFill=1;html=1;strokeWidth=1;strokeColor=#999999;">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="873" y="140" as="sourcePoint" />
+            <mxPoint x="873" y="190" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
