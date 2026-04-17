@@ -1,0 +1,160 @@
+<mxfile host="app.diagrams.net">
+  <diagram name="第 1 页" id="eZ_X_5ihL_Mx0LXsFMEg">
+    <mxGraphModel dx="1212" dy="661" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1000" pageHeight="1100" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="actor_user" parent="1" style="shape=umlLifeline;participant=umlActor;perimeter=lifelinePerimeter;whiteSpace=wrap;html=1;container=1;collapsible=0;recursiveResize=0;verticalAlign=top;spacingTop=36;outlineConnect=0;size=50;" value="用户" vertex="1">
+          <mxGeometry height="850" width="40" x="40" y="40" as="geometry" />
+        </mxCell>
+        <mxCell id="actor_client" parent="1" style="shape=umlLifeline;perimeter=lifelinePerimeter;whiteSpace=wrap;html=1;container=1;collapsible=0;recursiveResize=0;outlineConnect=0;" value="通知页面&#xa;(微信客户端)" vertex="1">
+          <mxGeometry height="850" width="100" x="160" y="40" as="geometry" />
+        </mxCell>
+        <mxCell id="actor_query" parent="1" style="shape=umlLifeline;perimeter=lifelinePerimeter;whiteSpace=wrap;html=1;container=1;collapsible=0;recursiveResize=0;outlineConnect=0;" value="getNotifications&#xa;(云函数)" vertex="1">
+          <mxGeometry height="850" width="100" x="360" y="40" as="geometry" />
+        </mxCell>
+        <mxCell id="actor_biz" parent="1" style="shape=umlLifeline;perimeter=lifelinePerimeter;whiteSpace=wrap;html=1;container=1;collapsible=0;recursiveResize=0;outlineConnect=0;" value="业务云函数&#xa;(如 auditJob)" vertex="1">
+          <mxGeometry height="850" width="100" x="560" y="40" as="geometry" />
+        </mxCell>
+        <mxCell id="actor_db" parent="1" style="shape=umlLifeline;perimeter=lifelinePerimeter;whiteSpace=wrap;html=1;container=1;collapsible=0;recursiveResize=0;outlineConnect=0;" value="Notifications&#xa;(集合)" vertex="1">
+          <mxGeometry height="850" width="100" x="760" y="40" as="geometry" />
+        </mxCell>
+        <mxCell id="act_biz" parent="1" style="html=1;points=[[0,0,0,0,5],[0,1,0,0,-5],[1,0,0,0,5],[1,1,0,0,-5]];perimeter=orthogonalPerimeter;outlineConnect=0;targetShapes=umlLifeline;portConstraint=eastwest;newEdgeStyle={&quot;curved&quot;:0,&quot;rounded&quot;:0};" value="" vertex="1">
+          <mxGeometry height="80" width="10" x="605" y="137" as="geometry" />
+        </mxCell>
+        <mxCell id="act_db_write" parent="1" style="html=1;points=[[0,0,0,0,5],[0,1,0,0,-5],[1,0,0,0,5],[1,1,0,0,-5]];perimeter=orthogonalPerimeter;outlineConnect=0;targetShapes=umlLifeline;portConstraint=eastwest;newEdgeStyle={&quot;curved&quot;:0,&quot;rounded&quot;:0};" value="" vertex="1">
+          <mxGeometry height="40" width="10" x="805" y="157" as="geometry" />
+        </mxCell>
+        <mxCell id="act_client" parent="1" style="html=1;points=[[0,0,0,0,5],[0,1,0,0,-5],[1,0,0,0,5],[1,1,0,0,-5]];perimeter=orthogonalPerimeter;outlineConnect=0;targetShapes=umlLifeline;portConstraint=eastwest;newEdgeStyle={&quot;curved&quot;:0,&quot;rounded&quot;:0};" value="" vertex="1">
+          <mxGeometry height="480" width="10" x="205" y="280" as="geometry" />
+        </mxCell>
+        <mxCell id="act_query" parent="1" style="html=1;points=[[0,0,0,0,5],[0,1,0,0,-5],[1,0,0,0,5],[1,1,0,0,-5]];perimeter=orthogonalPerimeter;outlineConnect=0;targetShapes=umlLifeline;portConstraint=eastwest;newEdgeStyle={&quot;curved&quot;:0,&quot;rounded&quot;:0};" value="" vertex="1">
+          <mxGeometry height="360" width="10" x="405" y="320" as="geometry" />
+        </mxCell>
+        <mxCell id="act_db_read" parent="1" style="html=1;points=[[0,0,0,0,5],[0,1,0,0,-5],[1,0,0,0,5],[1,1,0,0,-5]];perimeter=orthogonalPerimeter;outlineConnect=0;targetShapes=umlLifeline;portConstraint=eastwest;newEdgeStyle={&quot;curved&quot;:0,&quot;rounded&quot;:0};" value="" vertex="1">
+          <mxGeometry height="40" width="10" x="805" y="360" as="geometry" />
+        </mxCell>
+        <mxCell id="msg1" edge="1" parent="1" source="act_biz" style="html=1;verticalAlign=bottom;endArrow=open;rounded=0;exitX=1;exitY=0.25;entryX=0;entryY=0;" target="act_db_write">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="lbl1" connectable="0" parent="msg1" style="edgeLabel;html=1;align=center;verticalAlign=bottom;resizable=0;points=[];" value="1. 异步写入通知消息" vertex="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="msg2" edge="1" parent="1" source="act_db_write" style="html=1;verticalAlign=bottom;endArrow=open;dashed=1;endSize=8;rounded=0;exitX=0;exitY=1;entryX=1;entryY=0.75;" target="act_biz">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="lbl2" connectable="0" parent="msg2" style="edgeLabel;html=1;align=center;verticalAlign=bottom;resizable=0;points=[];" value="2. 返回成功" vertex="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="divider_time" parent="1" style="shape=note;whiteSpace=wrap;html=1;backgroundOutline=1;fontSize=12;dashed=1;fillColor=#fff9c4;strokeColor=#999900;" value="一段时间后，用户主动查看" vertex="1">
+          <mxGeometry height="30" width="200" x="40" y="215" as="geometry" />
+        </mxCell>
+        <mxCell id="msg3" edge="1" parent="1" source="actor_user" style="html=1;verticalAlign=bottom;endArrow=open;rounded=0;entryX=0;entryY=0;" target="act_client">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="lbl3" connectable="0" parent="msg3" style="edgeLabel;html=1;align=center;verticalAlign=bottom;resizable=0;points=[];" value="3. 打开通知页面" vertex="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="msg4" edge="1" parent="1" source="act_client" style="html=1;verticalAlign=bottom;endArrow=block;rounded=0;exitX=1;exitY=0.0833;entryX=0;entryY=0;" target="act_query">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="lbl4" connectable="0" parent="msg4" style="edgeLabel;html=1;align=center;verticalAlign=bottom;resizable=0;points=[];" value="4. 调用 getNotifications" vertex="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="msg5" edge="1" parent="1" source="act_query" style="html=1;verticalAlign=bottom;endArrow=block;rounded=0;exitX=1;exitY=0.1111;entryX=0;entryY=0;" target="act_db_read">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="lbl5" connectable="0" parent="msg5" style="edgeLabel;html=1;align=center;verticalAlign=bottom;resizable=0;points=[];" value="5. 库表查询 (按 OPENID)" vertex="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="msg6" edge="1" parent="1" source="act_db_read" style="html=1;verticalAlign=bottom;endArrow=open;dashed=1;endSize=8;rounded=0;exitX=0;exitY=1;entryX=1;entryY=0.2222;" target="act_query">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="lbl6" connectable="0" parent="msg6" style="edgeLabel;html=1;align=center;verticalAlign=bottom;resizable=0;points=[];" value="6. 返回通知集合数据" vertex="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="frame_alt" parent="1" style="shape=umlFrame;whiteSpace=wrap;html=1;pointerEvents=0;width=40;height=20;" value="alt" vertex="1">
+          <mxGeometry height="350" width="350" x="120" y="430" as="geometry" />
+        </mxCell>
+        <mxCell id="label_err" parent="1" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontStyle=1" value="[查询失败]" vertex="1">
+          <mxGeometry height="20" width="80" x="130" y="453" as="geometry" />
+        </mxCell>
+        <mxCell id="msg7" edge="1" parent="1" source="act_query" style="html=1;verticalAlign=bottom;endArrow=open;dashed=1;endSize=8;rounded=0;exitX=0;exitY=0.4444;entryX=1;entryY=0.4166;" target="act_client">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="lbl7" connectable="0" parent="msg7" style="edgeLabel;html=1;align=center;verticalAlign=bottom;resizable=0;points=[];" value="7. 返回异常/错误提示" vertex="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="divider_empty" parent="1" style="line;strokeWidth=1;dashed=1;html=1;whiteSpace=wrap;" value="" vertex="1">
+          <mxGeometry height="10" width="350" x="120" y="520" as="geometry" />
+        </mxCell>
+        <mxCell id="label_empty" parent="1" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontStyle=1" value="[通知为空]" vertex="1">
+          <mxGeometry height="20" width="80" x="130" y="531" as="geometry" />
+        </mxCell>
+        <mxCell id="msg8" edge="1" parent="1" source="act_query" style="html=1;verticalAlign=bottom;endArrow=open;dashed=1;endSize=8;rounded=0;exitX=0;exitY=0.6666;entryX=1;entryY=0.5833;" target="act_client">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="lbl8" connectable="0" parent="msg8" style="edgeLabel;html=1;align=center;verticalAlign=bottom;resizable=0;points=[];" value="8. 返回空列表" vertex="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="divider_succ" parent="1" style="line;strokeWidth=1;dashed=1;html=1;whiteSpace=wrap;" value="" vertex="1">
+          <mxGeometry height="10" width="350" x="120" y="600" as="geometry" />
+        </mxCell>
+        <mxCell id="label_succ" parent="1" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontStyle=1" value="[查询成功]" vertex="1">
+          <mxGeometry height="20" width="80" x="130" y="611" as="geometry" />
+        </mxCell>
+        <mxCell id="msg9" edge="1" parent="1" source="act_query" style="html=1;verticalAlign=bottom;endArrow=open;dashed=1;endSize=8;rounded=0;exitX=0;exitY=0.8888;entryX=1;entryY=0.7500;" target="act_client">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="lbl9" connectable="0" parent="msg9" style="edgeLabel;html=1;align=center;verticalAlign=bottom;resizable=0;points=[];" value="9. 返回列表、总数、未读数" vertex="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="msg10" edge="1" parent="1" source="act_client" style="html=1;verticalAlign=bottom;endArrow=block;rounded=0;exitX=1;exitY=0.8333;entryX=1;entryY=0.9583;" target="act_client">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="265" y="680" />
+              <mxPoint x="265" y="740" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="lbl10" connectable="0" parent="msg10" style="edgeLabel;html=1;align=left;verticalAlign=bottom;resizable=0;points=[];" value="10. 渲染通知列表与红点" vertex="1">
+          <mxGeometry relative="1" x="-0.8" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="msg10_return" edge="1" parent="1" source="act_client" style="html=1;verticalAlign=bottom;endArrow=open;dashed=1;endSize=8;rounded=0;exitX=1;exitY=0.9583;entryX=1;entryY=0.8333;" target="act_client">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="265" y="740" />
+              <mxPoint x="265" y="680" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="56JBYmVi_YRIWCs-lBj4-2" parent="1" style="shape=umlFrame;whiteSpace=wrap;html=1;pointerEvents=0;width=40;height=20;" value="opt" vertex="1">
+          <mxGeometry height="158" width="340" x="510" y="102" as="geometry" />
+        </mxCell>
+        <mxCell id="56JBYmVi_YRIWCs-lBj4-1" parent="1" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontStyle=1" value="[业务状态变更]" vertex="1">
+          <mxGeometry height="20" width="85" x="516" y="127" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
