@@ -1,0 +1,209 @@
+<mxfile host="app.diagrams.net">
+  <diagram name="第 1 页" id="eZ_X_5ihL_Mx0LXsFMEg">
+    <mxGraphModel dx="1084" dy="592" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1200" pageHeight="820" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="E_Users" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#000000;fontStyle=1;strokeWidth=1.5;" value="Users&#xa;(用户)" vertex="1">
+          <mxGeometry height="60" width="120" x="160" y="350" as="geometry" />
+        </mxCell>
+        <mxCell id="E_Jobs" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#000000;fontStyle=1;strokeWidth=1.5;" value="Jobs&#xa;(职位)" vertex="1">
+          <mxGeometry height="60" width="120" x="742" y="350" as="geometry" />
+        </mxCell>
+        <mxCell id="E_Comps" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#000000;fontStyle=1;strokeWidth=1.5;" value="Companies&#xa;(公司)" vertex="1">
+          <mxGeometry height="60" width="120" x="742" y="124" as="geometry" />
+        </mxCell>
+        <mxCell id="E_Notifs" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#000000;fontStyle=1;strokeWidth=1.5;" value="Notifications&#xa;(通知)" vertex="1">
+          <mxGeometry height="60" width="120" x="160" y="125" as="geometry" />
+        </mxCell>
+        <mxCell id="E_Favs" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#000000;fontStyle=1;strokeWidth=1.5;" value="Favorites&#xa;(收藏关系)" vertex="1">
+          <mxGeometry height="60" width="120" x="450" y="259" as="geometry" />
+        </mxCell>
+        <mxCell id="E_Apps" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#000000;fontStyle=1;strokeWidth=1.5;" value="Applications&#xa;(申请记录)" vertex="1">
+          <mxGeometry height="60" width="120" x="450" y="449" as="geometry" />
+        </mxCell>
+        <mxCell id="E_Acts" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#000000;fontStyle=1;strokeWidth=1.5;" value="UserActions&#xa;(行为记录)" vertex="1">
+          <mxGeometry height="60" width="120" x="450" y="550" as="geometry" />
+        </mxCell>
+        <mxCell id="R_Pub" parent="1" style="rhombus;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#000000;strokeWidth=1;" value="发布" vertex="1">
+          <mxGeometry height="40" width="80" x="470" y="360" as="geometry" />
+        </mxCell>
+        <mxCell id="R_Asc" parent="1" style="rhombus;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#000000;strokeWidth=1;" value="关联" vertex="1">
+          <mxGeometry height="40" width="80" x="762" y="244" as="geometry" />
+        </mxCell>
+        <mxCell id="R_Rec" parent="1" style="rhombus;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#000000;strokeWidth=1;" value="接收" vertex="1">
+          <mxGeometry height="40" width="80" x="180" y="246" as="geometry" />
+        </mxCell>
+        <mxCell id="R_FavU" parent="1" style="rhombus;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#000000;strokeWidth=1;" value="发起" vertex="1">
+          <mxGeometry height="40" width="80" x="310" y="269" as="geometry" />
+        </mxCell>
+        <mxCell id="R_FavJ" parent="1" style="rhombus;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#000000;strokeWidth=1;" value="目标" vertex="1">
+          <mxGeometry height="40" width="80" x="622" y="269" as="geometry" />
+        </mxCell>
+        <mxCell id="R_Sub" parent="1" style="rhombus;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#000000;strokeWidth=1;" value="提交" vertex="1">
+          <mxGeometry height="40" width="80" x="310" y="459" as="geometry" />
+        </mxCell>
+        <mxCell id="R_Con" parent="1" style="rhombus;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#000000;strokeWidth=1;" value="包含" vertex="1">
+          <mxGeometry height="40" width="80" x="622" y="459" as="geometry" />
+        </mxCell>
+        <mxCell id="R_ActU" parent="1" style="rhombus;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#000000;strokeWidth=1;" value="触发" vertex="1">
+          <mxGeometry height="40" width="80" x="310" y="560" as="geometry" />
+        </mxCell>
+        <mxCell id="R_ActJ" parent="1" style="rhombus;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#000000;strokeWidth=1;" value="记录" vertex="1">
+          <mxGeometry height="40" width="80" x="622" y="560" as="geometry" />
+        </mxCell>
+        <mxCell id="L_Pub1" edge="1" parent="1" source="E_Users" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=none;strokeColor=#000000;" target="R_Pub">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="T_Pub1" connectable="0" parent="L_Pub1" style="edgeLabel;html=1;align=center;verticalAlign=bottom;resizable=0;points=[];fontSize=12;fontStyle=1" value="1" vertex="1">
+          <mxGeometry relative="1" x="-0.7" as="geometry">
+            <mxPoint x="72" y="8" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="L_Pub2" edge="1" parent="1" source="R_Pub" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=none;strokeColor=#000000;" target="E_Jobs">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="T_Pub2" connectable="0" parent="L_Pub2" style="edgeLabel;html=1;align=center;verticalAlign=bottom;resizable=0;points=[];fontSize=12;fontStyle=1" value="N" vertex="1">
+          <mxGeometry relative="1" x="0.7" as="geometry">
+            <mxPoint x="-64" y="9" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="L_Asc1" edge="1" parent="1" source="E_Comps" style="rounded=0;html=1;endArrow=none;strokeColor=#000000;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" target="R_Asc">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="802" y="254.0000000000001" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="T_Asc1" connectable="0" parent="L_Asc1" style="edgeLabel;html=1;align=center;verticalAlign=bottom;resizable=0;points=[];fontSize=12;fontStyle=1" value="1" vertex="1">
+          <mxGeometry relative="1" x="-0.7" as="geometry">
+            <mxPoint y="30" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="L_Asc2" edge="1" parent="1" source="R_Asc" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=none;strokeColor=#000000;entryX=0.5;entryY=0;entryDx=0;entryDy=0;exitX=0.5;exitY=1;exitDx=0;exitDy=0;" target="E_Jobs">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="802" y="277" as="sourcePoint" />
+            <mxPoint x="802" y="357" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="T_Asc2" connectable="0" parent="L_Asc2" style="edgeLabel;html=1;align=center;verticalAlign=bottom;resizable=0;points=[];fontSize=12;fontStyle=1" value="N" vertex="1">
+          <mxGeometry relative="1" x="0.7" as="geometry">
+            <mxPoint y="-15" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="L_Rec1" edge="1" parent="1" source="E_Users" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=none;strokeColor=#000000;" target="R_Rec">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="T_Rec1" connectable="0" parent="L_Rec1" style="edgeLabel;html=1;align=center;verticalAlign=bottom;resizable=0;points=[];fontSize=12;fontStyle=1" value="1" vertex="1">
+          <mxGeometry relative="1" x="-0.7" as="geometry">
+            <mxPoint y="-13" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="L_Rec2" edge="1" parent="1" source="R_Rec" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=none;strokeColor=#000000;" target="E_Notifs">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="T_Rec2" connectable="0" parent="L_Rec2" style="edgeLabel;html=1;align=center;verticalAlign=bottom;resizable=0;points=[];fontSize=12;fontStyle=1" value="N" vertex="1">
+          <mxGeometry relative="1" x="0.7" as="geometry">
+            <mxPoint y="29" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="L_FavU1" edge="1" parent="1" source="E_Users" style="rounded=0;html=1;endArrow=none;strokeColor=#000000;" target="R_FavU">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="T_FavU1" connectable="0" parent="L_FavU1" style="edgeLabel;html=1;align=center;verticalAlign=bottom;resizable=0;points=[];fontSize=12;fontStyle=1" value="1" vertex="1">
+          <mxGeometry relative="1" x="-0.7" as="geometry">
+            <mxPoint x="27" y="-12" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="L_FavU2" edge="1" parent="1" source="R_FavU" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=none;strokeColor=#000000;" target="E_Favs">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="T_FavU2" connectable="0" parent="L_FavU2" style="edgeLabel;html=1;align=center;verticalAlign=bottom;resizable=0;points=[];fontSize=12;fontStyle=1" value="N" vertex="1">
+          <mxGeometry relative="1" x="0.7" as="geometry">
+            <mxPoint x="-29" y="8" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="L_FavJ1" edge="1" parent="1" source="E_Jobs" style="rounded=0;html=1;endArrow=none;strokeColor=#000000;" target="R_FavJ">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="T_FavJ1" connectable="0" parent="L_FavJ1" style="edgeLabel;html=1;align=center;verticalAlign=bottom;resizable=0;points=[];fontSize=12;fontStyle=1" value="1" vertex="1">
+          <mxGeometry relative="1" x="-0.7" as="geometry">
+            <mxPoint x="-28" y="-9" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="L_FavJ2" edge="1" parent="1" source="R_FavJ" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=none;strokeColor=#000000;" target="E_Favs">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="T_FavJ2" connectable="0" parent="L_FavJ2" style="edgeLabel;html=1;align=center;verticalAlign=bottom;resizable=0;points=[];fontSize=12;fontStyle=1" value="N" vertex="1">
+          <mxGeometry relative="1" x="0.7" as="geometry">
+            <mxPoint x="21" y="10" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="L_Sub1" edge="1" parent="1" source="E_Users" style="rounded=0;html=1;endArrow=none;strokeColor=#000000;" target="R_Sub">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="T_Sub1" connectable="0" parent="L_Sub1" style="edgeLabel;html=1;align=center;verticalAlign=bottom;resizable=0;points=[];fontSize=12;fontStyle=1" value="1" vertex="1">
+          <mxGeometry relative="1" x="-0.7" as="geometry">
+            <mxPoint x="33" y="30" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="L_Sub2" edge="1" parent="1" source="R_Sub" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=none;strokeColor=#000000;" target="E_Apps">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="T_Sub2" connectable="0" parent="L_Sub2" style="edgeLabel;html=1;align=center;verticalAlign=bottom;resizable=0;points=[];fontSize=12;fontStyle=1" value="N" vertex="1">
+          <mxGeometry relative="1" x="0.7" as="geometry">
+            <mxPoint x="-22" y="10" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="L_Con1" edge="1" parent="1" source="E_Jobs" style="rounded=0;html=1;endArrow=none;strokeColor=#000000;" target="R_Con">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="T_Con1" connectable="0" parent="L_Con1" style="edgeLabel;html=1;align=center;verticalAlign=bottom;resizable=0;points=[];fontSize=12;fontStyle=1" value="1" vertex="1">
+          <mxGeometry relative="1" x="-0.7" as="geometry">
+            <mxPoint x="-29" y="29" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="L_Con2" edge="1" parent="1" source="R_Con" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=none;strokeColor=#000000;exitX=0;exitY=0.5;exitDx=0;exitDy=0;" target="E_Apps">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="620" y="440" as="sourcePoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="T_Con2" connectable="0" parent="L_Con2" style="edgeLabel;html=1;align=center;verticalAlign=bottom;resizable=0;points=[];fontSize=12;fontStyle=1" value="N" vertex="1">
+          <mxGeometry relative="1" x="0.7" as="geometry">
+            <mxPoint x="18" y="9" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="L_ActU1" edge="1" parent="1" source="E_Users" style="rounded=0;html=1;endArrow=none;strokeColor=#000000;" target="R_ActU">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="T_ActU1" connectable="0" parent="L_ActU1" style="edgeLabel;html=1;align=center;verticalAlign=bottom;resizable=0;points=[];fontSize=12;fontStyle=1" value="1" vertex="1">
+          <mxGeometry relative="1" x="-0.7" as="geometry">
+            <mxPoint x="35" y="65" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="L_ActU2" edge="1" parent="1" source="R_ActU" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=none;strokeColor=#000000;" target="E_Acts">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="T_ActU2" connectable="0" parent="L_ActU2" style="edgeLabel;html=1;align=center;verticalAlign=bottom;resizable=0;points=[];fontSize=12;fontStyle=1" value="N" vertex="1">
+          <mxGeometry relative="1" x="0.7" as="geometry">
+            <mxPoint x="-22" y="10" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="L_ActJ1" edge="1" parent="1" source="E_Jobs" style="rounded=0;html=1;endArrow=none;strokeColor=#000000;" target="R_ActJ">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="T_ActJ1" connectable="0" parent="L_ActJ1" style="edgeLabel;html=1;align=center;verticalAlign=bottom;resizable=0;points=[];fontSize=12;fontStyle=1" value="1" vertex="1">
+          <mxGeometry relative="1" x="-0.7" as="geometry">
+            <mxPoint x="-37" y="63" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="L_ActJ2" edge="1" parent="1" source="R_ActJ" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=none;strokeColor=#000000;" target="E_Acts">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="T_ActJ2" connectable="0" parent="L_ActJ2" style="edgeLabel;html=1;align=center;verticalAlign=bottom;resizable=0;points=[];fontSize=12;fontStyle=1" value="N" vertex="1">
+          <mxGeometry relative="1" x="0.7" as="geometry">
+            <mxPoint x="19" y="10" as="offset" />
+          </mxGeometry>
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
