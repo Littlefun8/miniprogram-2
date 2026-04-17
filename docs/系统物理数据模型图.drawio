@@ -1,0 +1,81 @@
+<mxfile host="app.diagrams.net">
+  <diagram name="第 1 页" id="eZ_X_5ihL_Mx0LXsFMEg">
+    <mxGraphModel dx="1373" dy="749" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1200" pageHeight="820" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="T_Users" parent="1" style="rounded=0;whiteSpace=wrap;html=1;verticalAlign=top;align=left;spacingTop=8;spacingLeft=12;spacingRight=12;fillColor=#ffffff;strokeColor=#000000;strokeWidth=1.5;" value="&lt;b&gt;users&lt;/b&gt;&lt;hr&gt;&lt;div style=&quot;line-height: 1.5;&quot;&gt;_id : String [PK]&lt;br&gt;_openid : String [UK]&lt;br&gt;nickName : String&lt;br&gt;avatarUrl : String&lt;br&gt;userType : String&lt;br&gt;isVerified : Boolean&lt;br&gt;profile : Object&lt;br&gt;createTime : Date&lt;br&gt;updateTime : Date&lt;/div&gt;" vertex="1">
+          <mxGeometry height="210" width="220" x="154" y="200" as="geometry" />
+        </mxCell>
+        <mxCell id="T_Jobs" parent="1" style="rounded=0;whiteSpace=wrap;html=1;verticalAlign=top;align=left;spacingTop=8;spacingLeft=12;spacingRight=12;fillColor=#ffffff;strokeColor=#000000;strokeWidth=1.5;" value="&lt;b&gt;jobs&lt;/b&gt;&lt;hr&gt;&lt;div style=&quot;line-height: 1.5;&quot;&gt;_id : String [PK]&lt;br&gt;title : String&lt;br&gt;salary : String&lt;br&gt;company : String [FK]&lt;br&gt;location : String&lt;br&gt;tags : Array&lt;br&gt;status : String&lt;br&gt;publisherId : String [FK]&lt;br&gt;applicationCount : Number&lt;br&gt;createTime : Date&lt;/div&gt;" vertex="1">
+          <mxGeometry height="230" width="220" x="780" y="188" as="geometry" />
+        </mxCell>
+        <mxCell id="T_Comps" parent="1" style="rounded=0;whiteSpace=wrap;html=1;verticalAlign=top;align=left;spacingTop=8;spacingLeft=12;spacingRight=12;fillColor=#ffffff;strokeColor=#000000;strokeWidth=1.5;" value="&lt;b&gt;companies&lt;/b&gt;&lt;hr&gt;&lt;div style=&quot;line-height: 1.5;&quot;&gt;_id : String [PK]&lt;br&gt;name : String [UK]&lt;br&gt;description : String&lt;br&gt;industry : String&lt;br&gt;size : String&lt;br&gt;location : String&lt;br&gt;createTime : Date&lt;/div&gt;" vertex="1">
+          <mxGeometry height="170" width="220" x="1070" y="218" as="geometry" />
+        </mxCell>
+        <mxCell id="T_Apps" parent="1" style="rounded=0;whiteSpace=wrap;html=1;verticalAlign=top;align=left;spacingTop=8;spacingLeft=12;spacingRight=12;fillColor=#ffffff;strokeColor=#000000;strokeWidth=1.5;" value="&lt;b&gt;applications&lt;/b&gt;&lt;hr&gt;&lt;div style=&quot;line-height: 1.5;&quot;&gt;_id : String [PK]&lt;br&gt;jobId : String [FK]&lt;br&gt;userId : String [FK]&lt;br&gt;publisherId : String [FK]&lt;br&gt;status : String&lt;br&gt;timeline : Array&lt;br&gt;resumeSnapshot : Object&lt;br&gt;remark : String&lt;br&gt;createTime : Date&lt;/div&gt;" vertex="1">
+          <mxGeometry height="210" width="220" x="470" y="400" as="geometry" />
+        </mxCell>
+        <mxCell id="T_Notifs" parent="1" style="rounded=0;whiteSpace=wrap;html=1;verticalAlign=top;align=left;spacingTop=8;spacingLeft=12;spacingRight=12;fillColor=#ffffff;strokeColor=#000000;strokeWidth=1.5;" value="&lt;b&gt;notifications&lt;/b&gt;&lt;hr&gt;&lt;div style=&quot;line-height: 1.5;&quot;&gt;_id : String [PK]&lt;br&gt;userId : String [FK]&lt;br&gt;type : String&lt;br&gt;relatedId : String&lt;br&gt;title : String&lt;br&gt;content : String&lt;br&gt;isRead : Boolean&lt;br&gt;createTime : Date&lt;/div&gt;" vertex="1">
+          <mxGeometry height="190" width="220" x="154" y="540" as="geometry" />
+        </mxCell>
+        <mxCell id="T_Favs" parent="1" style="rounded=0;whiteSpace=wrap;html=1;verticalAlign=top;align=left;spacingTop=8;spacingLeft=12;spacingRight=12;fillColor=#ffffff;strokeColor=#000000;strokeWidth=1.5;" value="&lt;b&gt;favorites&lt;/b&gt;&lt;hr&gt;&lt;div style=&quot;line-height: 1.5;&quot;&gt;_id : String [PK]&lt;br&gt;userId : String [FK]&lt;br&gt;jobId : String [FK]&lt;br&gt;createTime : Date&lt;/div&gt;" vertex="1">
+          <mxGeometry height="130" width="220" x="470" y="240" as="geometry" />
+        </mxCell>
+        <mxCell id="T_Acts" parent="1" style="rounded=0;whiteSpace=wrap;html=1;verticalAlign=top;align=left;spacingTop=8;spacingLeft=12;spacingRight=12;fillColor=#ffffff;strokeColor=#000000;strokeWidth=1.5;" value="&lt;b&gt;user_actions&lt;/b&gt;&lt;hr&gt;&lt;div style=&quot;line-height: 1.5;&quot;&gt;_id : String [PK]&lt;br&gt;userId : String [FK]&lt;br&gt;jobId : String [FK]&lt;br&gt;actionType : String&lt;br&gt;stayDuration : Number&lt;br&gt;weight : Number&lt;br&gt;createTime : Date&lt;/div&gt;" vertex="1">
+          <mxGeometry height="170" width="220" x="470" y="30" as="geometry" />
+        </mxCell>
+        <mxCell id="E_U2J" edge="1" parent="1" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;startArrow=ERmandOne;endArrow=ERmany;startFill=0;endFill=0;strokeColor=#000000;strokeWidth=1.5;">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="430" y="386" />
+              <mxPoint x="430" y="386" />
+            </Array>
+            <mxPoint x="374" y="386.0666666666666" as="sourcePoint" />
+            <mxPoint x="780" y="386.0666666666666" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="E_C2J" edge="1" parent="1" source="T_Comps" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;startArrow=ERmandOne;endArrow=ERmany;startFill=0;endFill=0;strokeColor=#000000;strokeWidth=1.5;" target="T_Jobs">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="E_U2A" edge="1" parent="1" source="T_Users" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;startArrow=ERmandOne;endArrow=ERmany;startFill=0;endFill=0;strokeColor=#000000;strokeWidth=1.5;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" target="T_Apps">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="264" y="420" as="sourcePoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="E_J2A" edge="1" parent="1" source="T_Jobs" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;startArrow=ERmandOne;endArrow=ERmany;startFill=0;endFill=0;strokeColor=#000000;strokeWidth=1.5;entryX=1;entryY=0.5;entryDx=0;entryDy=0;exitX=0.5;exitY=1;exitDx=0;exitDy=0;" target="T_Apps">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="890" y="490" as="sourcePoint" />
+            <mxPoint x="760" y="537" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="E_U2N" edge="1" parent="1" source="T_Users" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;startArrow=ERmandOne;endArrow=ERmany;startFill=0;endFill=0;strokeColor=#000000;strokeWidth=1.5;" target="T_Notifs">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="E_U2F" edge="1" parent="1" source="T_Users" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;startArrow=ERmandOne;endArrow=ERmany;startFill=0;endFill=0;strokeColor=#000000;strokeWidth=1.5;" target="T_Favs">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="E_J2F" edge="1" parent="1" source="T_Jobs" style="rounded=0;html=1;startArrow=ERmandOne;endArrow=ERmany;startFill=0;endFill=0;strokeColor=#000000;strokeWidth=1.5;exitX=0;exitY=0.5;exitDx=0;exitDy=0;">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="780" y="306.35" as="sourcePoint" />
+            <mxPoint x="690" y="303.65" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="E_U2Ac" edge="1" parent="1" source="T_Users" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;startArrow=ERmandOne;endArrow=ERmany;startFill=0;endFill=0;strokeColor=#000000;strokeWidth=1.5;" target="T_Acts">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="264" y="115" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="E_J2Ac" edge="1" parent="1" source="T_Jobs" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;startArrow=ERmandOne;endArrow=ERmany;startFill=0;endFill=0;strokeColor=#000000;strokeWidth=1.5;" target="T_Acts">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="900" y="115" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
