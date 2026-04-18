@@ -1,0 +1,93 @@
+<mxfile host="app.diagrams.net">
+  <diagram name="第 1 页" id="hOI_y5E-hLcrtWMhZcBy">
+    <mxGraphModel dx="42821" dy="33535" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="U-xVEuenWb5TOJchnk1j-26" edge="1" parent="1" source="start" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" target="n1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="start" parent="1" style="ellipse;html=1;shape=startState;fillColor=#000000;strokeColor=#000000;" vertex="1">
+          <mxGeometry height="30" width="30" x="385" y="20" as="geometry" />
+        </mxCell>
+        <mxCell id="U-xVEuenWb5TOJchnk1j-27" edge="1" parent="1" source="n1" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" target="n2">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="n1" parent="1" style="rounded=1;whiteSpace=wrap;html=1;arcSize=40;fillColor=#ffffff;strokeColor=#000000;" value="进入职位列表页" vertex="1">
+          <mxGeometry height="40" width="180" x="310" y="90" as="geometry" />
+        </mxCell>
+        <mxCell id="U-xVEuenWb5TOJchnk1j-28" edge="1" parent="1" source="n2" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" target="n3">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="n2" parent="1" style="rounded=1;whiteSpace=wrap;html=1;arcSize=40;fillColor=#ffffff;strokeColor=#000000;" value="输入筛选条件&lt;br&gt;(keyword/city/jobType)" vertex="1">
+          <mxGeometry height="50" width="180" x="310" y="170" as="geometry" />
+        </mxCell>
+        <mxCell id="U-xVEuenWb5TOJchnk1j-29" edge="1" parent="1" source="n3" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" target="n4">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="n3" parent="1" style="rounded=1;whiteSpace=wrap;html=1;arcSize=40;fillColor=#ffffff;strokeColor=#000000;" value="调用 getJobList" vertex="1">
+          <mxGeometry height="40" width="180" x="310" y="260" as="geometry" />
+        </mxCell>
+        <mxCell id="U-xVEuenWb5TOJchnk1j-30" edge="1" parent="1" source="n4" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" target="n5">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="n4" parent="1" style="rounded=1;whiteSpace=wrap;html=1;arcSize=40;fillColor=#ffffff;strokeColor=#000000;" value="服务端设置查询条件&lt;br&gt;默认 status=published" vertex="1">
+          <mxGeometry height="50" width="180" x="310" y="340" as="geometry" />
+        </mxCell>
+        <mxCell id="U-xVEuenWb5TOJchnk1j-31" edge="1" parent="1" source="n5" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" target="d1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="n5" parent="1" style="rounded=1;whiteSpace=wrap;html=1;arcSize=40;fillColor=#ffffff;strokeColor=#000000;" value="分页查询并返回列表&lt;br&gt;(pageNum/pageSize/hasMore)" vertex="1">
+          <mxGeometry height="50" width="220" x="290" y="430" as="geometry" />
+        </mxCell>
+        <mxCell id="U-xVEuenWb5TOJchnk1j-32" edge="1" parent="1" source="d1" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" target="n6">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="U-xVEuenWb5TOJchnk1j-37" connectable="0" parent="U-xVEuenWb5TOJchnk1j-32" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" value="是" vertex="1">
+          <mxGeometry relative="1" x="-0.3085" y="-1" as="geometry">
+            <mxPoint y="1" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="U-xVEuenWb5TOJchnk1j-33" edge="1" parent="1" source="d1" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" target="n7">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="U-xVEuenWb5TOJchnk1j-36" connectable="0" parent="U-xVEuenWb5TOJchnk1j-33" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" value="否" vertex="1">
+          <mxGeometry relative="1" x="-0.0943" y="-1" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="d1" parent="1" style="rhombus;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#000000;" value="查询成功" vertex="1">
+          <mxGeometry height="80" width="160" x="320" y="520" as="geometry" />
+        </mxCell>
+        <mxCell id="U-xVEuenWb5TOJchnk1j-35" edge="1" parent="1" source="n7" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=1;entryY=0.5;entryDx=0;entryDy=0;" target="n2">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="630" y="195" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="n7" parent="1" style="rounded=1;whiteSpace=wrap;html=1;arcSize=40;fillColor=#ffffff;strokeColor=#000000;" value="提示获取失败" vertex="1">
+          <mxGeometry height="40" width="180" x="540" y="540" as="geometry" />
+        </mxCell>
+        <mxCell id="U-xVEuenWb5TOJchnk1j-34" edge="1" parent="1" source="n6" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" target="end">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="n6" parent="1" style="rounded=1;whiteSpace=wrap;html=1;arcSize=40;fillColor=#ffffff;strokeColor=#000000;" value="渲染职位列表" vertex="1">
+          <mxGeometry height="50" width="180" x="310" y="640" as="geometry" />
+        </mxCell>
+        <mxCell id="end" parent="1" style="ellipse;html=1;shape=endState;fillColor=#000000;strokeColor=#000000;" vertex="1">
+          <mxGeometry height="30" width="30" x="385" y="730" as="geometry" />
+        </mxCell>
+        <mxCell id="2" edge="1" parent="1" source="start" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;strokeColor=#000000;exitX=0.5;exitY=1;entryX=0.5;entryY=0;" target="n1" />
+        <mxCell id="3" edge="1" parent="1" source="n1" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;strokeColor=#000000;exitX=0.5;exitY=1;entryX=0.5;entryY=0;" target="n2" />
+        <mxCell id="4" edge="1" parent="1" source="n2" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;strokeColor=#000000;exitX=0.5;exitY=1;entryX=0.5;entryY=0;" target="n3" />
+        <mxCell id="5" edge="1" parent="1" source="n3" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;strokeColor=#000000;exitX=0.5;exitY=1;entryX=0.5;entryY=0;" target="n4" />
+        <mxCell id="6" edge="1" parent="1" source="n4" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;strokeColor=#000000;exitX=0.5;exitY=1;entryX=0.5;entryY=0;" target="n5" />
+        <mxCell id="7" edge="1" parent="1" source="n5" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;strokeColor=#000000;exitX=0.5;exitY=1;entryX=0.5;entryY=0;" target="d1" />
+        <mxCell id="8" edge="1" parent="1" source="d1" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;strokeColor=#000000;exitX=0.5;exitY=1;entryX=0.5;entryY=0;labelBackgroundColor=#ffffff;" target="n6" value="是" />
+        <mxCell id="9" edge="1" parent="1" source="n6" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;strokeColor=#000000;exitX=0.5;exitY=1;entryX=0.5;entryY=0;" target="end" />
+        <mxCell id="10" edge="1" parent="1" source="d1" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;strokeColor=#000000;exitX=1;exitY=0.5;entryX=0;entryY=0.5;labelBackgroundColor=#ffffff;" target="n7" value="否" />
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
