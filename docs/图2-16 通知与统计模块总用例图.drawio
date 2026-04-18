@@ -1,0 +1,59 @@
+<mxfile host="app.diagrams.net">
+  <diagram name="第 1 页" id="2F_Qeusw0-9GI4lCn1LK">
+    <mxGraphModel dx="1144" dy="624" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1169" pageHeight="827" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="Boundary" parent="1" style="shape=rect;whiteSpace=wrap;html=1;verticalAlign=top;fontStyle=1;fontSize=14;fillColor=none;strokeColor=#000000;strokeWidth=1.5;spacingTop=10;" value="通知与统计模块" vertex="1">
+          <mxGeometry height="260" width="220" x="380" y="120" as="geometry" />
+        </mxCell>
+        <mxCell id="Actor_User" parent="1" style="shape=umlActor;verticalLabelPosition=bottom;verticalAlign=top;html=1;outlineConnect=0;fillColor=#ffffff;strokeColor=#000000;strokeWidth=1.5;" value="用户" vertex="1">
+          <mxGeometry height="80" width="40" x="240" y="160" as="geometry" />
+        </mxCell>
+        <mxCell id="Actor_Student" parent="1" style="shape=umlActor;verticalLabelPosition=bottom;verticalAlign=top;html=1;outlineConnect=0;fillColor=#ffffff;strokeColor=#000000;strokeWidth=1.5;" value="学生" vertex="1">
+          <mxGeometry height="80" width="40" x="100" y="100" as="geometry" />
+        </mxCell>
+        <mxCell id="Actor_Alumni" parent="1" style="shape=umlActor;verticalLabelPosition=bottom;verticalAlign=top;html=1;outlineConnect=0;fillColor=#ffffff;strokeColor=#000000;strokeWidth=1.5;" value="校友" vertex="1">
+          <mxGeometry height="80" width="40" x="100" y="220" as="geometry" />
+        </mxCell>
+        <mxCell id="Actor_Teacher" parent="1" style="shape=umlActor;verticalLabelPosition=bottom;verticalAlign=top;html=1;outlineConnect=0;fillColor=#ffffff;strokeColor=#000000;strokeWidth=1.5;" value="教师&#xa;(管理员)" vertex="1">
+          <mxGeometry height="80" width="40" x="241" y="304" as="geometry" />
+        </mxCell>
+        <mxCell id="UC_ViewNotice" parent="1" style="ellipse;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#000000;strokeWidth=1.5;" value="查看通知" vertex="1">
+          <mxGeometry height="50" width="140" x="420" y="175" as="geometry" />
+        </mxCell>
+        <mxCell id="UC_ViewStats" parent="1" style="ellipse;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#000000;strokeWidth=1.5;" value="查看统计" vertex="1">
+          <mxGeometry height="50" width="140" x="420" y="280" as="geometry" />
+        </mxCell>
+        <mxCell id="2" edge="1" parent="1" source="Actor_Student" style="endArrow=block;endFill=0;endSize=12;html=1;strokeColor=#000000;strokeWidth=1.5;edgeStyle=orthogonalEdgeStyle;rounded=0;" target="Actor_User">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="190" y="140" />
+              <mxPoint x="190" y="200" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="3" edge="1" parent="1" source="Actor_Alumni" style="endArrow=block;endFill=0;endSize=12;html=1;strokeColor=#000000;strokeWidth=1.5;edgeStyle=orthogonalEdgeStyle;rounded=0;" target="Actor_User">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="190" y="260" />
+              <mxPoint x="190" y="200" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="4" edge="1" parent="1" source="Actor_Teacher" style="endArrow=block;endFill=0;endSize=12;html=1;strokeColor=#000000;strokeWidth=1.5;edgeStyle=orthogonalEdgeStyle;rounded=0;exitX=0.5;exitY=0;exitDx=0;exitDy=0;exitPerimeter=0;">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="260" y="308" as="sourcePoint" />
+            <mxPoint x="261" y="263" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="5" edge="1" parent="1" source="Actor_User" style="endArrow=none;html=1;strokeColor=#000000;strokeWidth=1.5;rounded=0;" target="UC_ViewNotice">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="6" edge="1" parent="1" source="Actor_Teacher" style="endArrow=none;html=1;strokeColor=#000000;strokeWidth=1.5;rounded=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" target="UC_ViewStats">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
