@@ -1,0 +1,62 @@
+<mxfile host="app.diagrams.net">
+  <diagram name="第 1 页" id="2F_Qeusw0-9GI4lCn1LK">
+    <mxGraphModel dx="1084" dy="592" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1169" pageHeight="827" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="Boundary" parent="1" style="shape=rect;whiteSpace=wrap;html=1;verticalAlign=top;fontStyle=1;fontSize=14;fillColor=none;strokeColor=#000000;strokeWidth=1.5;spacingTop=10;" value="用户与权限管理模块" vertex="1">
+          <mxGeometry height="320" width="220" x="314" y="90" as="geometry" />
+        </mxCell>
+        <mxCell id="Actor_User" parent="1" style="shape=umlActor;verticalLabelPosition=bottom;verticalAlign=top;html=1;outlineConnect=0;fillColor=#ffffff;strokeColor=#000000;strokeWidth=1.5;" value="用户" vertex="1">
+          <mxGeometry height="80" width="40" x="205" y="200" as="geometry" />
+        </mxCell>
+        <mxCell id="Actor_Student" parent="1" style="shape=umlActor;verticalLabelPosition=bottom;verticalAlign=top;html=1;outlineConnect=0;fillColor=#ffffff;strokeColor=#000000;strokeWidth=1.5;" value="学生" vertex="1">
+          <mxGeometry height="80" width="40" x="60" y="90" as="geometry" />
+        </mxCell>
+        <mxCell id="Actor_Alumni" parent="1" style="shape=umlActor;verticalLabelPosition=bottom;verticalAlign=top;html=1;outlineConnect=0;fillColor=#ffffff;strokeColor=#000000;strokeWidth=1.5;" value="校友" vertex="1">
+          <mxGeometry height="80" width="40" x="60" y="200" as="geometry" />
+        </mxCell>
+        <mxCell id="Actor_Teacher" parent="1" style="shape=umlActor;verticalLabelPosition=bottom;verticalAlign=top;html=1;outlineConnect=0;fillColor=#ffffff;strokeColor=#000000;strokeWidth=1.5;" value="教师&#xa;(管理员)" vertex="1">
+          <mxGeometry height="80" width="40" x="60" y="310" as="geometry" />
+        </mxCell>
+        <mxCell id="UC_Login" parent="1" style="ellipse;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#000000;strokeWidth=1.5;" value="登录" vertex="1">
+          <mxGeometry height="50" width="140" x="354" y="140" as="geometry" />
+        </mxCell>
+        <mxCell id="UC_Role" parent="1" style="ellipse;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#000000;strokeWidth=1.5;" value="角色确认" vertex="1">
+          <mxGeometry height="50" width="140" x="354" y="235" as="geometry" />
+        </mxCell>
+        <mxCell id="UC_Persist" parent="1" style="ellipse;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#000000;strokeWidth=1.5;" value="登录状态持久化" vertex="1">
+          <mxGeometry height="50" width="140" x="354" y="330" as="geometry" />
+        </mxCell>
+        <mxCell id="2" edge="1" parent="1" source="Actor_Student" style="endArrow=block;endFill=0;endSize=12;html=1;strokeColor=#000000;strokeWidth=1.5;edgeStyle=orthogonalEdgeStyle;rounded=0;" target="Actor_User">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="150" y="130" />
+              <mxPoint x="150" y="240" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="3" edge="1" parent="1" source="Actor_Alumni" style="endArrow=block;endFill=0;endSize=12;html=1;strokeColor=#000000;strokeWidth=1.5;edgeStyle=orthogonalEdgeStyle;rounded=0;" target="Actor_User">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="4" edge="1" parent="1" source="Actor_Teacher" style="endArrow=block;endFill=0;endSize=12;html=1;strokeColor=#000000;strokeWidth=1.5;edgeStyle=orthogonalEdgeStyle;rounded=0;" target="Actor_User">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="150" y="350" />
+              <mxPoint x="150" y="240" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="5" edge="1" parent="1" source="Actor_User" style="endArrow=none;html=1;strokeColor=#000000;strokeWidth=1.5;" target="UC_Login">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="6" edge="1" parent="1" source="Actor_User" style="endArrow=none;html=1;strokeColor=#000000;strokeWidth=1.5;" target="UC_Role">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="7" edge="1" parent="1" source="Actor_User" style="endArrow=none;html=1;strokeColor=#000000;strokeWidth=1.5;" target="UC_Persist">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
