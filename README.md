@@ -160,17 +160,14 @@
 
 - [微信开发者工具](https://developers.weixin.qq.com/miniprogram/dev/devtools/download.html)
 - Node.js 14+
-- 微信小程序 AppID：`wxde50d797e8fd2c38`
+- 微信小程序 AppID（需自行申请）
 
 ### 启动步骤
 
 1. 克隆项目并进入目录
 2. 用微信开发者工具打开项目根目录
-3. 安装依赖：`npm install`
-4. 在开发者工具中：工具 → 构建 npm
-5. 选择云开发环境（`cloud1-3g3q2srz04d1d705`）
-6. 右键 `cloudfunctions/` 下各函数目录 → 上传并部署
-
-## AppID
-
-`wxde50d797e8fd2c38`
+3. 在 `project.config.json` 中填入你自己的 AppID
+4. 安装依赖：`npm install`
+5. 在开发者工具中：工具 → 构建 npm
+6. 选择云开发环境
+7. 右键 `cloudfunctions/` 下各函数目录 → 上传并部署

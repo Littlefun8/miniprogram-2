@@ -1,0 +1,7 @@
+# Linguist overrides — make GitHub language stats reflect real code, not prototypes
+prototype/** linguist-documentation
+docs/** linguist-documentation
+*.drawio linguist-documentation
+*.mmd linguist-documentation
+*.puml linguist-documentation
+*.drawio.xml linguist-documentation
