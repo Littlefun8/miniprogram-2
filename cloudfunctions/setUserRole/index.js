@@ -3,7 +3,7 @@ const cloud = require('wx-server-sdk')
 cloud.init({ env: 'cloud1-3g3q2srz04d1d705' })
 const db = cloud.database()
 
-const VALID_ROLES = ['student', 'alumni', 'teacher']
+const VALID_ROLES = ['student', 'alumni']
 const ROLE_LABELS = { student: '学生', alumni: '校友', teacher: '老师' }
 
 // 云函数入口函数
@@ -17,7 +17,7 @@ exports.main = async (event, context) => {
     return { code: 400, message: '缺少 userType 参数' }
   }
   if (!VALID_ROLES.includes(userType)) {
-    return { code: 400, message: `非法角色类型：${userType}` }
+    return { code: 400, message: `非法角色类型：${userType}，仅支持 student/alumni；teacher/admin 由系统指定` }
   }
 
   try {

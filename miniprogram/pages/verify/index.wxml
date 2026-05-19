@@ -1,0 +1,17 @@
+<view class="container">
+  <view class="card">
+    <view class="title">身份认证</view>
+    <view class="row">
+      <text class="label">当前角色</text>
+      <text class="value">{{userType || '未选择'}}</text>
+    </view>
+    <view class="row">
+      <text class="label">认证状态</text>
+      <text class="value {{isVerified ? 'ok' : 'pending'}}">{{isVerified ? '已认证' : '未认证'}}</text>
+    </view>
+    <view class="tips">{{verifyTips}}</view>
+    <t-button theme="primary" block bindtap="onSubmitVerify" wx:if="{{!isVerified}}">提交认证申请</t-button>
+    <t-button theme="default" block disabled wx:if="{{isVerified}}">已完成认证</t-button>
+  </view>
+</view>
+

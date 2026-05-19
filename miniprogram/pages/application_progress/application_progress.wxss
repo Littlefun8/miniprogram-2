@@ -130,6 +130,41 @@ page {
   z-index: 1;
 }
 
+.timeline-progress {
+  position: absolute;
+  top: 16rpx;
+  height: 2rpx;
+  background-color: #0052d9;
+  z-index: 1;
+  opacity: 0;
+}
+
+.timeline-progress.active {
+  opacity: 1;
+}
+
+.timeline-progress.passed {
+  background-color: #52c41a;
+}
+
+.timeline-progress.failed {
+  background-color: #ff4d4f;
+}
+
+.timeline-progress.wait {
+  background-color: #eee;
+}
+
+.timeline-progress-1 {
+  left: 16rpx;
+  width: calc((100% - 32rpx) / 2);
+}
+
+.timeline-progress-2 {
+  left: calc(16rpx + ((100% - 32rpx) / 2));
+  width: calc((100% - 32rpx) / 2);
+}
+
 .timeline-item {
   position: relative;
   z-index: 2;
@@ -150,6 +185,10 @@ page {
 
 .timeline-item.done .timeline-dot {
   background-color: #0052d9;
+}
+
+.timeline-item.wait .timeline-dot {
+  background-color: #ddd;
 }
 
 .timeline-item.passed .timeline-dot {
@@ -176,9 +215,28 @@ page {
   font-weight: 500;
 }
 
-.timeline-item.done .timeline-title {
-  color: #0052d9;
+.timeline-item.wait .timeline-title {
+  color: #999;
+}
+
+.timeline-item.passed .timeline-title {
+  color: #52c41a;
   font-weight: 500;
+}
+
+.timeline-item.failed .timeline-title {
+  color: #ff4d4f;
+  font-weight: 500;
+}
+
+.application-status.completed-success {
+  color: #52c41a;
+  background-color: #f6ffed;
+}
+
+.application-status.completed-failed {
+  color: #ff4d4f;
+  background-color: #fff2f0;
 }
 
 .timeline-time {
@@ -352,4 +410,14 @@ page {
 .application-footer-actions {
   display: flex;
   gap: 16rpx;
-} 
+  margin-top: 12rpx;
+}
+
+.review-remark {
+  margin-top: 16rpx;
+  padding: 12rpx 16rpx;
+  background: #fff7e6;
+  color: #ad6800;
+  border-radius: 8rpx;
+  font-size: 24rpx;
+}

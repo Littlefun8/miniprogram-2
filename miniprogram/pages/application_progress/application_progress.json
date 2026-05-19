@@ -1,5 +1,5 @@
 {
-  "navigationBarTitleText": "申请进度",
+  "navigationBarTitleText": "进度中心",
   "enablePullDownRefresh": true,
   "usingComponents": {
     "t-button": "tdesign-miniprogram/button/button",

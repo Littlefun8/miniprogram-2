@@ -1,12 +1,12 @@
 /* job_detail.wxss */
 page {
   background-color: #f5f5f5;
-  padding-bottom: 160rpx;
+  padding-bottom: 260rpx;
 }
 
 .container {
   min-height: 100vh;
-  padding-bottom: 180rpx;
+  padding-bottom: 300rpx;
   box-sizing: border-box;
   background: #f5f5f5;
 }
@@ -15,7 +15,7 @@ page {
 .job-header {
   background: #fff;
   padding: 30rpx;
-  margin-bottom: 20rpx;
+  margin-bottom: 8rpx;
   box-shadow: 0 2rpx 8rpx rgba(0, 0, 0, 0.05);
 }
 
@@ -62,8 +62,12 @@ page {
   background: #fff;
   border-radius: 16rpx;
   box-shadow: 0 2rpx 8rpx rgba(0,0,0,0.05);
-  margin: 24rpx 24rpx 0 24rpx;
+  margin: 14rpx 24rpx 0 24rpx;
   padding: 30rpx;
+}
+
+.section-first {
+  margin-top: 8rpx;
 }
 
 .section-title {
@@ -87,6 +91,13 @@ page {
 /* 内推者有话说 */
 .recommender-section {
   background: #fff;
+}
+
+.recommender-text {
+  white-space: pre-wrap;
+  word-break: break-word;
+  color: #666;
+  line-height: 1.8;
 }
 
 /* 岗位描述 */
@@ -114,14 +125,21 @@ page {
 /* 发布人信息 */
 .publisher-container {
   display: flex;
-  flex-direction: column;
+  align-items: center;
+  gap: 20rpx;
+  flex-wrap: nowrap;
 }
 
 .publisher-info,
 .reviewer-info {
   display: flex;
   align-items: center;
-  margin-bottom: 16rpx;
+}
+
+.person-separator {
+  width: 2rpx;
+  height: 32rpx;
+  background: #e6e6e6;
 }
 
 .publisher-name,
@@ -278,3 +296,10 @@ page {
 .apply-btn {
   flex: 1;
 }
+
+.applied-info-btn {
+  color: #666;
+  background: #f5f5f5;
+  border-color: #e6e6e6;
+}
+

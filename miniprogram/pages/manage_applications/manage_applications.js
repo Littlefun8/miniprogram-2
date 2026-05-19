@@ -3,32 +3,42 @@ const auth = require('../../utils/auth.js')
 
 Page({
   data: {
-    activeTab: 'pending',
-    tabs: [
-      { key: 'pending', label: '待处理' },
-      { key: 'processing', label: '处理中' },
-      { key: 'accepted', label: '已通过' },
-      { key: 'rejected', label: '已拒绝' }
-    ],
     applications: [],
     isLoading: false,
-    noMoreData: false
+    noMoreData: false,
+    expandedApplicationId: ''
   },
 
   onLoad() {
+    if (wx.hideHomeButton) wx.hideHomeButton()
+    if (!auth.isLoggedIn()) {
+      auth.showLoginPrompt(() => {
+        this.loadApplications()
+      })
+      return
+    }
+
+    const userType = auth.getUserType()
+    if (userType !== 'alumni') {
+      wx.showModal({
+        title: '提示',
+        content: '仅校友可访问申请审核页面',
+        showCancel: false,
+        success: () => wx.switchTab({ url: '/pages/user_profile/user_profile' })
+      })
+      return
+    }
     this.loadApplications()
+  },
+
+  onShow() {
+    if (wx.hideHomeButton) wx.hideHomeButton()
   },
 
   onPullDownRefresh() {
     this.setData({ applications: [], noMoreData: false })
     this.loadApplications()
     wx.stopPullDownRefresh()
-  },
-
-  onTabChange(e) {
-    const tab = e.currentTarget.dataset.tab
-    this.setData({ activeTab: tab, applications: [], noMoreData: false })
-    this.loadApplications()
   },
 
   // 加载收到的申请
@@ -39,17 +49,21 @@ Page({
     wx.cloud.callFunction({
       name: 'getApplications',
       data: {
-        status: this.data.activeTab,
+        status: 'all',
         asPublisher: true,
         pageNum: 1,
         pageSize: 20
       },
       success: res => {
         if (res.result.code === 200) {
+          const actionable = (res.result.data || [])
+            .filter(item => item.status === 'pending' || item.status === 'processing')
+            .map(item => this.normalizeApplication(item))
+
           this.setData({
-            applications: res.result.data,
+            applications: actionable,
             isLoading: false,
-            noMoreData: res.result.data.length === 0
+            noMoreData: actionable.length === 0
           })
         } else {
           this.setData({ isLoading: false })
@@ -59,6 +73,37 @@ Page({
         this.setData({ isLoading: false })
         wx.showToast({ title: '加载失败', icon: 'none' })
       }
+    })
+  },
+
+  normalizeApplication(item) {
+    const profile = item.applicantProfile || {}
+    const resume = item.resumeSnapshot || {}
+
+    const applicantName = item.applicantName || resume.name || resume.realName || this.maskOpenid(item.userId)
+
+    return {
+      ...item,
+      applicantName,
+      applicantSchool: profile.school || resume.school || resume.university || '',
+      applicantMajor: profile.major || resume.major || '',
+      applicantGrade: profile.grade || resume.grade || '',
+      applicantPhone: resume.phone || resume.mobile || '',
+      applicantEmail: resume.email || '',
+      applicantBio: profile.bio || resume.bio || resume.introduction || ''
+    }
+  },
+
+  maskOpenid(openid) {
+    if (!openid || typeof openid !== 'string') return '未命名申请人'
+    if (openid.length <= 8) return openid
+    return `${openid.slice(0, 4)}****${openid.slice(-4)}`
+  },
+
+  onToggleApplicantDetail(e) {
+    const appId = e.currentTarget.dataset.id
+    this.setData({
+      expandedApplicationId: this.data.expandedApplicationId === appId ? '' : appId
     })
   },
 

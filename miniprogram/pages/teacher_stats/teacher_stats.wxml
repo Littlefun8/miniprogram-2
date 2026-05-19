@@ -1,7 +1,8 @@
 <!--teacher_stats.wxml-->
 <view class="container">
   <!-- 数据概览区域 -->
-  <view class="overview-section" style="display: flex; gap: 16rpx; margin-bottom: 24rpx;">
+  <view class="overview-section">
+    <view class="overview-grid">
       <view class="stats-card">
         <view class="stats-value">{{overview.totalStudents}}</view>
         <view class="stats-label">总学生数</view>
@@ -17,30 +18,44 @@
       <view class="stats-card">
         <view class="stats-value">{{overview.passRate}}%</view>
         <view class="stats-label">通过率</view>
+      </view>
     </view>
   </view>
 
-  <!-- 申请状态分布（环形图替换为统计卡片） -->
-  <view class="chart-section">
+  <!-- 模块导航：减少长页滚动 -->
+  <view class="module-tabs">
+    <view
+      wx:for="{{modules}}"
+      wx:key="key"
+      class="module-tab {{activeModule === item.key ? 'active' : ''}}"
+      bindtap="onModuleChange"
+      data-key="{{item.key}}"
+    >{{item.label}}</view>
+  </view>
+
+  <!-- 总览模块 -->
+  <view wx:if="{{activeModule === 'overview'}}">
+    <!-- 申请状态分布 -->
+    <view class="chart-section">
     <view class="section-header">
       <view class="section-title">申请状态分布</view>
     </view>
     <view class="status-distribution">
       <view class="status-item" wx:for="{{statusDistribution}}" wx:key="status">
-        <view class="status-progress">
-          <t-progress percentage="{{item.percentage}}" color="{{item.color}}" theme="circle" />
-        </view>
-        <view class="status-info">
+        <view class="status-head">
           <view class="status-name">{{item.status}}</view>
           <view class="status-count">{{item.count}}</view>
-          <view class="status-percent">{{item.percentage}}%</view>
         </view>
+        <view class="status-bar-track">
+          <view class="status-bar" style="width: {{item.percentage}}%; background: {{item.color}}"></view>
+        </view>
+        <view class="status-percent">占比 {{item.percentage}}%</view>
       </view>
     </view>
   </view>
 
-  <!-- 申请趋势区域（折线图替换为表格） -->
-  <view class="chart-section">
+    <!-- 申请趋势区域 -->
+    <view class="chart-section">
     <view class="section-header">
       <view class="section-title">申请趋势</view>
       <view class="filter-group">
@@ -55,7 +70,7 @@
         </view>
       </view>
     </view>
-    <view class="trend-table-container">
+    <view class="trend-table-container" wx:if="{{hasTrendData}}">
       <view class="table-header">
         <view class="table-cell date-cell">日期</view>
         <view class="table-cell count-cell">申请数</view>
@@ -69,10 +84,16 @@
         </view>
       </view>
     </view>
+    <view class="trend-empty" wx:else>
+      <view class="trend-empty-title">暂无趋势数据</view>
+      <view class="trend-empty-desc">请切换时间范围，或先产生申请记录后再查看。</view>
+    </view>
+  </view>
   </view>
 
-  <!-- 岗位热度排行（柱状图替换为表格） -->
-  <view class="chart-section">
+  <!-- 岗位模块 -->
+  <view wx:if="{{activeModule === 'jobs'}}">
+    <view class="chart-section">
     <view class="section-header">
       <view class="section-title">岗位热度排行</view>
     </view>
@@ -90,15 +111,17 @@
       </view>
     </view>
   </view>
+  </view>
 
-  <!-- 发布内推岗位较多的校友 -->
-  <view class="stats-section">
+  <!-- 人员模块 -->
+  <view wx:if="{{activeModule === 'people'}}">
+    <!-- 发布内推岗位较多的校友 -->
+    <view class="stats-section">
     <view class="section-header">
       <view class="section-title">发布内推岗位较多的校友</view>
-      <view class="view-all" bindtap="viewMoreTopAlumni">查看全部</view>
     </view>
     
-    <view class="stats-card-list">
+    <view class="stats-card-list" wx:if="{{topReferralPosters.length > 0}}">
       <view class="alumni-card" wx:for="{{topReferralPosters}}" wx:key="name">
         <view class="alumni-info">
           <t-avatar image="{{item.avatar}}" size="medium" />
@@ -111,20 +134,19 @@
         <view class="alumni-stats">
           <view class="alumni-value">{{item.referralsPostedCount}}</view>
           <view class="alumni-label">发布岗位数</view>
-          <view class="thank-btn" bindtap="thankAlumnus" data-id="{{item.name}}">感谢校友</view>
         </view>
       </view>
     </view>
+    <view class="module-empty" wx:else>暂无发布统计数据</view>
   </view>
 
-  <!-- 处理职位申请响应度低的校友 -->
-  <view class="stats-section">
+    <!-- 处理职位申请响应度低的校友 -->
+    <view class="stats-section">
     <view class="section-header">
       <view class="section-title">响应度低的校友</view>
-      <view class="view-all" bindtap="viewMoreLowResponseAlumni">查看全部</view>
     </view>
     
-    <view class="stats-card-list">
+    <view class="stats-card-list" wx:if="{{lowResponsivenessAlumni.length > 0}}">
       <view class="alumni-card" wx:for="{{lowResponsivenessAlumni}}" wx:key="name">
         <view class="alumni-info">
           <t-avatar image="{{item.avatar}}" size="medium" />
@@ -135,20 +157,20 @@
           </view>
         </view>
         <view class="alumni-stats">
-          <view class="contact-btn" bindtap="contactAlumnus" data-id="{{item.name}}">提醒校友</view>
+          <view class="alumni-label">待处理较多</view>
         </view>
       </view>
     </view>
+    <view class="module-empty" wx:else>暂无响应预警数据</view>
   </view>
 
-  <!-- 申请职位成功率较高的学生 -->
-  <view class="stats-section">
+    <!-- 申请职位成功率较高的学生 -->
+    <view class="stats-section">
     <view class="section-header">
       <view class="section-title">申请成功率高的学生</view>
-      <view class="view-all" bindtap="viewMoreSuccessfulStudents">查看全部</view>
     </view>
     
-    <view class="stats-card-list">
+    <view class="stats-card-list" wx:if="{{highSuccessRateStudents.length > 0}}">
       <view class="student-card" wx:for="{{highSuccessRateStudents}}" wx:key="name">
         <view class="student-info">
           <t-avatar image="{{item.avatar}}" size="medium" />
@@ -167,21 +189,22 @@
             <view class="success-count">{{item.applicationsSuccessful}}</view>
             <view class="application-label">成功数</view>
           </view>
-          <view class="invite-btn" bindtap="inviteShareExperience" data-id="{{item.name}}">邀请分享</view>
         </view>
       </view>
     </view>
+    <view class="module-empty" wx:else>暂无学生样本数据</view>
+  </view>
   </view>
 
-  <!-- 最近申请区域 -->
-  <view class="recent-section">
+  <!-- 申请模块 -->
+  <view wx:if="{{activeModule === 'applications'}}">
+    <view class="recent-section">
     <view class="section-header">
       <view class="section-title">最近申请</view>
-      <view class="view-all" bindtap="navigateToAllApplications">查看全部</view>
     </view>
     
-    <view class="applications-list">
-      <view 
+    <view class="applications-list" wx:if="{{recentApplications.length > 0}}">
+      <view
         class="application-item" 
         wx:for="{{recentApplications}}" 
         wx:key="id"
@@ -205,8 +228,8 @@
         </view>
         
         <view class="application-footer">
-          <view class="apply-time" style="width: 566rpx; display: block; box-sizing: border-box">申请时间: {{item.applyTime}}</view>
-          <t-button 
+          <view class="apply-time">申请时间: {{item.applyTime}}</view>
+          <t-button
             size="small" 
             theme="primary" 
             bindtap="handleApplication" 
@@ -216,6 +239,8 @@
         </view>
       </view>
     </view>
+    <view class="module-empty" wx:else>暂无最近申请记录</view>
+  </view>
   </view>
 </view>
 

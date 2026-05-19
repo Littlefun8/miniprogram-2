@@ -14,6 +14,7 @@ Page({
       appliesCount: 0,
       favoritesCount: 0
     },
+    notifyUnreadCount: 0,
     showLoginDialog: false,
     isLoggedIn: false,
     userType: ''
@@ -21,6 +22,7 @@ Page({
 
   onLoad() {
     this.syncAuthState()
+    this.updateNotificationBadge()
     if (this.data.isLoggedIn) {
       this.getUserStats()
     }
@@ -28,9 +30,37 @@ Page({
 
   onShow() {
     this.syncAuthState()
+    this.updateNotificationBadge()
     if (this.data.isLoggedIn) {
       this.getUserStats()
     }
+  },
+
+  updateNotificationBadge() {
+    if (!this.data.isLoggedIn) {
+      wx.removeTabBarBadge({ index: 2 })
+      this.setData({ notifyUnreadCount: 0 })
+      return
+    }
+
+    wx.cloud.callFunction({
+      name: 'getNotifications',
+      data: { pageNum: 1, pageSize: 1 },
+      success: (res) => {
+        if (res.result && res.result.code === 200) {
+          const unread = res.result.unreadCount || 0
+          if (unread > 0) {
+            wx.setTabBarBadge({
+              index: 2,
+              text: unread > 99 ? '99+' : String(unread)
+            })
+          } else {
+            wx.removeTabBarBadge({ index: 2 })
+          }
+          this.setData({ notifyUnreadCount: unread })
+        }
+      }
+    })
   },
 
   syncAuthState() {
@@ -50,8 +80,10 @@ Page({
       data: {},
       success: res => {
         if (res.result.code === 200) {
-          const { userInfo, publishedJobs, applications } = res.result.data
+          const { userInfo, publishedJobs, applications, reviewCount, demoPostsCount } = res.result.data
           if (userInfo) {
+            const isTeacherSide = userInfo.userType === 'teacher' || userInfo.userType === 'admin'
+            const isAlumni = userInfo.userType === 'alumni'
             this.setData({
               userInfo: {
                 avatarUrl: userInfo.avatarUrl || this.data.userInfo.avatarUrl,
@@ -60,16 +92,74 @@ Page({
                 role: auth.ROLE_LABELS[userInfo.userType] || this.data.userInfo.role
               },
               stats: {
-                postsCount: publishedJobs ? publishedJobs.length : 0,
-                appliesCount: applications ? applications.length : 0,
+                postsCount: isTeacherSide
+                  ? ((demoPostsCount && demoPostsCount > 0) ? demoPostsCount : (publishedJobs ? publishedJobs.length : 0))
+                  : (publishedJobs ? publishedJobs.length : 0),
+                appliesCount: (isTeacherSide || isAlumni)
+                  ? (reviewCount || 0)
+                  : (applications ? applications.length : 0),
                 favoritesCount: 0
               }
             })
+
+            // teacher/alumni 首次进入时自动补齐演示数据，便于截图
+            this.seedDemoDataIfNeeded(userInfo)
           }
         }
       },
       fail: () => {
         wx.showToast({ title: '获取用户信息失败', icon: 'none' })
+      }
+    })
+  },
+
+  seedDemoDataIfNeeded(userInfo) {
+    const role = userInfo && userInfo.userType
+    if (role !== 'teacher' && role !== 'admin' && role !== 'alumni') return
+
+    this.generateDemoData(true)
+  },
+
+  generateDemoData(isSilent) {
+    wx.cloud.callFunction({
+      name: 'seedDemoData',
+      data: {},
+      success: (res) => {
+        if (res.result && res.result.code === 200) {
+          const stats = (res.result.data && res.result.data.stats) || {}
+          if (this.data.userType === 'teacher' || this.data.userType === 'admin') {
+            this.setData({
+              stats: {
+                ...this.data.stats,
+                postsCount: stats.postsCount || this.data.stats.postsCount,
+                appliesCount: stats.reviewCount || this.data.stats.appliesCount
+              }
+            })
+          } else if (this.data.userType === 'alumni') {
+            this.setData({
+              stats: {
+                ...this.data.stats,
+                postsCount: stats.postsCount || this.data.stats.postsCount,
+                appliesCount: stats.reviewCount || this.data.stats.appliesCount
+              }
+            })
+          }
+
+          if (!isSilent) {
+            wx.showToast({ title: '演示数据已生成', icon: 'success' })
+            this.getUserStats()
+          }
+        } else if (!isSilent) {
+          wx.showToast({
+            title: (res.result && res.result.message) || '生成失败',
+            icon: 'none'
+          })
+        }
+      },
+      fail: () => {
+        if (!isSilent) {
+          wx.showToast({ title: '生成失败', icon: 'none' })
+        }
       }
     })
   },
@@ -119,6 +209,14 @@ Page({
   onNavigateToMyApplies() {
     if (!this.data.isLoggedIn) {
       this.showLoginDialog()
+      return
+    }
+    if (this.data.userType === 'alumni') {
+      wx.navigateTo({ url: '/pages/manage_applications/manage_applications' })
+      return
+    }
+    if (this.data.userType === 'teacher' || this.data.userType === 'admin') {
+      wx.navigateTo({ url: '/pages/audit_job/audit_job' })
       return
     }
     wx.navigateTo({ url: '/pages/application_progress/application_progress' })
@@ -202,6 +300,10 @@ Page({
   onNavigateToTeacherStats() {
     if (!this.data.isLoggedIn) {
       this.showLoginDialog()
+      return
+    }
+    if (this.data.userType !== 'teacher' && this.data.userType !== 'admin') {
+      wx.showToast({ title: '仅教师可查看职位统计', icon: 'none' })
       return
     }
     wx.navigateTo({ url: '/pages/teacher_stats/teacher_stats' })

@@ -7,29 +7,7 @@
 
 .header { margin-bottom: 24rpx; }
 .title { display: block; font-size: 40rpx; font-weight: 600; color: #333; }
-
-.tabs {
-  display: flex;
-  background: #fff;
-  border-radius: 12rpx;
-  margin-bottom: 24rpx;
-  overflow: hidden;
-}
-
-.tab {
-  flex: 1;
-  text-align: center;
-  padding: 20rpx 0;
-  font-size: 28rpx;
-  color: #666;
-  border-bottom: 4rpx solid transparent;
-}
-
-.tab-active {
-  color: #0079FE;
-  font-weight: 600;
-  border-bottom-color: #0079FE;
-}
+.subtitle { display: block; font-size: 26rpx; color: #999; margin-top: 8rpx; }
 
 .loading-wrap, .empty-wrap {
   display: flex;
@@ -69,7 +47,7 @@
   margin-top: 4rpx;
 }
 
-.app-status {
+.status-pill {
   font-size: 24rpx;
   padding: 6rpx 16rpx;
   border-radius: 6rpx;
@@ -91,6 +69,37 @@
   color: #999;
 }
 
+.app-user {
+  display: block;
+  font-size: 26rpx;
+  color: #333;
+  margin-top: 8rpx;
+}
+
+.detail-toggle {
+  margin-top: 12rpx;
+}
+
+.detail-toggle-text {
+  font-size: 24rpx;
+  color: #0079FE;
+}
+
+.applicant-detail {
+  margin-top: 12rpx;
+  padding: 16rpx;
+  background: #f8fbff;
+  border: 1rpx solid #e6f1ff;
+  border-radius: 8rpx;
+}
+
+.app-detail-item {
+  display: block;
+  font-size: 24rpx;
+  color: #555;
+  line-height: 1.7;
+}
+
 .app-remark {
   display: block;
   font-size: 26rpx;
@@ -100,19 +109,19 @@
 
 .app-actions {
   display: flex;
-  gap: 16rpx;
+  gap: 24rpx;
   justify-content: flex-end;
   border-top: 1rpx solid #f0f0f0;
-  padding-top: 20rpx;
+  padding-top: 24rpx;
 }
 
 .btn {
-  font-size: 26rpx;
-  padding: 10rpx 32rpx;
+  font-size: 28rpx;
+  padding: 12rpx 40rpx;
   border-radius: 8rpx;
   text-align: center;
 }
 
-.btn-process { background: #0079FE; color: #fff; }
-.btn-accept { background: #07c160; color: #fff; }
-.btn-reject { background: #e34d59; color: #fff; }
+.btn-primary { background: #0079FE; color: #fff; }
+.btn-success { background: #07c160; color: #fff; }
+.btn-danger { background: #e34d59; color: #fff; }

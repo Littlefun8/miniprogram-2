@@ -14,6 +14,20 @@
 
 .title { font-size: 40rpx; font-weight: 600; color: #333; }
 
+.title-wrap {
+  display: flex;
+  align-items: center;
+  gap: 16rpx;
+}
+
+.unread-pill {
+  padding: 4rpx 14rpx;
+  background: #e6f4ff;
+  color: #0052d9;
+  border-radius: 20rpx;
+  font-size: 22rpx;
+}
+
 .mark-read {
   font-size: 26rpx;
   color: #0079FE;
@@ -54,6 +68,25 @@
 
 .notification-content { flex: 1; }
 
+.notification-meta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 8rpx;
+}
+
+.read-status {
+  font-size: 22rpx;
+}
+
+.read-status.unread {
+  color: #d4380d;
+}
+
+.read-status.read {
+  color: #999;
+}
+
 .notification-title {
   display: block;
   font-size: 30rpx;
@@ -71,7 +104,25 @@
 }
 
 .notification-time {
-  display: block;
   font-size: 22rpx;
   color: #999;
+}
+
+.notification-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 6rpx;
+}
+
+.notification-action {
+  font-size: 22rpx;
+  color: #0052d9;
+}
+
+.no-more {
+  text-align: center;
+  color: #999;
+  font-size: 24rpx;
+  padding: 16rpx 0 24rpx;
 }
