@@ -1,9 +1,12 @@
 <!-- pages/notifications/notifications.wxml -->
 <view class="container">
   <view class="header">
-    <text class="title">通知</text>
+    <view class="title-wrap">
+      <text class="title">通知</text>
+      <view class="unread-pill" wx:if="{{unreadCount > 0}}">未读 {{unreadCount}}</view>
+    </view>
     <view wx:if="{{unreadCount > 0}}" class="mark-read" bindtap="onMarkAllRead">
-      全部已读
+      全部设为已读
     </view>
   </view>
 
@@ -24,10 +27,19 @@
           bindtap="onNotificationTap" data-item="{{item}}">
       <view class="dot" wx:if="{{!item.isRead}}"></view>
       <view class="notification-content">
+        <view class="notification-meta">
+          <t-tag size="small" theme="{{item.typeTheme}}" variant="light">{{item.typeText}}</t-tag>
+          <text class="read-status {{item.isRead ? 'read' : 'unread'}}">{{item.statusText}}</text>
+        </view>
         <text class="notification-title">{{item.title}}</text>
         <text class="notification-body">{{item.content}}</text>
-        <text class="notification-time">{{item.createTime}}</text>
+        <view class="notification-footer">
+          <text class="notification-time">{{item.displayTime}}</text>
+          <text class="notification-action">点击查看相关内容</text>
+        </view>
       </view>
     </view>
   </view>
+
+  <view class="no-more" wx:if="{{!isLoading && notifications.length > 0 && noMoreData}}">没有更多通知了</view>
 </view>

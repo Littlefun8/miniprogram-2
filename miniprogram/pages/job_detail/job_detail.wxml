@@ -26,20 +26,20 @@
   </view>
 
   <!-- 内推者有话说 -->
-  <view class="section recommender-section" wx:if="{{recommenderNodes}}">
+  <view class="section section-first recommender-section">
     <view class="section-title">
       <t-icon name="chat" size="36rpx" color="#0052d9" />
       <text>内推者有话说</text>
     </view>
     <view class="section-content">
-      <rich-text nodes="{{recommenderNodes}}"></rich-text>
+      <text class="recommender-text">{{jobDetail.recommenderMessage || '该职位暂未填写内推寄语'}}</text>
     </view>
   </view>
 
   <!-- 岗位描述 -->
   <view class="section" wx:if="{{jobDetail.description || jobDetail.requirements}}">
     <view class="section-title">
-      <t-icon name="file-icon" size="36rpx" color="#0052d9" />
+      <t-icon name="view-list" size="36rpx" color="#0052d9" />
       <text>岗位描述</text>
     </view>
     <view class="section-content">
@@ -64,12 +64,13 @@
       <view class="publisher-info">
         <t-avatar image="{{jobDetail.publisher.avatar}}" icon="user" size="small" />
         <text class="publisher-name">{{jobDetail.publisher.name}}</text>
-        <t-tag variant="light" theme="primary" size="small">{{jobDetail.publisher.tag}}</t-tag>
+        <t-tag wx:if="{{jobDetail.publisher.tag}}" variant="light" theme="primary" size="small">{{jobDetail.publisher.tag}}</t-tag>
       </view>
-      <view class="reviewer-info" wx:if="{{jobDetail.reviewer}}">
+      <view class="person-separator" wx:if="{{jobDetail.reviewer && jobDetail.reviewer.name}}"></view>
+      <view class="reviewer-info" wx:if="{{jobDetail.reviewer && jobDetail.reviewer.name}}">
         <t-avatar image="{{jobDetail.reviewer.avatar}}" icon="user" size="small" />
         <text class="reviewer-name">{{jobDetail.reviewer.name}}</text>
-        <t-tag variant="light" theme="success" size="small">{{jobDetail.reviewer.tag}}</t-tag>
+        <t-tag wx:if="{{jobDetail.reviewer.tag}}" variant="light" theme="success" size="small">{{jobDetail.reviewer.tag}}</t-tag>
       </view>
     </view>
   </view>
@@ -115,21 +116,21 @@
         <t-icon name="check-circle-filled" size="36rpx" color="#07c160" />
         <text>内推已通过，以下信息请妥善保管</text>
       </view>
-      <view class="unlocked-card" wx:if="{{jobDetail.referralCode}}">
+      <view class="unlocked-card">
         <view class="unlocked-label">内推码</view>
         <view class="unlocked-value-row">
           <text class="unlocked-value">{{jobDetail.referralCode}}</text>
           <view class="copy-btn" bindtap="copyText" data-text="{{jobDetail.referralCode}}">复制</view>
         </view>
       </view>
-      <view class="unlocked-card" wx:if="{{jobDetail.jobLink}}">
+      <view class="unlocked-card">
         <view class="unlocked-label">内推链接</view>
         <view class="unlocked-value-row">
           <text class="unlocked-value link-value">{{jobDetail.jobLink}}</text>
           <view class="copy-btn" bindtap="copyText" data-text="{{jobDetail.jobLink}}">复制</view>
         </view>
       </view>
-      <view class="unlocked-card" wx:if="{{jobDetail.contactWechat}}">
+      <view class="unlocked-card">
         <view class="unlocked-label">校友微信</view>
         <view class="unlocked-value-row">
           <text class="unlocked-value">{{jobDetail.contactWechat}}</text>
@@ -161,10 +162,9 @@
   <!-- 待审核 -->
   <t-button wx:if="{{userApplicationStatus === 'pending'}}" theme="default" block class="apply-btn" disabled>审核中...</t-button>
 
-  <!-- 已通过：分享 -->
-  <t-button wx:if="{{userApplicationStatus === 'accepted'}}" theme="primary" block class="apply-btn" bindtap="shareToFriend">
-    <t-icon name="share" size="32rpx" color="#fff" style="margin-right: 8rpx;" />
-    分享给同学
+  <!-- 已通过：信息提示 -->
+  <t-button wx:if="{{userApplicationStatus === 'accepted'}}" theme="default" block class="apply-btn applied-info-btn" disabled>
+    申请已通过
   </t-button>
 
   <!-- 已拒绝 -->

@@ -58,7 +58,7 @@ function getActionWeight(actionType) {
 
 // 提取 setUserRole 中的角色校验
 function validateUserRole(userType) {
-  const validRoles = ['student', 'alumni', 'teacher']
+  const validRoles = ['student', 'alumni']
   if (!validRoles.includes(userType)) {
     return { code: 400, message: `无效的用户类型: ${userType}` }
   }
@@ -201,7 +201,6 @@ console.log('\n--- setUserRole 角色校验 ---')
 test('合法角色校验通过', () => {
   assert(validateUserRole('student') === null)
   assert(validateUserRole('alumni') === null)
-  assert(validateUserRole('teacher') === null)
 })
 
 test('非法角色返回 400', () => {

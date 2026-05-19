@@ -1,183 +1,86 @@
 <!--post_job.wxml-->
 <view class="container" bindtap="onTap">
   <view class="form-container">
-    <!-- 职位名称 -->
-    <t-input 
-      label="职位名称" 
-      placeholder="请输入职位名称" 
-      value="{{formData.title}}" 
-      bind:change="onTitleChange" 
-      required
-    />
-    
-    <!-- 薪资范围 -->
-    <t-input 
-      label="薪资范围" 
-      placeholder="如：15k-25k" 
-      value="{{formData.salary}}" 
-      bind:change="onSalaryChange" 
-      required
-      tips="请填写月薪范围，单位为k"
-    />
-    
-    <!-- 工作地点 -->
+    <view class="compact-hint">说明：带 * 的字段为必填项</view>
+
+    <t-input label="*职位名称" placeholder="例如：前端开发工程师" value="{{formData.title}}" bind:change="onTitleChange" required />
+    <t-input label="*薪资范围" placeholder="例如：15k-25k" value="{{formData.salary}}" bind:change="onSalaryChange" required tips="建议按“最低-最高”格式填写" />
+
     <view class="form-item">
-      <t-select
-        label="工作地点"
-        value="{{selectedCityIndex}}"
-        options="{{cityOptions}}"
-        bind:change="onCitySelectChange"
-        placeholder="请选择工作地点"
-        required
-      />
+      <t-select label="*工作地点" value="{{selectedCityIndex}}" options="{{cityOptions}}" bind:change="onCitySelectChange" placeholder="请选择工作地点" required />
     </view>
     <view class="form-item" wx:if="{{useCustomLocation}}">
-      <t-input
-        label="自定义地点"
-        placeholder="请输入具体地点，如：远程/海外/其他"
-        value="{{customLocation}}"
-        bind:change="onCustomLocationChange"
-        required
-      />
+      <t-input label="*自定义地点" placeholder="例如：远程 / 海外 / 其他城市" value="{{customLocation}}" bind:change="onCustomLocationChange" required />
     </view>
-    
-    <!-- 职位标签 -->
-    <view class="form-block">
-      <view class="form-block-title">职位标签</view>
+
+    <t-input label="*所属公司" placeholder="默认已填，可按实际情况修改" value="{{formData.company}}" bind:change="onCompanyChange" required />
+
+    <view class="form-block compact-block">
+      <view class="form-block-title">*职位标签</view>
       <view class="tag-selector">
-        <view 
-          class="tag {{item.selected ? 'selected' : ''}}" 
-          wx:for="{{tagOptions}}" 
-          wx:key="value" 
-          bindtap="onTagSelect" 
-          data-tag="{{item.value}}"
-        >
-          {{item.label}}
-        </view>
+        <view class="tag {{item.selected ? 'selected' : ''}}" wx:for="{{tagOptions}}" wx:key="value" bindtap="onTagSelect" data-tag="{{item.value}}">{{item.label}}</view>
       </view>
       <view class="tag-counter">已选择 <text class="counter">{{formData.tags.length}}</text>/5 个标签</view>
     </view>
-    
-    <!-- 内推者想说 -->
-    <view class="form-block" style="height: 545rpx; display: block; box-sizing: border-box">
-      <view class="form-block-title">内推者想说</view>
-      <t-textarea 
-        placeholder="请尽可能真实地描述该职位的优势和可能存在的劝退点"
-        value="{{formData.recommenderComment}}" 
-        bind:change="onRecommenderCommentChange" 
-        maxlength="500"
-        indicator
-        disableDefaultPadding="{{true}}"
-      />
-      <view class="form-tips" style="position: relative; left: 14rpx; top: -31rpx">例如：工作环境、技术栈、团队氛围、发展前景等</view>
-    </view>
-    
-    <!-- 岗位详情 -->
-    <t-input 
-      label="岗位详情" 
-      placeholder="请输入岗位详情链接 或 投递方式" 
-      value="{{formData.jobLink}}" 
-      bind:change="onJobLinkChange" 
-      required
-    />
-    
-    
-    
-    <!-- 关联信息说明 -->
-    <view class="form-block" style="height: 172rpx; display: block; box-sizing: border-box; left: 0rpx; top: 0rpx">
-      <view class="form-block-title" style="width: 654rpx; display: flex; box-sizing: border-box; position: relative; left: 0rpx; top: -14rpx">*关联信息说明</view>
-      <view class="info-box" style="height: 100rpx; display: block; box-sizing: border-box; position: relative; left: 0rpx; top: -33rpx">
-        <view style="position: relative; left: 0rpx; top: -14rpx">发布后，将生成岗位详情页面，并提供二维码供分享。</view>
-        <view style="position: relative; left: 0rpx; top: -12rpx">查看者扫描二维码后，可看到学生和老师关联信息。</view>
-      </view>
-    </view>
-    
-    <!-- 所属公司 -->
-    <t-input
-      label="所属公司"
-      placeholder="请输入公司名称"
-      value="{{formData.company}}"
-      bind:change="onCompanyChange"
-      required
-    />
 
-    <!-- 期望条件（可选） -->
-    <view class="form-block">
-      <view class="form-block-title">期望条件（可选）</view>
-      <t-input
-        label="期望专业"
-        placeholder="如：计算机、软件工程，多个用逗号分隔"
-        value="{{formData.expectedMajors}}"
-        bind:change="onExpectedMajorsChange"
-      />
-      <view style="height: 16rpx;"></view>
-      <t-input
-        label="最低年级"
-        placeholder="如：大二、研一"
-        value="{{formData.minGrade}}"
-        bind:change="onMinGradeChange"
-      />
-      <view class="form-tips">设置后，不匹配的学生申请时会收到提醒（仍可申请）</view>
+    <view class="form-block compact-block">
+      <view class="form-block-title">*内推者有话说</view>
+      <t-textarea class="textarea-recommender" placeholder="请写明岗位优势与注意点，建议包含：团队氛围、成长空间、工作节奏" value="{{formData.recommenderComment}}" bind:change="onRecommenderCommentChange" maxlength="500" indicator />
     </view>
-    
-    <!-- 发布人信息 -->
-    <view class="form-block">
-      <view class="form-block-title">发布人信息</view>
-      <view class="publisher-info">
-        <t-input 
-          placeholder="发布人姓名" 
-          value="{{formData.publisherName}}" 
-          bind:change="onPublisherNameChange"
-          style="flex: 1; margin-right: 20rpx;"
-        />
-        <view class="custom-select" catchtap>
-          <view class="select-value" catchtap="togglePublisherDropdown">
-            {{formData.publisherType}}
-            <t-icon name="chevron-down" size="32rpx" />
-          </view>
-          <view class="select-dropdown {{isPublisherDropdownOpen ? 'open' : ''}}">
-            <view 
-              class="select-option {{formData.publisherType === '校友' ? 'active' : ''}}" 
-              data-value="校友" 
-              catchtap="onPublisherTypeSelect"
-            >校友</view>
-            <view 
-              class="select-option {{formData.publisherType === '老师' ? 'active' : ''}}" 
-              data-value="老师" 
-              catchtap="onPublisherTypeSelect"
-            >老师</view>
-          </view>
-        </view>
+
+    <view class="form-block compact-block">
+      <view class="form-block-title">*岗位描述</view>
+
+      <view class="sub-section">
+        <view class="sub-title">岗位职责</view>
+        <t-textarea class="textarea-normal" placeholder="请简要列出岗位核心职责（3-5条）" value="{{formData.description}}" bind:change="onDescriptionChange" maxlength="300" indicator />
       </view>
-      <view class="form-tips">请填写发布人姓名和身份标签</view>
+
+      <view class="sub-section">
+        <view class="sub-title">任职要求</view>
+        <t-textarea class="textarea-normal" placeholder="请填写任职要求，可包含学历、专业、技能、经验等" value="{{formData.requirements}}" bind:change="onRequirementsChange" maxlength="300" indicator />
+      </view>
+
+      <view class="sub-section">
+        <view class="sub-title">期望条件</view>
+        <t-input label="期望专业" placeholder="如：计算机、软件工程" value="{{formData.expectedMajors}}" bind:change="onExpectedMajorsChange" />
+        <view class="field-gap"></view>
+        <t-input label="最低年级" placeholder="如：大二、研一" value="{{formData.minGrade}}" bind:change="onMinGradeChange" />
+        <view class="form-tips">设置后，不匹配的学生申请时会收到提醒（仍可申请）</view>
+      </view>
     </view>
-    
-    <!-- 审核人信息 -->
-    <view class="form-block disabled-block">
+
+    <view class="form-block compact-block">
       <view class="form-block-title">
-        审核人信息
-        <text class="status-tag">发布后由老师审核</text>
+        内推通道信息
+        <text class="status-tag">仅校友审核通过后展示</text>
       </view>
-      <view class="publisher-info">
-        <t-input 
-          placeholder="审核老师姓名" 
-          value="{{formData.reviewerName}}" 
-          disabled
-          style="flex: 1; margin-right: 20rpx;"
-        />
-        <view class="custom-select disabled">
-          <view class="select-value">
-            老师
-            <t-icon name="chevron-down" size="32rpx" />
-          </view>
+      <t-input label="*岗位链接/投递方式" placeholder="请输入岗位链接或投递说明" value="{{formData.jobLink}}" bind:change="onJobLinkChange" required />
+      <view class="field-gap"></view>
+      <t-input label="内推码" placeholder="如有请填写推荐码" value="{{formData.referralCode}}" bind:change="onReferralCodeChange" />
+      <view class="field-gap"></view>
+      <t-input label="校友微信" placeholder="用于通过后沟通，建议写常用号" value="{{formData.contactWechat}}" bind:change="onContactWechatChange" />
+    </view>
+
+    <view class="form-block compact-block">
+      <view class="form-block-title">发布人信息</view>
+      <view class="publisher-card" wx:if="{{userType !== 'teacher'}}">
+        <view class="publisher-row">
+          <t-avatar image="{{currentUserAvatar}}" icon="user" size="small" />
+          <text class="publisher-name">{{formData.publisherName || '当前校友'}}</text>
+          <t-tag variant="light" theme="primary" size="small">{{formData.publisherType}}</t-tag>
         </view>
       </view>
-      <view class="form-tips">岗位发布后，将由系统分配老师进行审核</view>
+      <view wx:if="{{userType === 'teacher'}}">
+        <t-input label="发布人姓名" placeholder="请输入代发布的校友姓名" value="{{formData.publisherName}}" bind:change="onPublisherNameChange" />
+        <view class="form-tips">老师发布岗位时，可填写代发布的校友姓名；前端展示身份统一为校友。</view>
+      </view>
     </view>
-    
-    <!-- 提交按钮 -->
-    <view class="submit-btn-container">
-      <t-button theme="primary" block size="large" class="submit-btn" bindtap="onSubmit">发布职位</t-button>
-    </view>
+
+    <view class="bottom-space"></view>
   </view>
-</view> 
+
+  <view class="footer-actions">
+    <t-button theme="primary" block size="large" class="submit-btn-fixed" bindtap="onSubmit">发布职位</t-button>
+  </view>
+</view>

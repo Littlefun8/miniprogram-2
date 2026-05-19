@@ -3,6 +3,12 @@ const cloud = require('wx-server-sdk')
 cloud.init({ env: 'cloud1-3g3q2srz04d1d705' })
 const db = cloud.database()
 
+const STATUS_DESC = {
+  processing: '申请审核中',
+  accepted: '申请审核通过',
+  rejected: '申请审核未通过'
+}
+
 const VALID_STATUS_TRANSITIONS = {
   pending: ['processing'],
   processing: ['accepted', 'rejected']
@@ -48,13 +54,43 @@ exports.main = async (event, context) => {
       return { code: 409, message: `非法状态流转：${currentStatus} → ${status}` }
     }
 
-    await db.collection('applications').doc(applicationId).update({
+    const timeline = Array.isArray(application.timeline) ? application.timeline.slice() : []
+    timeline.push({
+      status,
+      time: new Date(),
+      desc: STATUS_DESC[status] || '状态更新'
+    })
+
+    const updateData = {
+      status,
+      updateTime: db.serverDate(),
+      timeline
+    }
+    if (typeof remark === 'string') {
+      updateData.remark = remark
+    }
+
+    await db.collection('applications').doc(applicationId).update({ data: updateData })
+
+    const notificationTitleMap = {
+      processing: '申请处理中',
+      accepted: '申请已通过',
+      rejected: '申请未通过'
+    }
+    const remarkText = status === 'rejected' && remark ? ` 原因：${remark}` : ''
+    await db.collection('notifications').add({
       data: {
-        status,
-        remark: remark || '',
-        updateTime: db.serverDate()
+        userId: application.userId,
+        type: 'application_status',
+        title: notificationTitleMap[status] || '申请状态更新',
+        content: `您申请的职位「${(job && job.title) || '职位'}」状态已更新为：${STATUS_DESC[status]}。${remarkText}`.trim(),
+        isRead: false,
+        relatedId: application.jobId,
+        relatedApplicationId: applicationId,
+        createTime: db.serverDate()
       }
     })
+
     return { code: 200, message: '状态更新成功' }
   } catch (e) {
     return { code: 500, message: '状态更新失败', error: e }

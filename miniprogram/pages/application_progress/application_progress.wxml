@@ -3,26 +3,13 @@
   <!-- 标签切换栏 -->
   <view class="tabs-container">
     <view class="tabs-header">
-      <view 
-        class="tab-item {{activeTab === 'all' ? 'active' : ''}}" 
-        bindtap="onTabChange" 
-        data-tab="all"
-      >全部</view>
-      <view 
-        class="tab-item {{activeTab === 'pending' ? 'active' : ''}}" 
-        bindtap="onTabChange" 
-        data-tab="pending"
-      >待处理</view>
-      <view 
-        class="tab-item {{activeTab === 'processing' ? 'active' : ''}}" 
-        bindtap="onTabChange" 
-        data-tab="processing"
-      >处理中</view>
-      <view 
-        class="tab-item {{activeTab === 'completed' ? 'active' : ''}}" 
-        bindtap="onTabChange" 
-        data-tab="completed"
-      >已完成</view>
+      <view
+        wx:for="{{tabs}}"
+        wx:key="key"
+        class="tab-item {{activeTab === item.key ? 'active' : ''}}"
+        bindtap="onTabChange"
+        data-tab="{{item.key}}"
+      >{{item.label}}</view>
     </view>
     <view class="tabs-slider">
       <view class="slider-bar" style="left: {{sliderLeft}}; width: {{sliderWidth}}"></view>
@@ -40,17 +27,27 @@
     >
       <view class="application-header">
         <view class="job-title">{{item.jobTitle}}</view>
-        <view class="application-status {{item.status}}">{{item.statusText}}</view>
+        <view class="application-status {{item.status}} {{item.statusClass}}">{{item.statusText}}</view>
       </view>
       
       <view class="company-info">
-        <text>{{item.company}}</text>
-        <text class="separator">|</text>
-        <text>{{item.location}}</text>
+        <block wx:if="{{isReviewer}}">
+          <text>{{item.company}}</text>
+          <text class="separator">|</text>
+          <text>申请人：{{item.applicantText}}</text>
+        </block>
+        <block wx:else>
+          <text>{{item.company}}</text>
+          <text class="separator">|</text>
+          <text>{{item.location}}</text>
+        </block>
       </view>
       
       <view class="application-timeline">
-        <view class="timeline-item {{item.timeline[0].done ? 'done' : ''}}">
+        <view class="timeline-progress timeline-progress-1 {{item.progress1 ? 'active' : ''}}"></view>
+        <view class="timeline-progress timeline-progress-2 {{item.progress2 ? 'active' : ''}} {{item.progress2State}}"></view>
+
+        <view class="timeline-item {{item.timeline[0].state}}">
           <view class="timeline-dot"></view>
           <view class="timeline-content">
             <view class="timeline-title">{{item.timeline[0].title}}</view>
@@ -58,7 +55,7 @@
           </view>
         </view>
         
-        <view class="timeline-item {{item.timeline[1].done ? 'done' : ''}}">
+        <view class="timeline-item {{item.timeline[1].state}}">
           <view class="timeline-dot"></view>
           <view class="timeline-content">
             <view class="timeline-title">{{item.timeline[1].title}}</view>
@@ -66,18 +63,16 @@
           </view>
         </view>
         
-        <view class="timeline-item {{item.timeline[2].done ? 'done' : ''}} {{item.timeline[2].status === 'passed' ? 'passed' : ''}} {{item.timeline[2].status === 'failed' ? 'failed' : ''}}">
+        <view class="timeline-item {{item.timeline[2].state}}">
           <view class="timeline-dot"></view>
           <view class="timeline-content">
             <view class="timeline-title">{{item.timeline[2].title}}</view>
             <view class="timeline-time">{{item.timeline[2].time || '等待中'}}</view>
-            <view class="timeline-status" wx:if="{{item.timeline[2].status === 'passed'}}">已通过</view>
-            <view class="timeline-status failed" wx:if="{{item.timeline[2].status === 'failed'}}">未通过</view>
           </view>
         </view>
       </view>
       
-      <view class="referral-info {{item.timeline[2].status === 'passed' ? 'passed' : ''}}" wx:if="{{item.status === 'completed' && item.referralInfo && item.timeline[2].status === 'passed'}}">
+      <view class="referral-info passed" wx:if="{{!isReviewer && item.status === 'completed' && item.showReferralInfo}}">
         <view class="referral-header">
           <view class="referral-title">内推信息</view>
           <view class="referral-tag">获得内推</view>
@@ -92,21 +87,38 @@
             <t-button size="small" theme="primary" bindtap="copyReferralContact" data-contact="{{item.referralContact}}" class="copy-btn">复制联系方式</t-button>
           </view>
         </view>
+        <view class="referral-contact-block" wx:if="{{item.referralLink}}">
+          <view class="referral-contact-title">
+            <t-icon name="link" size="32rpx" color="#0052d9" /> 岗位投递链接
+          </view>
+          <view class="referral-contact-row">
+            <view class="referral-contact-content" style="width: 316rpx; display: block; box-sizing: border-box">{{item.referralLink}}</view>
+            <t-button size="small" theme="primary" bindtap="copyReferralLink" data-link="{{item.referralLink}}" class="copy-btn">复制链接</t-button>
+          </view>
+        </view>
         <view class="referral-actions" wx:if="{{item.referralCode}}">
           <view class="referral-code" style="position: relative; left: 14rpx; top: 14rpx; width: 339rpx; display: block; box-sizing: border-box; height: 41rpx">内推码：{{item.referralCode}}</view>
           <t-button size="small" theme="primary" bindtap="copyReferralCode" data-code="{{item.referralCode}}" class="copy-btn">复制内推码</t-button>
         </view>
       </view>
 
+      <view class="review-remark" wx:if="{{isReviewer && item.remark}}">备注：{{item.remark}}</view>
+
+      <view class="application-footer-actions" wx:if="{{isReviewer && (item.canProcess || item.canAcceptReject)}}">
+        <t-button wx:if="{{item.canProcess}}" size="small" theme="primary" bindtap="onStartReview" data-id="{{item.id}}" catchtap>开始处理</t-button>
+        <t-button wx:if="{{item.canAcceptReject}}" size="small" theme="primary" bindtap="onAccept" data-id="{{item.id}}" catchtap>通过</t-button>
+        <t-button wx:if="{{item.canAcceptReject}}" size="small" theme="danger" variant="outline" bindtap="onReject" data-id="{{item.id}}" catchtap>拒绝</t-button>
+      </view>
+
       <view class="application-footer" style="height: 81rpx; display: flex; box-sizing: border-box">
-        <view class="application-date" style="width: 410rpx; display: block; box-sizing: border-box; position: relative; left: 14rpx; top: -2rpx">申请时间：{{item.applyDate}}</view>
-        <t-button 
+        <view class="application-date" style="width: 410rpx; display: block; box-sizing: border-box; position: relative; left: 14rpx; top: -2rpx">{{isReviewer ? '收到时间' : '申请时间'}}：{{item.applyDate}}</view>
+        <t-button
           size="small" 
           theme="primary" 
           variant="outline" 
           bindtap="onViewDetailTap" 
           class="detail-btn" 
-          data-id="{{item.id}}"
+          data-jobid="{{item.jobId}}"
           catchtap
         >查看详情</t-button>
       </view>
@@ -119,9 +131,9 @@
 
   <!-- 空状态 -->
   <view class="empty-state" wx:else>
-    <t-empty icon="info-circle-filled" description="暂无申请记录" />
-    <view class="empty-hint">快去申请心仪的职位吧</view>
-    <t-button theme="primary" size="medium" class="browse-btn" bindtap="onBrowseJobsTap">浏览职位</t-button>
+    <t-empty icon="info-circle-filled" description="{{isReviewer ? '暂无审核记录' : '暂无申请记录'}}" />
+    <view class="empty-hint">{{isReviewer ? '可先发布职位并等待学生投递申请' : '快去申请心仪的职位吧'}}</view>
+    <t-button wx:if="{{!isReviewer}}" theme="primary" size="medium" class="browse-btn" bindtap="onBrowseJobsTap">浏览职位</t-button>
   </view>
 
   <!-- 加载状态 -->

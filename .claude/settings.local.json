@@ -30,7 +30,13 @@
       "Skill(docx)",
       "Bash(pandoc:*)",
       "Bash(where:*)",
-      "Bash(python:*)"
+      "Bash(python:*)",
+      "Bash(git -C \"D:/miniprogram-2\" status --porcelain)",
+      "Bash(git -C \"D:/miniprogram-2\" log --oneline -5)",
+      "Bash(git -C \"D:/miniprogram-2\" remote -v)",
+      "Bash(gh repo rename:*)",
+      "Bash(git -C \"D:/miniprogram-2\" remote set-url origin https://github.com/Littlefun8/JUFE-campus-referral)",
+      "Bash(git -C \"D:/miniprogram-2\" add -- . ':!docs/thesis_workbench/')"
     ]
   }
 }

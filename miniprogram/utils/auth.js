@@ -4,9 +4,9 @@
  */
 
 const ROLE_LABELS = { student: '学生', alumni: '校友', teacher: '老师' }
+// 前端仅允许学生/校友自助选择；教师账号由系统侧预置。
 const ROLE_OPTIONS = [
   { userType: 'alumni', label: '校友' },
-  { userType: 'teacher', label: '老师' },
   { userType: 'student', label: '学生' }
 ]
 
@@ -26,7 +26,7 @@ function login() {
 
 /**
  * 调用 setUserRole 云函数设置角色（一次性）
- * @param {string} userType - 'student' | 'alumni' | 'teacher'
+ * @param {string} userType - 'student' | 'alumni'
  * @returns {Promise<Object>} { code, data: { userType, roleLabel } }
  */
 function setUserRole(userType) {

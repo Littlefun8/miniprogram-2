@@ -1,16 +1,8 @@
 <!-- pages/manage_applications/manage_applications.wxml -->
 <view class="container">
   <view class="header">
-    <text class="title">申请管理</text>
-  </view>
-
-  <!-- Tab 切换 -->
-  <view class="tabs">
-    <view class="tab {{activeTab === item.key ? 'tab-active' : ''}}"
-          wx:for="{{tabs}}" wx:key="key"
-          bindtap="onTabChange" data-tab="{{item.key}}">
-      {{item.label}}
-    </view>
+    <text class="title">申请审核</text>
+    <text class="subtitle">待审核申请列表</text>
   </view>
 
   <!-- 加载中 -->
@@ -20,7 +12,7 @@
 
   <!-- 空状态 -->
   <view wx:if="{{!isLoading && applications.length === 0}}" class="empty-wrap">
-    <t-empty icon="file-copy" description="暂无申请记录" />
+    <t-empty icon="file-copy" description="暂无待处理申请" />
   </view>
 
   <!-- 申请列表 -->
@@ -31,28 +23,40 @@
           <text class="app-job-title">{{item.jobSnapshot.title || '未知职位'}}</text>
           <text class="app-job-company">{{item.jobSnapshot.company || ''}}</text>
         </view>
-        <view class="app-status status-{{item.status}}">
+        <view class="status-pill status-{{item.status}}">
           {{item.status === 'pending' ? '待处理' : item.status === 'processing' ? '处理中' : item.status === 'accepted' ? '已通过' : '已拒绝'}}
         </view>
       </view>
 
       <view class="app-body">
         <text class="app-time">申请时间：{{item.applyDate || item.createTime || '未知'}}</text>
+        <text class="app-user">申请人：{{item.applicantName}}</text>
+        <view class="detail-toggle" catchtap="onToggleApplicantDetail" data-id="{{item._id}}">
+          <text class="detail-toggle-text">{{expandedApplicationId === item._id ? '收起申请人详情' : '查看申请人详情'}}</text>
+        </view>
+        <view class="applicant-detail" wx:if="{{expandedApplicationId === item._id}}">
+          <text class="app-detail-item" wx:if="{{item.applicantSchool}}">学校：{{item.applicantSchool}}</text>
+          <text class="app-detail-item" wx:if="{{item.applicantMajor}}">专业：{{item.applicantMajor}}</text>
+          <text class="app-detail-item" wx:if="{{item.applicantGrade}}">年级：{{item.applicantGrade}}</text>
+          <text class="app-detail-item" wx:if="{{item.applicantPhone}}">电话：{{item.applicantPhone}}</text>
+          <text class="app-detail-item" wx:if="{{item.applicantEmail}}">邮箱：{{item.applicantEmail}}</text>
+          <text class="app-detail-item" wx:if="{{item.applicantBio}}">自我介绍：{{item.applicantBio}}</text>
+        </view>
         <text class="app-remark" wx:if="{{item.remark}}">备注：{{item.remark}}</text>
       </view>
 
       <!-- 操作按钮 -->
       <view class="app-actions" wx:if="{{item.status === 'pending' || item.status === 'processing'}}">
         <view wx:if="{{item.status === 'pending'}}"
-              class="btn btn-process" catchtap="onProcess" data-app="{{item}}">
+              class="btn btn-primary" catchtap="onProcess" data-app="{{item}}">
           开始处理
         </view>
         <view wx:if="{{item.status === 'processing'}}"
-              class="btn btn-accept" catchtap="onAccept" data-app="{{item}}">
+              class="btn btn-success" catchtap="onAccept" data-app="{{item}}">
           通过
         </view>
         <view wx:if="{{item.status === 'processing'}}"
-              class="btn btn-reject" catchtap="onReject" data-app="{{item}}">
+              class="btn btn-danger" catchtap="onReject" data-app="{{item}}">
           拒绝
         </view>
       </view>

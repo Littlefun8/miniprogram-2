@@ -18,9 +18,13 @@
   <!-- 职位列表 -->
   <view class="job-list">
     <view class="job-card" wx:for="{{pendingJobs}}" wx:key="id" bindtap="onJobTap" data-id="{{item.id}}">
-      <view class="job-info">
+      <view class="app-header">
+        <view class="app-job-info">
         <text class="job-title">{{item.title}}</text>
         <text class="job-company">{{item.company}}</text>
+        </view>
+      </view>
+      <view class="app-body">
         <view class="job-meta">
           <text class="job-salary">{{item.salary}}</text>
           <text class="job-location">{{item.location}}</text>
@@ -33,11 +37,11 @@
           </t-tag>
         </view>
       </view>
-      <view class="job-actions" catchtap="">
-        <view class="btn-approve" catchtap="onApprove" data-id="{{item.id}}" data-title="{{item.title}}">
+      <view class="app-actions" catchtap="">
+        <view class="btn btn-success" catchtap="onApprove" data-id="{{item.id}}" data-title="{{item.title}}">
           通过
         </view>
-        <view class="btn-reject" catchtap="onReject" data-id="{{item.id}}" data-title="{{item.title}}">
+        <view class="btn btn-danger" catchtap="onReject" data-id="{{item.id}}" data-title="{{item.title}}">
           拒绝
         </view>
       </view>

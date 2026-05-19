@@ -10,6 +10,7 @@ Page({
   },
 
   onLoad() {
+    wx.hideHomeButton && wx.hideHomeButton()
     if (auth.getUserType() !== 'teacher') {
       wx.showModal({
         title: '提示',
@@ -20,6 +21,10 @@ Page({
       return
     }
     this.loadPendingJobs()
+  },
+
+  onShow() {
+    wx.hideHomeButton && wx.hideHomeButton()
   },
 
   onPullDownRefresh() {

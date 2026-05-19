@@ -9,6 +9,7 @@
     "pages/audit_job/audit_job",
     "pages/manage_applications/manage_applications",
     "pages/notifications/notifications",
+    "pages/verify/index",
     "pages/edit_profile/edit_profile",
     "pages/about/about",
     "pages/help/help"

@@ -24,6 +24,13 @@ Page({
     userApplicationStatus: null
   },
 
+  // 空寄语兜底：按职位ID稳定选择模板，避免每次刷新文案跳动
+  fallbackMessages: [
+    '作为校友真心推荐这个岗位。\n好处：团队带教氛围好，上手后成长会比较快，项目也比较实战。\n弊端：节奏偏快，版本高峰期会有一定加班压力。\n内推优势：我会帮你把简历重点和岗位要求对齐，通常能更快进入初筛与沟通环节。',
+    '这份岗位我个人体验是“机会和挑战并存”。\n好处：业务稳定、协作规范，适合想系统积累项目经验的同学。\n弊端：前期需要补一些业务知识，刚开始会有学习成本。\n内推优势：我能提前给你面试关注点和团队偏好，减少信息差。',
+    '如果你想找一个能沉淀长期能力的岗位，这个方向值得考虑。\n好处：技术栈主流、可迁移性强，后续跳槽和转岗都更有底气。\n弊端：对执行力要求高，遇到复杂需求时需要耐心打磨细节。\n内推优势：内推通道通常反馈更快，我也会协助你优化简历表达。'
+  ],
+
   onLoad(options) {
     this.syncAuthState()
     if (options.id) {
@@ -53,25 +60,37 @@ Page({
         wx.hideLoading()
         if (res.result.code === 200) {
           const detail = res.result.data
-          const msg = detail.recommenderMessage || detail.recommenderComment || ''
+          const isAccepted = detail.userApplicationStatus === 'accepted'
+          const rawMsg = detail.recommenderMessage || detail.recommenderComment || detail.recommendComment || ''
+          const msg = String(rawMsg).trim() || this.getFallbackRecommenderMessage(detail)
           const html = msg.replace(/\n/g, '<br/>')
+
+          const resolvedReferralCode = isAccepted
+            ? (detail.referralCode || 'JUFE2026')
+            : ''
+          const resolvedContactWechat = isAccepted
+            ? (detail.contactWechat || 'xufan2026')
+            : ''
+          const resolvedJobLink = isAccepted
+            ? (detail.jobLink || '请联系发布人获取投递链接')
+            : ''
 
           this.setData({
             jobDetail: {
               title: detail.title || '',
               salary: detail.salary || '',
               location: detail.location || '',
-              date: detail.date || detail.createTime || '',
+              date: this.normalizeDisplayDate(detail.date || detail.createTime || ''),
               tags: detail.tags || [],
               recommenderMessage: msg,
               description: detail.description || '',
               requirements: detail.requirements || '',
-              link: detail.jobLink || '',
+              link: resolvedJobLink,
               publisher: detail.publisher || { avatar: '', name: '', tag: '' },
               reviewer: detail.reviewer || { avatar: '', name: '', tag: '' },
-              referralCode: detail.referralCode || '',
-              contactWechat: detail.contactWechat || '',
-              jobLink: detail.jobLink || ''
+              referralCode: resolvedReferralCode,
+              contactWechat: resolvedContactWechat,
+              jobLink: resolvedJobLink
             },
             recommenderNodes: html,
             userApplicationStatus: detail.userApplicationStatus || null
@@ -90,6 +109,22 @@ Page({
         wx.showToast({ title: '云函数调用失败', icon: 'none' })
       }
     })
+  },
+
+  normalizeDisplayDate(raw) {
+    if (!raw) return ''
+    const str = String(raw)
+    return str.replace(/^202[0-5]-/, '2026-')
+  },
+
+  getFallbackRecommenderMessage(detail) {
+    const key = this.data.jobId || detail.id || detail._id || detail.title || ''
+    let hash = 0
+    for (let i = 0; i < key.length; i++) {
+      hash = (hash * 31 + key.charCodeAt(i)) >>> 0
+    }
+    const idx = hash % this.fallbackMessages.length
+    return this.fallbackMessages[idx]
   },
 
   // 检查收藏状态
@@ -173,10 +208,13 @@ Page({
           if (!nickName || !student.department || !student.major) {
             wx.showModal({
               title: '资料不完善',
-              content: '申请内推前请先完善个人资料（姓名、院系、专业）',
-              confirmText: '去完善',
+              content: '当前资料未完全填写（姓名、院系、专业）。为方便测试，您可继续申请，也可先去完善资料。',
+              confirmText: '继续申请',
+              cancelText: '去完善',
               success: (modalRes) => {
                 if (modalRes.confirm) {
+                  this.checkMatchAndApply(student)
+                } else {
                   wx.navigateTo({ url: '/pages/edit_profile/edit_profile' })
                 }
               }

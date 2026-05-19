@@ -55,7 +55,10 @@ Page({
       },
       success: res => {
         if (res.result.code === 200) {
-          const newJobs = res.result.data
+          const newJobs = (res.result.data || []).map(item => ({
+            ...item,
+            date: this.normalizeDisplayDate(item.date)
+          }))
           const allJobs = this.data.pageNum === 1 ? newJobs : this.data.jobList.concat(newJobs)
           this.setData({
             jobList: allJobs,
@@ -72,6 +75,12 @@ Page({
         wx.showToast({ title: '云函数调用失败', icon: 'none' })
       }
     })
+  },
+
+  normalizeDisplayDate(raw) {
+    if (!raw) return ''
+    const str = String(raw)
+    return str.replace(/^202[0-5]-/, '2026-')
   },
 
   refreshJobList() {

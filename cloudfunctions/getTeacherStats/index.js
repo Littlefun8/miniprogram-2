@@ -1,7 +1,6 @@
 const cloud = require('wx-server-sdk')
-cloud.init({ env: cloud.DYNAMIC_CURRENT_ENV })
+cloud.init({ env: 'cloud1-3g3q2srz04d1d705' })
 const db = cloud.database()
-const _ = db.command
 
 /**
  * getTeacherStats — 教师统计页数据聚合
@@ -21,7 +20,7 @@ const _ = db.command
  *   trendData: [{ date, count }]
  *   funnelStages: [{ name, count, conversion }]
  */
-exports.main = async (event, context) => {
+exports.main = async (event) => {
   const { OPENID } = cloud.getWXContext()
   const { timeRange = 'week' } = event
 
